@@ -1,65 +1,56 @@
-私のアプリ「com.coara.browser」は、以下のサードパーティライブラリを使用しています。  
+アプリケーション「com.aozora.browser」は、以下のサードパーティライブラリを使用しています。  
 全ライブラリは [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0) に基づいてライセンスされています。  
 
-1. **AndroidX AppCompat**  
-   - アーティファクト: `androidx.appcompat:appcompat:1.7.0`  
-   - 公式サイト: [AndroidX AppCompat](https://developer.android.com/jetpack/androidx/releases/appcompat)  
+1. **AppCompat V7**  
+   - アーティファクト: `com.android.support:appcompat-v7:28.0.0`  
    - ライセンス: Apache License, Version 2.0  
    - 著作権: © The Android Open Source Project
 
-2. **Material Components for Android**  
-   - アーティファクト: `com.google.android.material:material:1.12.0`  
-   - 公式サイト: [Material Components for Android](https://material.io/develop/android)  
-   - ライセンス: Apache License, Version 2.0  
-   - 著作権: © Google Inc.  
-
-3. **ConstraintLayout**  
-   - アーティファクト: `androidx.constraintlayout:constraintlayout:2.2.0`  
-   - 公式サイト: [ConstraintLayout](https://developer.android.com/jetpack/androidx/releases/constraintlayout)  
+2. **Design**  
+   - アーティファクト: `com.android.support:design:28.0.0`  
    - ライセンス: Apache License, Version 2.0  
    - 著作権: © The Android Open Source Project
 
-4. **CoordinatorLayout**  
-   - アーティファクト: `androidx.coordinatorlayout:coordinatorlayout:1.2.0`  
-   - 公式サイト: [CoordinatorLayout](https://developer.android.com/jetpack/androidx/releases/coordinatorlayout)  
+3. **Support V4**  
+   - アーティファクト: `com.android.support:support-v4:28.0.0`  
    - ライセンス: Apache License, Version 2.0  
    - 著作権: © The Android Open Source Project
 
-5. **RecyclerView**  
-   - アーティファクト: `androidx.recyclerview:recyclerview:1.4.0`  
-   - 公式サイト: [RecyclerView](https://developer.android.com/jetpack/androidx/releases/recyclerview)  
+4. **RecyclerView**  
+   - アーティファクト: `com.android.support:recyclerview-v7:28.0.0`  
    - ライセンス: Apache License, Version 2.0  
    - 著作権: © The Android Open Source Project
 
-6. **SwipeRefreshLayout**  
-   - アーティファクト: `androidx.swiperefreshlayout:swiperefreshlayout:1.1.0`  
-   - 公式サイト: [SwipeRefreshLayout](https://developer.android.com/jetpack/androidx/releases/swiperefreshlayout)  
+5. **SwipeRefreshLayout**  
+   - アーティファクト: `com.android.support:swiperefreshlayout:28.0.0`  
    - ライセンス: Apache License, Version 2.0  
    - 著作権: © The Android Open Source Project
 
-7. **CardView**  
-   - アーティファクト: `androidx.cardview:cardview:1.0.0`  
-   - 公式サイト: [CardView](https://developer.android.com/jetpack/androidx/releases/cardview)  
+6. **CardView**  
+   - アーティファクト: `com.android.support:cardview-v7:28.0.0`  
    - ライセンス: Apache License, Version 2.0  
    - 著作権: © The Android Open Source Project
 
-8. **WebKit for Android**  
-   - アーティファクト: `androidx.webkit:webkit:1.12.1`  
-   - 公式サイト: [WebKit for Android](https://developer.android.com/jetpack/androidx/releases/webkit)  
+7. **WebKit for Android**  
+   - アーティファクト: `com.android.support:webkit`  
    - ライセンス: Apache License, Version 2.0  
    - 著作権: © The Android Open Source Project
 
-9. **AndroidX Activity**  
-   - アーティファクト: `androidx.activity:activity:1.9.3`  
-   - 公式サイト: [AndroidX Activity](https://developer.android.com/jetpack/androidx/releases/activity)  
+8. **Android Activity**  
+   - アーティファクト: `android.app.Activity`  
    - ライセンス: Apache License, Version 2.0  
    - 著作権: © The Android Open Source Project
 
-10. **ZXing Core**  
-    - アーティファクト: `com.google.zxing:core`  
+9. **ZXing Core**  
+    - アーティファクト: `com.google.zxing:core:3.4.1`  
     - 公式サイト: [ZXing GitHub](https://github.com/zxing/zxing)  
     - ライセンス: Apache License, Version 2.0  
     - 著作権: © ZXing authors
+
+10. **Preference**  
+   - アーティファクト: `com.android.support:preference-v7:28.0.0`  
+   - ライセンス: Apache License, Version 2.0  
+   - 著作権: © The Android Open Source Project
 
 11. **Android SDKライセンス**  
     - Android SDKに関する詳細なライセンス情報は下記を参照してください。  
