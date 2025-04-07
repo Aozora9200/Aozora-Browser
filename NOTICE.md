@@ -52,18 +52,24 @@
    - ライセンス: Apache License, Version 2.0  
    - 著作権: © The Android Open Source Project
 
-11. **Android SDKライセンス**  
+11. **Coara-Browser**
+   - 一部コードを流用
+   - Github: [Coara-Browser](https://github.com/coara-chocomaru/coara-browser/) 
+   - ライセンス: Apache License, Version 2.0
+   - 開発者: Coara-Chocomaru
+
+12. **Android SDKライセンス**  
     - Android SDKに関する詳細なライセンス情報は下記を参照してください。  
     - [Android SDKライセンス情報](https://developer.android.com/license)
 
 ## 商標通知
-12. **Android™** はGoogle LLCの商標です。  
+13. **Android™** はGoogle LLCの商標です。  
 
 ---  
-- 以上の12項目が基本的なライセンス情報です  
+- 以上の13項目が基本的なライセンス情報です  
 - 各ライブラリの詳細なライセンス情報、及び利用条件については  
 - 公式サイトや各ライブラリの配布物に含まれるファイルをご確認ください。  
 ---  
-Copyright 2025 coara-chocomaru  
+Copyright 2025 Aozora 9200  
 ---  
 ※ このNOTICEは、アプリに含まれるサードパーティライブラリのライセンス遵守のために作成されています。
