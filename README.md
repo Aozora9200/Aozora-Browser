@@ -1,7 +1,8 @@
-# CoaraBrowser
+# AozoraBrowser
 
 - Android の WebView を活用した
-- 軽量マルチタブ方式の Web ブラウザです。
+- Coara Browser 基準の軽量マルチタブ方式の Android 4.4風 Web ブラウザです。
+- 動作バージョン Android 4.4 ～ Android 15
 
 ## 概要
 
@@ -29,4 +30,4 @@ Apache License, Version 2.0
 #####
 [NOTICE](./NOTICE.md)  
 ---
-Copyright 2025 coara-chocomaru
+Copyright 2025 Hatsukari (Aozora 9200)
