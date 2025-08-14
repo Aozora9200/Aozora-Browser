@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/findInPageBar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="#CC000000"
+    android:fitsSystemWindows="true">
+
+    <EditText
+         android:id="@+id/etFindQuery"
+         android:layout_width="0dp"
+         android:layout_weight="1"
+         android:layout_height="wrap_content"
+         android:hint="検索キーワード"
+         android:textColor="#FFFFFF"
+         android:imeOptions="actionSearch" />
+
+    <TextView
+         android:id="@+id/tvFindCount"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="0/0"
+         android:textColor="#FFFFFF"
+         android:padding="8dp" />
+
+    <Button
+         android:id="@+id/btnFindPrev"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="前へ" />
+
+    <Button
+         android:id="@+id/btnFindNext"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="次へ" />
+
+    <Button
+         android:id="@+id/btnFindClose"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="閉じる" />
+</LinearLayout>

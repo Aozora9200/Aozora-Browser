@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+
+    <!-- Devices running Android 13 (API level 33) or higher -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+
+    <!-- To handle the reselection within the app on devices running Android 14
+         or higher if your app targets Android 14 (API level 34) or higher.  -->
+    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
+    <uses-feature android:name="android.hardware.camera" android:required="false"/>
+    <uses-feature android:name="android.hardware.microphone" android:required="false" />
+
+    <queries>
+        <!-- カメラ -->
+        <intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE" />
+        </intent>
+        <!-- ギャラリー -->
+        <intent>
+            <action android:name="android.intent.action.GET_CONTENT" />
+        </intent>
+        <intent>
+            <action android:name="android.provider.MediaStore.RECORD_SOUND"/>
+        </intent>
+    </queries>
+
+    <application
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:theme="@style/Theme.AozoraBrowser"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/aozora"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/aozora"
+        android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
+        android:launchMode="singleTop"
+        tools:targetApi="31">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:windowSoftInputMode="stateHidden"
+            android:configChanges="orientation|screenSize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="file" />
+                <data android:scheme="content" />
+                <data android:mimeType="text/html" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".DownloadListActivity"
+            android:icon="@drawable/download"
+            android:label="ダウンロード"
+            android:theme="@android:style/Theme.Holo"/>
+        <activity
+            android:name=".Ior1orl"
+            android:label="I or 1 or l"
+            android:theme="@android:style/Theme.Holo"/>
+        <activity
+            android:name=".txtphoto"
+            android:label="文字を画像に変換"
+            android:theme="@android:style/Theme.Holo"/>
+        <activity
+            android:name=".asciiart"
+            android:label="画像をTXTに変換"
+            android:theme="@android:style/Theme.Holo"/>
+        <activity
+            android:name=".pagedl"
+            android:label="ページ保存ツール"
+            android:theme="@android:style/Theme.Holo"/>
+        <activity
+            android:name=".num"
+            android:label="電卓"
+            android:theme="@android:style/Theme.Holo"/>
+        <activity
+            android:name=".QrCodeActivity"
+            android:label="QRコード化"
+            android:theme="@android:style/Theme.Holo"/>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="設定"
+            android:configChanges="orientation|screenSize"
+            android:icon="@mipmap/ic_launcher_settings"
+            android:screenOrientation="unspecified"
+            android:theme="@android:style/Theme.Holo" />
+        <activity
+            android:name=".info"
+            android:label="端末情報"
+            android:configChanges="orientation|screenSize"
+            android:icon="@mipmap/ic_launcher_settings"
+            android:screenOrientation="unspecified"
+            android:theme="@android:style/Theme.Holo" />
+        <activity
+            android:name=".reset"
+            android:label="バックアップとリセット"
+            android:configChanges="orientation|screenSize"
+            android:icon="@mipmap/ic_launcher_settings"
+            android:screenOrientation="unspecified"
+            android:theme="@android:style/Theme.Holo" />
+        <activity
+            android:name=".SecretActivity"
+            android:label="シークレットモード"
+            android:theme="@style/Theme.AozoraBrowser"
+            android:windowSoftInputMode="stateHidden"
+            android:configChanges="orientation|screenSize"/>
+        <activity
+            android:name=".exec"
+            android:label="exec"
+            android:theme="@android:style/Theme.Holo.Light"
+            android:windowSoftInputMode="stateHidden"
+            android:configChanges="orientation|screenSize"/>
+        <activity
+            android:name=".grepmd5appActivity"
+            android:label="grep-i/md5"
+            android:theme="@android:style/Theme.Holo"/>
+        <activity
+            android:name=".htmlview"
+            android:label="HTML エディター"
+            android:theme="@android:style/Theme.Holo"
+            android:exported="true">
+        <intent-filter>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="file" />
+            <data android:scheme="content" />
+            <data android:mimeType="text/html" />
+        </intent-filter>
+        </activity>
+        <activity
+            android:name=".notepad"
+            android:label="メモ帳"
+            android:theme="@android:style/Theme.Holo"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="content" />
+                <data android:scheme="file" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".QrCameraActivity"
+            android:label="QRコードスキャン"
+            android:theme="@android:style/Theme.Holo"/>
+        <activity
+            android:name=".FileManager"
+            android:label="ファイルマネージャ"
+            android:theme="@android:style/Theme.Holo"/>
+        <activity
+            android:name=".SavedPagesActivity"
+            android:theme="@android:style/Theme.Holo"/>
+        <activity
+            android:name=".WebViewActivity"
+            android:theme="@android:style/Theme.Holo"/>
+        <activity
+            android:name=".SavedBookMarkActivity"
+            android:theme="@android:style/Theme.Holo"/>
+        <activity
+            android:name=".HistoryActivity"
+            android:theme="@android:style/Theme.Holo"/>
+        <activity
+            android:name=".BmHisActivity"
+            android:theme="@android:style/Theme.Holo"/>
+        <activity
+            android:name=".HisBMActivity"
+            android:theme="@android:style/Theme.Holo"/>
+        <service android:name=".AudioPlaybackService"
+            android:exported="false" />
+    </application>
+
+</manifest>

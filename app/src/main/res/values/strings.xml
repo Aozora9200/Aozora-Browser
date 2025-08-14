@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Aozora</string>
+    <string name="version">2.0</string>
+    <string name="build">AZ03A</string>
+    <string name="cannot_get_image_path">画像のパスを取得できません</string>
+    <string name="cannot_load_image">画像を読み込めません</string>
+    <string name="convert_ascii_art">アスキーアートに変換</string>
+    <string name="file_not_selected">ファイルが選択されていません</string>
+    <string name="unknown_file">不明なファイル</string>
+    <string name="file_save_failed">ファイルの保存に失敗しました</string>
+    <string name="file_save_success">ファイルが保存されました</string>
+    <string name="file_saved_path">保存先：</string>
+    <string name="need_storage_permission">ストレージへのアクセス権限が必要です</string>
+    <string name="save_text">ファイルに保存</string>
+    <string name="select_image">画像を選択</string>
+    <string name="selected_image">画像を選択しました</string>
+    <string name="storage_permission_denied">ストレージのアクセス権限が拒否されました</string>
+    <string name="save_color">カラー保存</string>
+    <string name="qrcode_short_label">QRコード</string>
+    <string name="qrcode_long_label">QRコードに変換</string>
+    <string name="pagedl_short_label">ページDL</string>
+    <string name="pagedl_long_label">ページをダウンロード</string>
+    <string name="asciiart_short_label">ASCIIアート</string>
+    <string name="asciiart_long_label">画像をASCIIアートに変換</string>
+    <string name="txtphoto_short_label">TXT画像</string>
+    <string name="txtphoto_long_label">TXTを画像に変換</string>
+    <string name="bm_long_label">ブックマークを開く</string>
+    <string name="bm_short_label">ブックマーク</string>
+    </resources>

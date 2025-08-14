@@ -1,4 +1,6 @@
 # AozoraBrowser
+![AozoraBrowser_Header](https://github.com/user-attachments/assets/e38147c9-b482-4b01-b750-4b4118aaa560)
+
 
 - Android の WebView を活用した
 - Coara Browser 基準の軽量マルチタブ方式の Android 4.4風 Web ブラウザです。

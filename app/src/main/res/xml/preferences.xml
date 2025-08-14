@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
+
+    <PreferenceCategory
+        android:title="無線とネットワーク">
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="端末">
+
+        <Preference
+            android:key="Storage"
+            android:icon="@drawable/storage"
+            android:title="ストレージ" />
+
+    </PreferenceCategory>
+
+    <!--<PreferenceCategory
+        android:title="ユーザー設定">
+        <CheckBoxPreference
+            android:key="notification_enable"
+            android:title="通知を有効にする"
+            android:defaultValue="true" />
+
+        <EditTextPreference
+            android:key="username"
+            android:title="ユーザー名"
+            android:dialogTitle="ユーザー名を入力してください" />
+
+        <Preference
+            android:key="BackupReset"
+            android:icon="@drawable/reset"
+            android:title="バックアップとリセット" />
+
+
+    </PreferenceCategory>-->
+    <!-- カテゴリ2 -->
+    <PreferenceCategory android:title="システム">
+        <!--<ListPreference
+            android:key="theme"
+            android:title="テーマの選択"
+            android:dialogTitle="テーマを選択"
+            android:entries="@array/theme_entries"
+            android:entryValues="@array/theme_values"
+            android:defaultValue="light" />-->
+        <Preference
+            android:key="Information"
+            android:pivotX="50%"
+            android:pivotY="50%"
+            android:fromDegrees="0"
+            android:toDegrees="180"
+            android:icon="@drawable/error"
+            android:title="端末情報" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

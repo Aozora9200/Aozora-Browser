@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
+
+    <PreferenceCategory
+        android:title="ブックマーク">
+
+        <Preference
+            android:key="bookmark_export_key"
+            android:title="ブックマークをエクスポート" />
+        <Preference
+            android:key="bookmark_import_key"
+            android:title="ブックマークをインポート" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="個人データ">
+
+        <Preference
+            android:key="reset"
+            android:title="データの初期化" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
