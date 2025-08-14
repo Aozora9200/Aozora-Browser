@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--<item
+        android:title="選択オプション">
+        <menu>
+            <item android:id="@+id/action_select"
+                android:title="複数選択" />
+            <item
+                android:id="@+id/menu_select_all"
+                android:title="全選択" />
+
+            <item
+                android:id="@+id/menu_clear_selection"
+                android:title="全解除" />
+        </menu>
+    </item>-->
+    <item
+        android:title="新規作成"
+        android:icon="@android:drawable/ic_menu_add">
+        <menu>
+            <item
+                android:id="@+id/menu_create_folder"
+                android:title="フォルダの作成" />
+            <item
+                android:id="@+id/menu_new_file"
+                android:title="ファイルを作成"/>
+        </menu>
+    </item>
+    <item android:id="@+id/action_paste"
+        android:title="貼り付け" />
+    <item android:id="@+id/sort_name"
+        android:title="名前でソート" />
+    <item android:id="@+id/sort_date"
+        android:title="更新日でソート" />
+    <item android:id="@+id/sort_size"
+        android:title="サイズでソート" />
+    <item android:id="@+id/toggle_order"
+        android:title="昇順 / 降順" />
+    <item
+        android:id="@+id/menu_info"
+        android:title="アプリ情報"/>
+    <item
+        android:id="@+id/file_close"
+        android:title="終了" />
+</menu>

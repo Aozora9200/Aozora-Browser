@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
+
+    <PreferenceCategory android:title="">
+        <!--<ListPreference
+            android:key="theme"
+            android:title="テーマの選択"
+            android:dialogTitle="テーマを選択"
+            android:entries="@array/theme_entries"
+            android:entryValues="@array/theme_values"
+            android:defaultValue="light" />-->
+        <Preference
+            android:title="Appバージョン"
+            android:summary="@string/version"/>
+        <Preference
+            android:title="ビルド番号"
+            android:summary="@string/build"/>
+        <Preference
+            android:key="license"
+            android:pivotX="50%"
+            android:pivotY="50%"
+            android:fromDegrees="0"
+            android:toDegrees="180"
+            android:title="オープンソースライセンス" />
+        <Preference
+            android:key="getpropinfo"
+            android:pivotX="50%"
+            android:pivotY="50%"
+            android:fromDegrees="0"
+            android:toDegrees="180"
+            android:icon="@drawable/error"
+            android:title="デバイスのgetprop情報" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

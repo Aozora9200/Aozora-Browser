@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextClock
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Aozora"
+            android:textAlignment="center"
+            android:textSize="16dp"
+            />
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/action_Bar"
+        android:layout_width="match_parent"
+        android:layout_height="34dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/favicon"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:src="@drawable/transparent_vector"
+                android:contentDescription="Favicon"/>
+
+            <AutoCompleteTextView
+                android:id="@+id/urlEditText"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="50dp"
+                android:hint="検索または URL を入力"
+                android:inputType="textUri"
+                android:selectAllOnFocus="true"
+                android:imeOptions="actionGo"/>
+
+            <ImageButton
+                android:id="@+id/action_bookmark"
+                android:layout_width="50dp"
+                android:layout_height="34dp"
+                android:src="@drawable/bookmark_black"
+                android:background="?android:attr/selectableItemBackground"
+                android:contentDescription="ブックマーク" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:max="100"
+        android:progress="0"
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+
+    <!-- <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"> -->
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <FrameLayout
+            android:id="@+id/webViewContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <!-- 追加: フルスクリーン用のコンテナ -->
+    <FrameLayout
+        android:id="@+id/fullscreenContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    </FrameLayout>
+
+        <!-- 下部のアクションバー風ボトムバー
+        <LinearLayout
+            android:id="@+id/Bar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:background="#000000"
+            android:alpha="0.7"
+            android:layout_gravity="bottom"
+            android:gravity="center"/> -->
+
+    <!-- 下部のアクションバー風ボトムバー -->
+    <LinearLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:background="#000000"
+        android:alpha="1.0"
+        android:layout_gravity="bottom"
+        android:gravity="center">
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="65dp"
+            android:layout_height="40dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:src="@drawable/white_back_button_selector" />
+
+        <ImageButton
+            android:id="@+id/forwardButton"
+            android:layout_width="65dp"
+            android:layout_height="40dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:src="@drawable/white_forward_button_selector" />
+
+
+        <!-- 再読み込みボタン -->
+        <ImageButton
+            android:id="@+id/action_reload"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/reload"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="再読込" />
+
+        <!--<ImageButton
+            android:id="@+id/action_tab"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/tab_white"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="タブ" />-->
+
+        <FrameLayout
+            android:layout_width="65dp"
+            android:layout_height="40dp">
+        <TextView
+            android:id="@+id/tabCountTextView"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:background="@drawable/rounded_outline"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="#ffffff"
+            android:textSize="14sp"
+            android:layout_marginStart="4dp"/>
+        </FrameLayout>
+
+        <ImageButton
+            android:id="@+id/action_popup"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@mipmap/aozora"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="スタート" />
+
+    </LinearLayout>
+
+<!-- </FrameLayout> -->
+
+</LinearLayout>

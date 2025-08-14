@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="ツール">
+        <menu>
+            <item
+                android:id="@+id/action_basic_auth"
+                android:title="basicモード"
+                android:checkable="true"/>
+            <item
+                android:id="@+id/action_txtphoto"
+                android:title="文字を画像に変換" />
+            <item
+                android:id="@+id/action_asciiart"
+                android:title="画像を文字に変換" />
+            <item
+                android:id="@+id/action_pgdl"
+                android:title="ページ保存ツール" />
+            <item
+                android:id="@+id/action_num"
+                android:title="電卓" />
+            <item
+                android:id="@+id/action_qr"
+                android:title="QRコード化" />
+            <item
+                android:id="@+id/action_ior1orl"
+                android:title="I,1,l判別" />
+            <item
+                android:id="@+id/action_exec"
+                android:title="exec" />
+            <item
+                android:id="@+id/action_grep"
+                android:title="grep-i/md5"/>
+            <item
+                android:id="@+id/action_htmlview"
+                android:title="HTML エディター"/>
+            <item
+                android:id="@+id/action_notepad"
+                android:title="メモ帳"/>
+            <item
+                android:id="@+id/action_qrcamera"
+                android:title="QRコードのスキャン"/>
+            <item
+                android:id="@+id/action_File"
+                android:title="ファイルマネージャ"/>
+            <item
+                android:id="@+id/tool_close"
+                android:title="閉じる" />
+        </menu>
+    </item>
+    <item android:title="表示設定">
+        <menu>
+            <item
+                android:id="@+id/action_dark_mode"
+                android:title="ダークモード"
+                android:checkable="true" />
+            <item
+                android:id="@+id/action_zoom_toggle"
+                android:title="ズーム"
+                android:checkable="true" />
+            <item
+                android:id="@+id/action_negapoji"
+                android:title="ネガポジ" />
+            <item
+                android:id="@+id/action_deskua"
+                android:title="デスクトップ表示"
+                android:checkable="true" />
+            <item
+                android:id="@+id/action_ct3ua"
+                android:title="CT3UA"
+                android:checkable="true" />
+            <item
+                android:id="@+id/action_translate"
+                android:title="日本語に翻訳" />
+            <item
+                android:id="@+id/display_close"
+                android:title="閉じる" />
+        </menu>
+    </item>
+    <item android:title="軽量オプション">
+        <menu>
+            <item
+                android:id="@+id/action_ua"
+                android:title="ガラケーUA"
+                android:checkable="true" />
+            <!--<item
+                android:id="@+id/action_js"
+                android:title="Javascript"
+                android:checkable="true" />-->
+            <item
+                android:id="@+id/action_img"
+                android:title="画像ブロック"
+                android:checkable="true" />
+            <item
+                android:id="@+id/lite_close"
+                android:title="閉じる" />
+        </menu>
+    </item>
+    <item
+        android:id="@+id/action_screenshot"
+        android:title="スクリーンショット" />
+    <item android:title="設定">
+        <menu>
+            <item android:title="リセットオプション">
+                <menu>
+                    <item
+                        android:id="@+id/action_Dhistory"
+                        android:title="ダウンロード履歴消去" />
+                    <item
+                        android:id="@+id/action_Delhistory"
+                        android:title="履歴消去" />
+                    <item
+                        android:id="@+id/reset_close"
+                        android:title="閉じる" />
+                </menu>
+            </item>
+            <item
+                android:id="@+id/action_settings"
+                android:title="その他の設定" />
+            <item
+                android:id="@+id/settings_close"
+                android:title="閉じる" />
+        </menu>
+    </item>>
+    <item
+        android:id="@+id/action_close"
+        android:title="閉じる" />
+</menu>

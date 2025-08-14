@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:fitsSystemWindows="true">
+
+    <Button
+        android:id="@+id/selectFileButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ファイル選択"
+        android:contentDescription="ファイルを選択するボタン" />
+
+    <EditText
+        android:id="@+id/grepInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="検索するキーワードを入力"
+        android:contentDescription="Grep用キーワード入力欄" />
+
+    <Button
+        android:id="@+id/grepButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="grep -i実行"
+        android:textAllCaps="false"
+        android:layout_marginTop="8dp"
+        android:contentDescription="Grep処理を実行するボタン" />
+
+    <Button
+        android:id="@+id/md5Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MD5確認"
+        android:layout_marginTop="8dp"
+        android:contentDescription="MD5チェックを実行するボタン" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="16dp"
+        android:fillViewport="true">
+
+        <TextView
+            android:id="@+id/resultTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="結果が表示されます"
+            android:padding="10dp"
+            android:textIsSelectable="true"
+            android:longClickable="true"
+            android:scrollbars="vertical" />
+    </ScrollView>
+
+</LinearLayout>
