@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Aozora</string>
-    <string name="version">2.0</string>
-    <string name="build">AZ03A</string>
+    <string name="version">2.1</string>
+    <string name="build">AZ03B</string>
     <string name="cannot_get_image_path">画像のパスを取得できません</string>
     <string name="cannot_load_image">画像を読み込めません</string>
     <string name="convert_ascii_art">アスキーアートに変換</string>
