@@ -88,6 +88,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
+import android.content.pm.PackageInfo;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -106,6 +109,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -209,6 +213,8 @@ public class MainActivity extends Activity {
 
     private static final int MENU_ID_SETTING = 5;
     private static final int MENU_ID_CLOSE = 6;
+    private static final String GITHUB_API_URL =
+            "https://api.github.com/repos/Aozora9200/Aozora-Browser/releases/latest";
 
     static {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
@@ -462,7 +468,7 @@ public class MainActivity extends Activity {
         }
 
         updateTabCount();
-
+        new CheckUpdateTask().execute();
 
         preInitializeWebView();
         if (!defaultLoadsImagesAutomaticallyInitialized && !webViews.isEmpty()) {
@@ -493,6 +499,57 @@ public class MainActivity extends Activity {
         } else {
             return;
         }
+
+    }
+
+    private class CheckUpdateTask extends AsyncTask<Void, Void, String> {
+        @Override
+        protected String doInBackground(Void... voids) {
+            try {
+                URL url = new URL(GITHUB_API_URL);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("Accept", "application/vnd.github.v3+json");
+                InputStream in = conn.getInputStream();
+                Scanner scanner = new Scanner(in).useDelimiter("\\A");
+                String result = scanner.hasNext() ? scanner.next() : "";
+                conn.disconnect();
+
+                JSONObject json = new JSONObject(result);
+                return json.getString("tag_name"); // バージョン
+            } catch (Exception e) {
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String latestVersion) {
+            if (latestVersion == null) return;
+
+            try {
+                PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                String currentVersion = pInfo.versionName;
+
+                if (!currentVersion.equals(latestVersion)) {
+                    showUpdateDialog(latestVersion);
+                }
+            } catch (Exception ignored) {}
+        }
+    }
+
+    private void showUpdateDialog(final String latestVersion) {
+        new AlertDialog.Builder(this)
+                .setTitle("アップデートがあります")
+                .setMessage("最新バージョン (" + latestVersion + ") が利用可能です。更新しますか？")
+                .setPositiveButton("更新する", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // GitHubリリースページへ飛ばす
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                                Uri.parse("https://github.com/Aozora9200/Aozora-Browser/releases/latest"));
+                        startActivity(browserIntent);
+                    }
+                })
+                .setNegativeButton("後で", null)
+                .show();
     }
 
     private void fetchSuggestions(String query, ArrayAdapter<String> adapter) {
