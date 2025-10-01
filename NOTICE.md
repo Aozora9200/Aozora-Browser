@@ -252,6 +252,41 @@
    license: The Apache License, Version 2.0
    licenseUrl: https://github.com/coara-chocomaru/coara-browser/blob/main/LICENSE
    url: https://github.com/coara-chocomaru/coara-browser/
+　 改変者: Aozora9200
+　 改変内容: Jetpack Compose から Android サポートライブラリ パッケージへの移行
+
+  Android Kitkat "com.android.settings"
+   Google LLC.
+   license: The Apache License, Version 2.0
+   licenseUrl: https://android.googlesource.com/platform/packages/apps/Settings/+/kitkat-release/NOTICE
+   com.aozora.aozora uses this source code icon.
+
+  Android Kitkat "com.android.providers.downloads"
+   Google LLC.
+   license: The Apache License, Version 2.0
+   licenseUrl: https://android.googlesource.com/platform/packages/providers/DownloadProvider/+/refs/heads/kitkat-release/NOTICE
+   com.aozora.aozora uses this source code icon.
+
+  Android Kitkat "com.android.deskclock"
+   Google LLC.
+   license: The Apache License, Version 2.0
+   licenseUrl:
+https://android.googlesource.com/platform/packages/apps/DeskClock/+/refs/tags/android-4.4.4_r2.0.1/NOTICE
+   com.aozora.aozora uses this source code icon.
+
+  Android Kitkat "com.android.camera"
+   Google LLC.
+   license: The Apache License, Version 2.0
+   licenseUrl:
+https://android.googlesource.com/platform/packages/apps/Camera2/+/refs/tags/android-4.4.4_r2.0.1/jni/NOTICE
+   com.aozora.aozora uses this source code icon.
+
+  Android Kitkat "com.android.browser"
+   Google LLC.
+   license: The Apache License, Version 2.0
+   licenseUrl:
+https://android.googlesource.com/platform/packages/apps/Browser/+/refs/tags/android-4.4.4_r2.0.1/NOTICE
+   com.aozora.aozora uses this source code icon and codes.
 
 
 ## 商標通知
