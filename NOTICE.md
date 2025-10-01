@@ -288,6 +288,12 @@ https://android.googlesource.com/platform/packages/apps/Camera2/+/refs/tags/andr
 https://android.googlesource.com/platform/packages/apps/Browser/+/refs/tags/android-4.4.4_r2.0.1/NOTICE
    com.aozora.aozora uses this source code icon and codes.
 
+  Android Kitkat "com.android.calculator2"
+   Google LLC.
+   license: The Apache License, Version 2.0
+        licenseUrl:https://android.googlesource.com/platform/packages/apps/Calculator/+/refs/tags/android-4.4.4_r2/NOTICE
+   com.aozora.aozora uses this source code icon.
+
 
 ## 商標通知
 
