@@ -3,7 +3,7 @@
 
 
 - Coara Browser 基準の軽量マルチタブ方式の Android 4.4風 WebView ブラウザです。
-- 動作バージョン Android 4.4 ～ Android 15
+- 動作バージョン Android 6.0 ～ Android 15
 
 ## 概要
 
