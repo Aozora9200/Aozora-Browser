@@ -1,0 +1,64 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- 証明書有効表示 -->
+        <TextView
+            android:id="@+id/tvValid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="✅ 証明書は有効です。"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:paddingBottom="12dp"/>
+
+        <!-- 発行先 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="発行先:"
+            android:textStyle="bold"/>
+        <TextView android:id="@+id/tvIssuedToCN" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="共通名：" />
+        <TextView android:id="@+id/tvIssuedToO" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="組織：" />
+        <TextView android:id="@+id/tvIssuedToOU" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="組織単位：" />
+
+        <!-- 発行者 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="発行者:"
+            android:textStyle="bold"
+            android:paddingTop="8dp"/>
+        <TextView android:id="@+id/tvIssuedByCN" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="共通名：" />
+        <TextView android:id="@+id/tvIssuedByO" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="組織：" />
+        <TextView android:id="@+id/tvIssuedByOU" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="組織単位：" />
+
+        <!-- 有効期間 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="有効期間:"
+            android:textStyle="bold"
+            android:paddingTop="8dp"/>
+        <TextView android:id="@+id/tvValidFrom" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="発行：" />
+        <TextView android:id="@+id/tvValidUntil" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="有効期限：" />
+
+        <!-- 指紋 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="指紋:"
+            android:textStyle="bold"
+            android:paddingTop="8dp"/>
+        <TextView android:id="@+id/tvSHA256" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="SHA-256指紋：" />
+        <TextView android:id="@+id/space1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="" />
+        <TextView android:id="@+id/tvSHA1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="SHA-1指紋：" />
+
+    </LinearLayout>
+</ScrollView>

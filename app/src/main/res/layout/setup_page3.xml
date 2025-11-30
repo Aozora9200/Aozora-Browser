@@ -1,0 +1,84 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="自分好みに設定しましょう"
+        android:paddingTop="40dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:textColor="#BBBBBB"
+        android:textSize="30sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="※あとからでも変更できます。"
+        android:paddingTop="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:textColor="#BBBBBB"
+        android:textSize="15sp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <ImageButton
+        android:id="@+id/background_example_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="280dp"
+        android:src="@drawable/setupback"
+        android:scaleType="centerCrop"
+        android:backgroundTint="#00000000"
+        />
+
+        <Spinner
+            android:id="@+id/setup_backgroundList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="240dp"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="20dp" />
+
+    <CheckBox android:id="@+id/setup_checkbox_desktop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="190dp"
+        android:layout_gravity="bottom"
+        android:textColor="#BBBBBB"
+        android:text="デスクトップモードを有効化する" />
+
+    <CheckBox android:id="@+id/setup_checkbox_ua"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="140dp"
+        android:layout_gravity="bottom"
+        android:textColor="#BBBBBB"
+        android:text="ガラケーのユーザーエージェントを有効化する" />
+
+    <CheckBox android:id="@+id/setup_checkbox_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="90dp"
+        android:layout_gravity="bottom"
+        android:textColor="#BBBBBB"
+        android:text="下部メニューバーを自動的に隠す" />
+
+    <Button
+        android:id="@+id/setup_help_ua"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginBottom="50dp"
+        android:layout_gravity="bottom"
+        android:gravity="start"
+        android:backgroundTint="#00000000"
+        android:textColor="#BBBBBB"
+        android:text="ユーザーエージェント(UA)とは何ですか?"
+        />
+    </FrameLayout>
+</LinearLayout>

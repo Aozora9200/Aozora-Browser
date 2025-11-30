@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
+    <FrameLayout
+        android:id="@+id/effectLayer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="69dp"
+            android:layout_marginBottom="50dp"
+            android:layout_weight="1">
+        <FrameLayout
+            android:id="@+id/webViewContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        <!-- 追加: フルスクリーン用のコンテナ -->
+        <FrameLayout
+            android:id="@+id/fullscreenContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+            <WebView android:id="@+id/webView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </FrameLayout>
+        <LinearLayout
+            android:id="@+id/statusbar"
+            android:layout_width="match_parent"
+            android:layout_height="25dp">
+            <TextView
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textAlignment="textEnd"
+                android:textSize="16dp" />
+            <TextClock
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="textStart" />
+            <TextView
+                android:id="@+id/sitename"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="25dp"
+                android:text="Aozora"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textAlignment="center"
+                android:textSize="16dp" />
+            <ProgressBar
+                android:id="@+id/pageloading"
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_width="5dp"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textAlignment="textEnd"
+                android:textSize="16dp" />
+            <ImageView
+                android:id="@+id/wifi"
+                android:layout_gravity="end"
+                android:layout_width="20dp"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:id="@+id/network"
+                android:layout_gravity="end"
+                android:layout_width="20dp"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/batteryStatus"
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
+                android:text="--%"
+                android:textAlignment="textEnd"
+                android:textSize="16dp" />
+            <TextView
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textAlignment="textEnd"
+                android:textSize="16dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/action_Bar"
+            android:layout_marginTop="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+                <ImageButton
+                    android:id="@+id/favicon"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:src="@drawable/transparent_vector"
+                    android:contentDescription="Favicon"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/nav_button_background"
+                    android:padding="0dp"/>
+                <AutoCompleteTextView
+                    android:id="@+id/urlEditText"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="50dp"
+                    android:hint="検索または URL を入力"
+                    android:inputType="textUri"
+                    android:selectAllOnFocus="true"
+                    android:imeOptions="actionGo"/>
+                <ImageButton
+                    android:id="@+id/action_bookmark"
+                    android:layout_width="50dp"
+                    android:layout_height="34dp"
+                    android:src="@drawable/bookmark_black"
+                    android:background="@drawable/nav_button_background"
+                    android:contentDescription="ブックマーク" />
+            </LinearLayout>
+        </LinearLayout>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_marginTop="59dp"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:background="#88000000"
+            android:max="100"
+            android:progress="0"
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+        <!-- <FrameLayout
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"> -->
+        <!-- 下部のアクションバー風ボトムバー
+        <LinearLayout
+        android:id="@+id/Bar"
+        android:layout_width="match_parent"
+         android:layout_height="50dp"
+          android:orientation="horizontal"
+           android:background="#000000"
+            android:alpha="0.7"
+             android:layout_gravity="bottom"
+              android:gravity="center"/> -->
+        <!-- 下部のアクションバー風ボトムバー -->
+        <LinearLayout
+            android:id="@+id/bottomBar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:background="#000000"
+            android:alpha="1.0"
+            android:layout_gravity="bottom"
+            android:gravity="center">
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/nav_button_background"
+                android:src="@drawable/ic_sysbar_back" />
+
+            <ImageView
+                android:id="@+id/backView"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/ic_sysbar_lights_out_dot_large"
+                android:visibility="gone"/>
+
+            <ImageButton
+                android:id="@+id/forwardButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/nav_button_background"
+                android:src="@drawable/ic_sysbar_forward" />
+
+            <ImageView
+                android:id="@+id/forwardView"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/ic_sysbar_lights_out_dot_large"
+                android:visibility="gone"/>
+            <!-- 再読み込みボタン -->
+            <ImageButton
+                android:id="@+id/action_reload"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/reload"
+                android:background="@drawable/nav_button_background"
+                android:contentDescription="再読込" />
+            <!--<ImageButton
+            android:id="@+id/action_tab"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/tab_white"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="タブ" />-->
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:foreground="@drawable/nav_button_background">
+                <TextView
+                    android:id="@+id/tabCountTextView"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:foreground="@drawable/nav_button_background"
+                    android:background="@drawable/rounded_outline"
+                    android:gravity="center"
+                    android:text="0"
+                    android:textColor="#ffffff"
+                    android:textSize="14sp"
+                    android:layout_marginStart="4dp"/>
+            </FrameLayout>
+            <ImageButton
+                android:id="@+id/action_popup"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@mipmap/aozora"
+                android:background="@drawable/nav_button_background"
+                android:contentDescription="スタート" />
+            <ImageButton
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:id="@+id/hidebottom"
+                android:background="@drawable/nav_button_background"
+                android:src="@drawable/hidebottom" />
+        </LinearLayout>
+
+        <ZoomControls
+            android:id="@+id/simpleZoomControl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:alpha="0.6"
+            android:layout_marginBottom="60dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp" />
+
+    <FrameLayout
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="bottom|end"
+        android:background="@drawable/rounded_outline_logo"
+        android:clipToOutline="true">
+
+        <ImageButton
+            android:id="@+id/showbottom"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="bottom|end"
+            android:foreground="@drawable/rounded_outline_logo"
+            android:background="#88333333"
+            android:src="@drawable/showbottom"/>
+
+    </FrameLayout>
+
+        <ImageButton
+            android:id="@+id/donttouch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#00000000"/>
+
+        <com.aozora.aozora.TouchEffectView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="false"
+            android:focusable="false"/>
+
+    </FrameLayout>
+    <!-- </FrameLayout> -->
+</LinearLayout>

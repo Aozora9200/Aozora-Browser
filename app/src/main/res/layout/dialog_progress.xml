@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="20dp"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ProgressBar
+        android:id="@+id/progress_Bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true" />
+
+    <TextView
+        android:id="@+id/textFileName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="コピー中のファイル"
+        android:textSize="16sp"
+        android:paddingBottom="8dp" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:progress="0"
+        android:indeterminate="false" />
+
+    <TextView
+        android:id="@+id/textProgressPercent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="0% 完了"
+        android:paddingTop="8dp"
+        android:textSize="14sp"
+        android:gravity="end"/>
+</LinearLayout>

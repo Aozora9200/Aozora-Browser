@@ -1,0 +1,89 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_bookmarks_holo_dark"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_marginLeft="30dp"
+        android:text="このページをブックマークに追加"
+        android:layout_gravity="center|start"
+        android:textSize="16sp"
+        android:gravity="center|start"/>
+
+    </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="5dp"
+        android:background="?android:attr/listDivider" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:orientation="horizontal">
+
+    <!-- タイトル -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:text="ラベル"
+        android:layout_gravity="center|start"
+        android:textSize="16sp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:gravity="center|start" />
+
+    <EditText
+        android:id="@+id/editTitle"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_marginLeft="100dp"
+        android:layout_gravity="center|end"
+        android:singleLine="true"
+        android:textSize="16sp"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+    <!-- URL -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:text="アドレス"
+        android:layout_gravity="center|start"
+        android:textSize="16sp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:gravity="center|start"/>
+
+    <EditText
+        android:id="@+id/editUrl"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_marginLeft="100dp"
+        android:layout_gravity="center|end"
+        android:singleLine="true"
+        android:textSize="16sp"/>
+
+    </FrameLayout>
+</LinearLayout>

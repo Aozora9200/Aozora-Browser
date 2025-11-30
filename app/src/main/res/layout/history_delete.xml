@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+    <TextView
+        android:id="@+id/history_del_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:text="Aozora browser では閲覧履歴を一覧表示し、過去のページを遡ることができます。アプリケーションをアンインストールすると、閲覧履歴やブックマークが削除される場合があります。" />
+    <Button
+        android:id="@+id/history_del"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#0067C0"
+        android:textSize="15dp"
+        android:text="閲覧履歴データを削除..."
+        android:background="@null"
+        android:focusable="false"
+        android:clickable="true"
+        android:padding="0dp"
+        android:scaleType="fitCenter"/>
+
+</LinearLayout>

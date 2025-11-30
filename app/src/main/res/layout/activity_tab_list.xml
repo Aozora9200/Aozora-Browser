@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tab_list_root"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/tab_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#333333">
+        <ImageButton
+            android:id="@+id/buttonAddTab"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:layout_marginEnd="40dp"
+            android:src="@drawable/ic_new_window_holo_dark"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="新しいタブを開く" />
+        <ImageButton
+            android:id="@+id/buttonBMTab"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:src="@drawable/ic_bookmarks_holo_dark"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="新しいタブを開く" />
+        <ImageButton
+            android:id="@+id/buttonMenu"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:src="@drawable/ic_menu_overflow"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="新しいタブを開く" />
+
+    </FrameLayout>
+
+    <!-- タブ一覧をスワイプでページング表示 -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPagerTabs"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</LinearLayout>
