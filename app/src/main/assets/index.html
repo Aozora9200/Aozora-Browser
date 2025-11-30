@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <!-- Font Awesome icons (free version)-->
+  <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+  <!-- Google fonts-->
+  <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Klee+One&display=swap" rel="stylesheet">
+  <title>スタートページ</title>
+  <style>
+    /* 既存のスタイル */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      overflow-x: hidden;
+    }
+    body {
+      display: flex;
+      flex-direction: column; /* ← 縦方向に積む */
+      justify-content: flex-start; /* 上から配置 */
+      align-items: center;  /* 中央揃え */
+      min-height: 100vh;    /* 縦スクロール対応 */
+      font-family: "Comic Sans MS", cursive, sans-serif;
+      position: relative;
+      animation: bgShift 20s ease-in-out infinite;
+      background-attachment: fixed;
+      -webkit-animation: bgShift 20s ease-in-out infinite;
+}
+    @keyframes bgShift {
+      0%   { filter: hue-rotate(0deg) contrast(1); }
+      50%  { filter: hue-rotate(20deg) contrast(1.1); }
+      100% { filter: hue-rotate(0deg) contrast(1); }
+    }
+    @-webkit-keyframes bgShift {
+      0%   { -webkit-filter: hue-rotate(0deg) contrast(1); }
+      50%  { -webkit-filter: hue-rotate(20deg) contrast(1.1); }
+      100% { -webkit-filter: hue-rotate(0deg) contrast(1); }
+    }
+    /* ===== ライトモード（通常） ===== */
+    .masthead h1, .masthead .h1 {
+      background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0));
+    }
+    body {
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.7) 75%, #fff 100%), url("assets/img/bg-masthead.jpg");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: scroll;
+      background-size: cover;
+      color: #000;
+    }
+    #logo {
+      color: #000000;
+    }
+    input[type="text"] {
+      border: 2px solid #999999;
+      background: #ccc;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      color: black;
+    }
+    input[type="text"]::placeholder { color: #444444; }
+    input[type="text"]:focus {
+      border-color: #666666;
+      box-shadow: 0 6px 8px rgba(255,255,255,0.4);
+    }
+    #goButton {
+      background: #bbbbbb;
+      color: black;
+    }
+    #goButton:hover {
+      background: #666666;
+    }
+    #engineToggle {
+      background: #bbbbbb;
+      color: black;
+    }
+    #engineToggle:hover {
+      background: #999999;
+    }
+    #engineSelector {
+      background: rgba(255,255,255,0.9);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    #engineSelector button {
+      background: #bbbbbb;
+      border: 1px solid #888888;
+      color: #000000;
+    }
+    #engineSelector button:hover {
+      background: #999999;
+    }
+    #notification {
+      background: rgba(0,0,0,0.6);
+      color: white;
+    }
+    .suggest-box {
+      background: #cccccc;
+      border: 1px solid #333;
+      color: black;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .suggest-box li:hover {
+      background: #555555;
+    }
+    .icon-grid a {
+      color: black;
+    }
+
+    /* Yahooニュース一覧 */
+    #news {
+      background: rgba(0,0,0,0.1);
+      color: black;
+    }
+    #news h2 {
+      border-bottom: 1px solid rgba(0,0,0,0.3);
+    }
+    #news a {
+      color: #333;
+    }
+    #news li {
+      background: rgba(255, 255, 255, 0.6);
+    }
+
+    #news li:hover {
+      background: rgba(255, 255, 255, 0.85);
+    }
+    #bgSelector, #bgClear {
+      background: #bbbbbb;
+      color: black;
+    }
+    #bgClear {
+      background: #bbbbbb;
+    }
+    #bgSelector:hover { background: #999999; }
+    #bgClear:hover { background: #999999; }
+    #bgOverlay {
+          background: rgba(255,255,255,0.3);
+        }
+    /* ===== ダークモード ===== */
+    @media (prefers-color-scheme: dark) {
+        .masthead h1, .masthead .h1 {
+          background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
+        }
+        body {
+          background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.7) 75%, #000 100%), url("assets/img/bg-masthead.jpg");
+          background-position: center;
+          background-repeat: no-repeat;
+          background-attachment: scroll;
+          background-size: cover;
+          color: #fff;
+        }
+        #logo {
+          color: #ffffff;
+        }
+        input[type="text"] {
+          border: 2px solid #666666;
+          background: #333;
+          box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+          color: white;
+        }
+        input[type="text"]::placeholder { color: #BBBBBB; }
+        input[type="text"]:focus {
+          border-color: #999999;
+          box-shadow: 0 6px 8px rgba(255,255,255,0.4);
+        }
+        #goButton {
+          background: #444444;
+          color: white;
+        }
+        #goButton:hover {
+          background: #666666;
+        }
+        #engineToggle {
+          background: #444444;
+          color: white;
+        }
+        #engineToggle:hover {
+          background: #666666;
+        }
+        #engineSelector {
+          background: rgba(255,255,255,0.9);
+          box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        #engineSelector button {
+          background: #444444;
+          border: 1px solid #777777;
+          color: #ffffff;
+        }
+        #engineSelector button:hover {
+          background: #666666;
+        }
+        #notification {
+          background: rgba(0,0,0,0.6);
+          color: white;
+        }
+        .suggest-box {
+          background: #333333;
+          border: 1px solid #ccc;
+          color: white;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .suggest-box li:hover {
+          background: #aaaaaa;
+        }
+        .icon-grid a {
+          color: white;
+        }
+
+        /* Yahooニュース一覧 */
+        #news {
+          background: rgba(255,255,255,0.1);
+          color: white;
+        }
+        #news h2 {
+          border-bottom: 1px solid rgba(255,255,255,0.3);
+        }
+        #news a {
+          color: #bbb;
+        }
+
+        #news li {
+          background: rgba(0, 0, 0, 0.6);
+        }
+
+        #news li:hover {
+          background: rgba(0, 0, 0, 0.85);
+        }
+
+        #bgSelector, #bgClear {
+          background: #333333;
+          color: white;
+        }
+        #bgClear {
+          background: #333333;
+        }
+        #bgSelector:hover { background: #555555; }
+        #bgClear:hover { background: #555555; }
+        #bgOverlay {
+          background: rgba(0,0,0,0.3);
+        }
+    }
+    
+    .masthead {
+  position: relative;
+  width: 100%;
+  height: auto;
+  animation: fadeInUp 1s ease-out;
+  -webkit-animation: fadeInUp 1s ease-out;
+  min-height: 35rem;
+  padding: 15rem 0;
+}
+.masthead h1, .masthead .h1 {
+  font-family: "Varela Round", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 2.5rem;
+  line-height: 2.5rem;
+  letter-spacing: 0.8rem;
+  margin-top: 20px;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+          background-clip: text;
+}
+.masthead h2, .masthead .h2 {
+  max-width: 20rem;
+  font-size: 1rem;
+}
+@media (min-width: 768px) {
+  .masthead h1, .masthead .h1 {
+    font-size: 4rem;
+    line-height: 4rem;
+  }
+}
+@media (min-width: 992px) {
+  .masthead {
+    height: 100vh;
+    padding: 0;
+  }
+  .masthead h1, .masthead .h1 {
+    font-size: 6.5rem;
+    line-height: 6.5rem;
+    letter-spacing: 0.8rem;
+  }
+  .masthead h2, .masthead .h2 {
+    max-width: 30rem;
+    font-size: 1.25rem;
+  }
+}
+
+    .container {
+  display: flex;
+  flex-direction: column;  /* 縦に並べる */
+  align-items: center;     /* 中央寄せ */
+  z-index: 10;
+  animation: fadeInUp 1s ease-out;
+  -webkit-animation: fadeInUp 1s ease-out;
+  width: 100%;             /* 追加：横幅いっぱい */
+  max-width: 500px;        /* 追加：横幅を制限 */
+  margin: 0 auto;          /* 追加：中央寄せ */
+}
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @-webkit-keyframes fadeInUp {
+      from { opacity: 0; -webkit-transform: translateY(20px); }
+      to { opacity: 1; -webkit-transform: translateY(0); }
+    }
+    #logo {
+      font-size: 30px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: transform 0.5s ease;
+    }
+    @keyframes rotateLogo {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @-webkit-keyframes rotateLogo {
+      from { -webkit-transform: rotate(0deg); }
+      to { -webkit-transform: rotate(360deg); }
+    }
+    form { text-align: center; }
+    /* 検索欄と検索ボタン用コンテナ */
+    .search-container {
+      position: relative;
+      display: inline-block;
+    }
+    input[type="text"] {
+      width: 80vw;
+      max-width: 300px;
+      padding: 10px 20px;
+      /* 右側に余白を確保 */
+      padding-right: 70px;
+      font-size: 16px;
+      border-radius: 30px;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+    /* 検索ボタンのスタイル */
+    #goButton {
+      position: absolute;
+      right: 5px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      padding: 8px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.2s ease;
+    }
+    .fluffy {
+      position: absolute;
+      pointer-events: none;
+      animation-fill-mode: forwards;
+      animation-timing-function: ease-in-out;
+      will-change: transform, opacity;
+    }
+    .fluffy.snow { animation-name: floatSnow; -webkit-animation-name: floatSnow; }
+    @keyframes floatSnow {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0.8; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+    @-webkit-keyframes floatSnow {
+      0% { -webkit-transform: translateY(0) rotate(0deg); opacity: 0.8; }
+      100% { -webkit-transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+    .fluffy.feather { animation-name: floatFeather; -webkit-animation-name: floatFeather; }
+    @keyframes floatFeather {
+      0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.8; }
+      100% { transform: translateY(-100vh) translateX(20vw) rotate(30deg); opacity: 0; }
+    }
+    @-webkit-keyframes floatFeather {
+      0% { -webkit-transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.8; }
+      100% { -webkit-transform: translateY(-100vh) translateX(20vw) rotate(30deg); opacity: 0; }
+    }
+    .fluffy.petal { animation-name: floatPetal; -webkit-animation-name: floatPetal; }
+    @keyframes floatPetal {
+      0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.8; }
+      50% { transform: translateY(50vh) translateX(10vw) rotate(15deg); }
+      100% { transform: translateY(100vh) translateX(0) rotate(0deg); opacity: 0; }
+    }
+    @-webkit-keyframes floatPetal {
+      0% { -webkit-transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.8; }
+      50% { -webkit-transform: translateY(50vh) translateX(10vw) rotate(15deg); }
+      100% { -webkit-transform: translateY(100vh) translateX(0) rotate(0deg); opacity: 0; }
+    }
+    .fluffy.bubble { animation-name: floatBubble; -webkit-animation-name: floatBubble; }
+    @keyframes floatBubble {
+      0% { transform: translateY(0) scale(0.5); opacity: 0.8; }
+      100% { transform: translateY(-100vh) scale(1); opacity: 0; }
+    }
+    @-webkit-keyframes floatBubble {
+      0% { -webkit-transform: translateY(0) scale(0.5); opacity: 0.8; }
+      100% { -webkit-transform: translateY(-100vh) scale(1); opacity: 0; }
+    }
+    .fluffy.leaf { animation-name: floatLeaf; -webkit-animation-name: floatLeaf; }
+    @keyframes floatLeaf {
+      0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.8; }
+      100% { transform: translateY(100vh) translateX(-10vw) rotate(360deg); opacity: 0; }
+    }
+    @-webkit-keyframes floatLeaf {
+      0% { -webkit-transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.8; }
+      100% { -webkit-transform: translateY(100vh) translateX(-10vw) rotate(360deg); opacity: 0; }
+    }
+    .fluffy.star { animation-name: floatStar; -webkit-animation-name: floatStar; }
+    @keyframes floatStar {
+      0% { transform: translateY(0) scale(1); opacity: 0.8; }
+      100% { transform: translateY(-50vh) scale(1.5); opacity: 0; }
+    }
+    @-webkit-keyframes floatStar {
+      0% { -webkit-transform: translateY(0) scale(1); opacity: 0.8; }
+      100% { -webkit-transform: translateY(-50vh) scale(1.5); opacity: 0; }
+    }
+    .fluffy.cloud { animation-name: floatCloud; -webkit-animation-name: floatCloud; }
+    @keyframes floatCloud {
+      0% { transform: translateX(0) scale(1); opacity: 0.6; }
+      100% { transform: translateX(50vw) scale(1.2); opacity: 0; }
+    }
+    @-webkit-keyframes floatCloud {
+      0% { -webkit-transform: translateX(0) scale(1); opacity: 0.6; }
+      100% { -webkit-transform: translateX(50vw) scale(1.2); opacity: 0; }
+    }
+    .fluffy.sparkle { animation-name: floatSparkle; -webkit-animation-name: floatSparkle; }
+    @keyframes floatSparkle {
+      0% { transform: scale(0); opacity: 1; }
+      50% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(0); opacity: 0; }
+    }
+    @-webkit-keyframes floatSparkle {
+      0% { -webkit-transform: scale(0); opacity: 1; }
+      50% { -webkit-transform: scale(1); opacity: 1; }
+      100% { -webkit-transform: scale(0); opacity: 0; }
+    }
+    .fluffy.bird {
+      animation-name: floatBird;
+      -webkit-animation-name: floatBird;
+      animation-timing-function: linear;
+      -webkit-animation-timing-function: linear;
+    }
+    @keyframes floatBird {
+      0% { transform: translate(-20vw, 0); opacity: 0; }
+      10% { opacity: 1; }
+      50% { transform: translate(50vw, -5vh); opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translate(120vw, 0); opacity: 0; }
+    }
+    @-webkit-keyframes floatBird {
+      0% { -webkit-transform: translate(-20vw, 0); opacity: 0; }
+      10% { opacity: 1; }
+      50% { -webkit-transform: translate(50vw, -5vh); opacity: 1; }
+      90% { opacity: 1; }
+      100% { -webkit-transform: translate(120vw, 0); opacity: 0; }
+    }
+
+    #engineToggle {
+      margin-top: 10px;
+      padding: 8px 14px;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      z-index: 20;
+      font-size: 14px;
+      transition: background 0.2s ease;
+    }
+    #engineSelector {
+      display: none;
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      padding: 10px;
+      border-radius: 5px;
+      z-index: 20;
+    }
+    #engineSelector button {
+      border-radius: 5px;
+      padding: 8px 12px;
+      margin: 4px 0;
+      cursor: pointer;
+      font-size: 14px;
+      transition: transform 0.2s ease, background 0.2s ease;
+      width: 100%;
+    }
+    #engineSelector button:hover {
+      transform: scale(1.05);
+    }
+    #notification {
+      display: none;
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 10px;
+      border-radius: 5px;
+      z-index: 30;
+      font-size: 14px;
+    }
+    .suggest-box {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      max-width: 300px;
+      margin-top: 5px;
+      border-radius: 4px;
+      z-index: 99;
+      list-style: none;
+      padding: 0;
+      font-size: 14px;
+    }
+
+    .suggest-box li {
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    /* アイコン一覧 */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-top: 20px;
+      padding: 0 10px;
+    }
+    .icon-grid a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      font-size: 12px;
+      transition: transform 0.2s ease;
+    }
+    .icon-grid a:hover {
+      transform: scale(1.1);
+    }
+    .icon-grid img {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      margin-bottom: 5px;
+    }
+
+    /* Yahooニュース一覧 */
+    #news {
+  margin: 25px auto 0;
+  padding: 10px;
+  border-radius: 8px;
+  width: 90vw;
+  max-width: 600px;
+  font-size: 14px;
+  backdrop-filter: blur(4px);
+}
+
+#news h2 {
+  font-size: 16px;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+}
+
+#news ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#news li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px; /* ← 画像とテキストの間 */
+  margin: 14px 0; /* ← 各ニュース間に間隔 */
+  padding: 10px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+#news img {
+  width: 70px;
+  height: 70px;
+  border-radius: 5px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+#news a {
+  text-decoration: none;
+  line-height: 1.4;
+  display: block;
+}
+
+#news a:hover {
+  text-decoration: underline;
+}
+    #bgContainer {
+      text-align: center; /* ←これで中央揃え */
+      margin-top: 50px;
+    }
+    #bgSelector, #bgClear {
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 10px;
+      padding: 8px 14px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.2s ease;
+      z-index: 20;
+    }
+    #bgClear {
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header class="masthead">
+  <div class="container">
+    <h1 class="mx-auto my-0 text-uppercase">AOZORA</h1>
+    <h2 class="text-white-50 mx-auto mt-2 mb-5">Webview Browser</h2>
+    <form id="searchForm" action="https://www.google.com/search" method="get">
+      <div class="search-container">
+        <input type="text" name="q" id="searchInput" placeholder="Googleで検索" autofocus>
+        <button type="submit" id="goButton">検索</button>
+        <ul id="suggestions" class="suggest-box"></ul>
+      </div>
+    </form>
+    <button id="engineToggle">検索エンジンを選択</button>
+  </div>
+  <div id="engineSelector">
+    <button data-engine="google">Google</button>
+    <button data-engine="bing">Bing</button>
+    <button data-engine="yahoo">Yahoo</button>
+    <button data-engine="duckduckgo">DuckDuckGo</button>
+    <button data-engine="ecosia">Ecosia</button>
+    <button data-engine="youtube">YouTube</button>
+  </div>
+  <div id="notification">検索エンジンを変更しました</div>
+  <!-- ホーム画面風アイコン -->
+  <div class="icon-grid">
+    <a href="https://www.facebook.com"><img src="https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://www.facebook.com/&size=64"><span>Facebook</span></a>
+    <a href="https://www.google.com"><img src="https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://www.google.com/&size=64"><span>Google</span></a>
+    <a href="https://www.yahoo.co.jp"><img src="https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://www.yahoo.co.jp/&size=64"><span>Yahoo</span></a>
+    <a href="https://www.instagram.com"><img src="https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://www.instagram.com/&size=64"><span>Instagram</span></a>
+    <a href="https://x.com"><img src="https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://x.com/&size=64"><span>X</span></a>
+    <a href="https://www.rakuten.co.jp"><img src="https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://www.rakuten.co.jp/&size=64" style="background:#fff;"><span>楽天市場</span></a>
+    <a href="https://books.rakuten.co.jp"><img src="https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://books.rakuten.co.jp/&size=64" style="background:#fff;"><span>楽天ブックス</span></a>
+    <a href="https://ja.wikipedia.org"><img src="https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://ja.wikipedia.org/&size=64"><span>Wikipedia</span></a>
+    <a href="https://www.nicovideo.jp"><img src="https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://www.nicovideo.jp/&size=64" style="background:#fff;"><span>ニコニコ</span></a>
+    <a href="https://www.youtube.com"><img src="https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://www.youtube.com&size=64" style="background:#fff;"><span>YouTube</span></a>
+  </div>
+
+  <div id="news">
+    <h2>ニュース</h2>
+    <ul id="newsList"><li>読み込み中...</li></ul>
+  </div>
+  <div id="bgContainer">
+  <p>壁紙を設定</p>
+  <input type="file" id="bgSelector" accept="image/*">
+  <button id="bgClear">背景をクリア</button>
+  </div>
+  </header>
+  <script>
+    const patterns = ['snow', 'feather', 'petal', 'bubble', 'leaf', 'star', 'cloud', 'sparkle'];
+    const patternSymbols = {
+      snow: '',
+      feather: '',
+      petal: '',
+      bubble: '',
+      leaf: '',
+      star: '',
+      cloud: '',
+      sparkle: '',
+      bird: ''
+    };
+    const patternTop = {
+      snow: "-10vh",
+      feather: "110vh",
+      petal: "-10vh",
+      bubble: "110vh",
+      leaf: "-10vh",
+      star: "110vh",
+      cloud: null,
+      sparkle: null
+    };
+    function createFluffy() {
+      const pattern = patterns[Math.floor(Math.random() * patterns.length)];
+      const div = document.createElement('div');
+      div.classList.add('fluffy', pattern);
+      div.textContent = patternSymbols[pattern];
+      div.style.left = Math.random() * 100 + 'vw';
+      div.style.top = patternTop[pattern] ? patternTop[pattern] : Math.random() * 100 + 'vh';
+      div.style.fontSize = (16 + Math.random() * 14) + 'px';
+      const duration = 8 + Math.random() * 8;
+      div.style.animationDuration = duration + 's';
+      div.style.webkitAnimationDuration = duration + 's';
+      document.body.appendChild(div);
+      setTimeout(function() { div.remove(); }, duration * 1000);
+    }
+    setInterval(createFluffy, 500);
+    function createBird() {
+      const div = document.createElement('div');
+      div.classList.add('fluffy', 'bird');
+      div.textContent = patternSymbols['bird'];
+      div.style.top = (10 + Math.random() * 60) + 'vh';
+      div.style.fontSize = '24px';
+      const duration = 12;
+      div.style.animationDuration = duration + 's';
+      div.style.webkitAnimationDuration = duration + 's';
+      document.body.appendChild(div);
+      setTimeout(function() { div.remove(); }, duration * 1000);
+    }
+    function scheduleBird() {
+      const delay = 10000 + Math.random() * 20000;
+      setTimeout(function() { createBird(); scheduleBird(); }, delay);
+    }
+    scheduleBird();
+    const inputField = document.querySelector('input[type="text"]');
+    inputField.addEventListener('focus', function() {
+      inputField.style.transform = 'scale(1.05)';
+      inputField.style.webkitTransform = 'scale(1.05)';
+    });
+    inputField.addEventListener('blur', function() {
+      inputField.style.transform = 'scale(1)';
+      inputField.style.webkitTransform = 'scale(1)';
+    });
+
+    // 検索エンジン選択機能
+    const searchEngines = {
+      google: { action: "https://www.google.com/search", param: "q", placeholder: "Googleで検索" },
+      bing: { action: "https://www.bing.com/search", param: "q", placeholder: "Bingで検索" },
+      yahoo: { action: "https://search.yahoo.co.jp/search", param: "p", placeholder: "Yahooで検索" },
+      duckduckgo: { action: "https://duckduckgo.com/", param: "q", placeholder: "DuckDuckGoで検索" },
+      ecosia: { action: "https://www.ecosia.org/search", param: "q", placeholder: "Ecosiaで検索" },
+      youtube: { action: "https://www.youtube.com/results", param: "search_query", placeholder: "YouTubeで検索" }
+    };
+    const engineToggle = document.getElementById('engineToggle');
+    const engineSelector = document.getElementById('engineSelector');
+    const notification = document.getElementById('notification');
+    const searchForm = document.getElementById('searchForm');
+    const searchInput = document.getElementById('searchInput');
+
+    // フォーム送信時、検索欄が空なら送信をキャンセル
+    searchForm.addEventListener('submit', function(e) {
+      if (!searchInput.value.trim()) {
+        e.preventDefault();
+        return false;
+      }
+    });
+
+    engineToggle.addEventListener('click', () => {
+      if (engineSelector.style.display === 'none' || engineSelector.style.display === '') {
+        engineSelector.style.display = 'flex';
+        engineSelector.style.flexDirection = 'column';
+      } else {
+        engineSelector.style.display = 'none';
+      }
+    });
+
+    engineSelector.querySelectorAll('button').forEach(button => {
+      button.addEventListener('click', () => {
+        const engineKey = button.getAttribute('data-engine');
+        if (searchEngines[engineKey]) {
+          const engine = searchEngines[engineKey];
+          searchForm.action = engine.action;
+          searchInput.name = engine.param;
+          searchInput.placeholder = engine.placeholder;
+          notification.textContent = engineKey + " に変更しました";
+          notification.style.display = 'block';
+          setTimeout(() => { notification.style.display = 'none'; }, 2000);
+        }
+        engineSelector.style.display = 'none';
+      });
+    });
+
+    const suggestBox = document.getElementById('suggestions');
+let debounceTimer;
+
+searchInput.addEventListener('input', () => {
+  const query = searchInput.value.trim();
+  clearTimeout(debounceTimer);
+  if (query.length === 0) {
+    suggestBox.style.display = 'none';
+    return;
+  }
+
+  debounceTimer = setTimeout(() => {
+    fetch(`https://suggestqueries.google.com/complete/search?client=firefox&q=${encodeURIComponent(query)}`)
+      .then(res => res.json())
+      .then(data => {
+        const suggestions = data[1];
+        if (suggestions.length === 0) {
+          suggestBox.style.display = 'none';
+          return;
+        }
+
+        suggestBox.innerHTML = '';
+        suggestions.forEach(word => {
+          const li = document.createElement('li');
+          li.textContent = word;
+          li.addEventListener('click', () => {
+            searchInput.value = word;
+            suggestBox.style.display = 'none';
+            searchForm.submit();
+          });
+          suggestBox.appendChild(li);
+        });
+        suggestBox.style.display = 'block';
+      });
+  }, 300);
+});
+
+document.addEventListener('click', (e) => {
+  if (!searchInput.contains(e.target) && !suggestBox.contains(e.target)) {
+    suggestBox.style.display = 'none';
+  }
+});
+
+    function loadNews() {
+  const newsList = document.getElementById("newsList");
+  newsList.innerHTML = "<li>読み込み中…</li>";
+
+  fetch("https://api.rss2json.com/v1/api.json?rss_url=https://news.google.com/rss?hl=ja&gl=JP&ceid=JP:ja")
+    .then(response => response.json())
+    .then(data => {
+      newsList.innerHTML = "";
+      data.items.slice(0, 8).forEach(item => {
+        const li = document.createElement("li");
+
+        // サムネイル画像（なければデフォルト）
+        const imgSrc = item.thumbnail || "https://www.gstatic.com/marketing-cms/assets/images/4b/1d/dcc752ee4ba4a56308fad264037f/google-news.webp=s48-fcrop64=1,00000000ffffffff-rw";
+
+        li.innerHTML = `
+          <img src="${imgSrc}" alt="news thumbnail">
+          <a href="${item.link}">${item.title}</a>
+        `;
+
+        newsList.appendChild(li);
+      });
+    })
+    .catch(error => {
+      console.error(error);
+      newsList.innerHTML = "<li>ニュースを読み込めませんでした。</li>";
+    });
+}
+loadNews();
+
+    const bgSelector = document.getElementById('bgSelector');
+    const bgClear = document.getElementById('bgClear');
+    const MAX_SIZE_LOWER = 2 * 1024 * 1024;
+    const MAX_SIZE_UPPER = 8 * 1024 * 1024;
+
+    addEventListener('DOMContentLoaded', () => {
+      const savedBg = localStorage.getItem('bgImage');
+      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+      if (isDark) {
+        // 🌙 ダークモードのときの背景
+        if (savedBg) document.body.style.backgroundImage = `linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.7) 75%, #000 100%), url(${savedBg})`;
+      } else {
+        // ☀ ライトモードのときの背景
+        if (savedBg) document.body.style.backgroundImage = `linear-gradient(to bottom, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.7) 75%, #fff 100%), url(${savedBg})`;
+      }
+    });
+
+    bgSelector.addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file || file.size > MAX_SIZE_UPPER) {
+        if (file && file.size > MAX_SIZE_UPPER) alert("8MBを超える画像はサポートしていません。");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = event => {
+        const dataUrl = event.target.result;
+        const applyBackground = (url) => {
+          localStorage.setItem('bgImage', url);
+          const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+          if (isDark) {
+            // 🌙 ダークモードのときの背景
+            document.body.style.backgroundImage = `linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.7) 75%, #000 100%), url(${url})`;
+          } else {
+            // ☀ ライトモードのときの背景
+            document.body.style.background = `linear-gradient(to bottom, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.7) 75%, #fff 100%), url(${url})`;
+          }
+          document.body.style.backgroundSize = 'cover';
+          document.body.style.backgroundPosition = 'center';
+      };
+
+        if (file.size > MAX_SIZE_LOWER) {
+          const img = new Image();
+          img.onload = () => {
+            const ratio = Math.sqrt(MAX_SIZE_LOWER / file.size);
+            const targetWidth = Math.floor(img.width * ratio);
+            const targetHeight = Math.floor(img.height * ratio);
+            const canvas = document.createElement('canvas');
+            canvas.width = targetWidth;
+            canvas.height = targetHeight;
+            const ctx = canvas.getContext('2d', { alpha: false });
+            ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+            const optimizedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+            applyBackground(optimizedDataUrl);
+          };
+          img.src = dataUrl;
+        } else {
+          applyBackground(dataUrl);
+        }
+      };
+
+      reader.readAsDataURL(file);
+    });
+
+    bgClear.addEventListener('click', () => {
+      localStorage.removeItem('bgImage');
+      document.body.style.backgroundImage = 'none';
+      // ダークモード判定
+      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+      if (isDark) {
+        // 🌙 ダークモードのときの背景
+        document.body.style.background = 'linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.7) 75%, #000 100%), url("assets/img/bg-masthead.jpg")';
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundPosition = 'center';
+        document.body.style.backgroundRepeat = 'no-repeat';
+        document.body.style.backgroundAttachment = 'scroll';
+      } else {
+        // ☀ ライトモードのときの背景
+        document.body.style.background = 'linear-gradient(to bottom, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.7) 75%, #fff 100%), url("assets/img/bg-masthead.jpg")';
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundPosition = 'center';
+        document.body.style.backgroundRepeat = 'no-repeat';
+        document.body.style.backgroundAttachment = 'scroll';
+      }
+    });
+  </script>
+</body>
+</html>
