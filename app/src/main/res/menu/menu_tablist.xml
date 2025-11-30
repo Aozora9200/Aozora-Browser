@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/action_secret"
+        android:title="新しいシークレットタブ" />
+    <item android:id="@+id/action_history"
+        android:title="履歴" />
+    <item android:id="@+id/action_savedpage"
+        android:title="保存したページ" />
+    <item android:id="@+id/action_settings"
+        android:title="設定" />
+    <item android:id="@+id/action_alltabclose"
+        android:title="すべてのタブを閉じる" />
+</menu>

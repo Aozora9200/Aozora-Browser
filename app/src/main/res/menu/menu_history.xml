@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/history_removeall"
+        android:title="すべて削除" />
+    <item
+        android:id="@+id/history_close"
+        android:title="閉じる" />
+</menu>
