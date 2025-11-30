@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
+    <PreferenceCategory
+        android:title="高度な設定">
+
+        <CheckBoxPreference
+            android:key="javascript"
+            android:title="JavaScriptを有効にする" />
+
+        <Preference
+            android:key="geoSettings"
+            android:title="位置情報の権限設定"
+            android:summary="個々のウェブサイトの権限設定"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="ページコンテンツ">
+
+        <CheckBoxPreference
+            android:key="popupblock"
+            android:title="ポップアップをブロック" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="初期設定にリセット">
+
+        <Preference
+            android:key="reset"
+            android:title="初期設定にリセット"
+            android:summary="初期設定に戻す"/>
+
+    </PreferenceCategory>
+</PreferenceScreen>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
+    <PreferenceCategory
+        android:title="プライバシーとセキュリティ">
+
+        <Preference
+            android:key="delcache"
+            android:title="キャッシュを消去"
+            android:summary="ローカルにキャッシュしたコンテンツとデータベースを消去する"/>
+
+        <CheckBoxPreference
+            android:key="securityAlert"
+            android:title="セキュリティ警告"
+            android:summary="サイトの安全性に問題がある場合に警告を表示する"/>
+
+        <CheckBoxPreference
+            android:key="acceptCookies"
+            android:title="Cookieを受け入れる"
+            android:summary="サイトによるCookieの保存と読み取りを許可する"/>
+
+        <Preference
+            android:key="delcookie"
+            android:title="Cookieをすべて消去"
+            android:summary="すべてのブラウザCookieを消去する"/>
+
+        <CheckBoxPreference
+            android:key="geolocation"
+            android:title="位置情報を有効にする"
+            android:summary="サイトに現在地情報へのアクセスを許可する"/>
+
+        <Preference
+            android:key="delgeolocation"
+            android:title="位置情報アクセスをクリア"
+            android:summary="すべてのウェブサイトの位置情報アクセスをクリアする"/>
+
+    </PreferenceCategory>
+</PreferenceScreen>

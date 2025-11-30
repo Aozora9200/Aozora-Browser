@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="buttons">
+        <item>@+id/digit0</item>
+        <item>@+id/digit1</item>
+        <item>@+id/digit2</item>
+        <item>@+id/digit3</item>
+        <item>@+id/digit4</item>
+        <item>@+id/digit5</item>
+        <item>@+id/digit6</item>
+        <item>@+id/digit7</item>
+        <item>@+id/digit8</item>
+        <item>@+id/digit9</item>
+        <item>@+id/dot</item>
+        <item>@+id/plus</item>
+        <item>@+id/minus</item>
+        <item>@+id/div</item>
+        <item>@+id/mul</item>
+        <item>@+id/equal</item>
+        <item>@+id/leftParen</item>
+        <item>@+id/rightParen</item>
+        <item>@+id/sin</item>
+        <item>@+id/cos</item>
+        <item>@+id/tan</item>
+        <item>@+id/ln</item>
+        <item>@+id/lg</item>
+        <item>@+id/e</item>
+        <item>@+id/pi</item>
+        <item>@+id/power</item>
+        <item>@+id/factorial</item>
+        <item>@+id/sqrt</item>
+    </array>
+    <string-array name="theme_entries">
+        <item>ライト</item>
+        <item>ダーク</item>
+        <item>システム設定に従う</item>
+    </string-array>
+
+    <string-array name="theme_values">
+        <item>light</item>
+        <item>dark</item>
+        <item>system</item>
+    </string-array>
+
+    <string-array name="zip_split_sizes">
+        <item>しない</item>
+        <item>5MB</item>
+        <item>10MB</item>
+        <item>24MB</item>
+        <item>50MB</item>
+        <item>100MB</item>
+        <item>1024MB</item>
+        <item>2048MB</item>
+    </string-array>
+
+    <array name="simple_buttons">
+        <item>@+id/digit0</item>
+        <item>@+id/digit1</item>
+        <item>@+id/digit2</item>
+        <item>@+id/digit3</item>
+        <item>@+id/digit4</item>
+        <item>@+id/digit5</item>
+        <item>@+id/digit6</item>
+        <item>@+id/digit7</item>
+        <item>@+id/digit8</item>
+        <item>@+id/digit9</item>
+        <item>@+id/dot</item>
+        <item>@+id/plus</item>
+        <item>@+id/minus</item>
+        <item>@+id/div</item>
+        <item>@+id/mul</item>
+        <item>@+id/equal</item>
+    </array>
+    <array name="advanced_buttons">
+        <item>@+id/leftParen</item>
+        <item>@+id/rightParen</item>
+        <item>@+id/sin</item>
+        <item>@+id/cos</item>
+        <item>@+id/tan</item>
+        <item>@+id/ln</item>
+        <item>@+id/lg</item>
+        <item>@+id/e</item>
+        <item>@+id/pi</item>
+        <item>@+id/power</item>
+        <item>@+id/factorial</item>
+        <item>@+id/sqrt</item>
+    </array>
+
+</resources>

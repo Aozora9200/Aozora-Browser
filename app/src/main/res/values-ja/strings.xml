@@ -1,0 +1,217 @@
+<resources>
+    <string name="app_name">Aozora</string>
+    <string name="h_egg_name">Honeycomb</string>
+    <string name="version">3.0.0</string>
+    <string name="build">AZ30A</string>
+    <string name="password_key"></string>
+
+    <string name="websiteSettings">ウェブサイト設定</string>
+    <string name="geoSettings">位置情報の権限設定</string>
+    <string name="tool">ツール</string>
+    <string name="download">ダウンロード</string>
+    <string name="txtphoto">文字を画像に変換</string>
+    <string name="asciiart">画像をTXTに変換</string>
+    <string name="pagedlTools">ページ保存ツール</string>
+    <string name="calculator">電卓</string>
+    <string name="qrcodeTools">QRコード化</string>
+    <string name="settings">設定</string>
+    <string name="history">履歴</string>
+    <string name="deviceinfo">端末情報</string>
+    <string name="legal">法的情報</string>
+    <string name="devicestatus">端末の状態</string>
+    <string name="theme">テーマ</string>
+    <string name="wallpaperSettings">壁紙設定</string>
+    <string name="browserSettings">ブラウザ設定</string>
+    <string name="backupandreset">バックアップとリセット</string>
+    <string name="secretmode">シークレットモード</string>
+    <string name="htmleditor">HTML エディター</string>
+    <string name="notepad">メモ帳</string>
+    <string name="scanqrcode">QRコードをスキャン</string>
+    <string name="filemanager">ファイルマネージャ</string>
+    <string name="general">全般</string>
+    <string name="privacyandsecurity">プライバシーとセキュリティ</string>
+    <string name="advancedsettings">高度な設定</string>
+    <string name="bandwidthmanagement">帯域幅の管理</string>
+    <string name="ior1orl">I or 1 or l</string>
+
+
+
+    <!-- Help: Saved Page -->
+    <string name="help_savedpage_title">ページを保存する</string>
+    <string name="help_savedpage_detail">ページを保存することで、オフラインでも閲覧することができます。URLバーの横の星ボタンをタップすると、ページを保存できます。ファイルとして保存するには、ツール一覧にあるページ保存ツールを使います。</string>
+
+    <!-- Help: Bookmark -->
+    <string name="help_bookmark_title">ブックマークを追加する</string>
+    <string name="help_bookmark_detail">ブックマークを追加するには、URLバーの横にある星ボタンから保存できます。</string>
+
+    <!-- Help: Tools -->
+    <string name="help_tools_title">ツールを使用する</string>
+    <string name="help_tools_detail">ツールを起動するには、メニューボタン(A)を開き、ツール項目をタップします。</string>
+
+    <!-- Help: Switch Tab -->
+    <string name="help_switchtab_title">タブを切り替える</string>
+    <string name="help_switchtab_detail">タブを切り替えるには、タブボタンをタップし、切り替えるタブを選択します。タブ一覧のメニューボタンから、すべてのタブを閉じることができます。</string>
+
+    <!-- Boot Screen -->
+    <string name="help_boot_title">起動画面や起動音を消す</string>
+    <string name="help_boot_detail">起動画面や起動音を消すには、\nブラウザ設定の「アプリ設定の項目」から「起動画面」「起動音」のチェックを外すことで消すことができます。</string>
+
+    <!-- Settings -->
+    <string name="help_settings_title">設定を開く</string>
+    <string name="help_settings_detail">メニューボタン(A)を押し、「設定」を押します。\nブラウザ設定から、各種設定が行えます。</string>
+
+    <!-- UA -->
+    <string name="help_ua_title">UAとは</string>
+    <string name="help_ua_detail">UA (ユーザーエージェント)とは、Webサイトにアクセスした際に、相手のサイトに渡される自身の端末の情報の事です。</string>
+
+    <!-- Contact Waiting -->
+    <string name="help_contact_wait">お待ち下さい...</string>
+
+
+    <string-array name="theme_options">
+        <item>ライトモード</item>
+        <item>ダークモード</item>
+        <item>デバイスの既定</item>
+    </string-array>
+    <string-array name="popupbutton_options">
+        <item>ライトボタン</item>
+        <item>ダークボタン</item>
+        <item>デバイスのテーマに合わせる</item>
+    </string-array>
+    <string-array name="arrowbutton_options">
+        <item>従来のスタイル</item>
+        <item>システムUI</item>
+        <item>モダンスタイル</item>
+    </string-array>
+    <string-array name="background_options">
+        <item>壁紙1</item>
+        <item>壁紙2</item>
+        <item>壁紙3</item>
+        <item>壁紙を設定しない</item>
+        <item>カスタム</item>
+    </string-array>
+    <string name="cannot_get_image_path">画像のパスを取得できません</string>
+    <string name="cannot_load_image">画像を読み込めません</string>
+    <string name="convert_ascii_art">アスキーアートに変換</string>
+    <string name="file_not_selected">ファイルが選択されていません</string>
+    <string name="unknown_file">不明なファイル</string>
+    <string name="file_save_failed">ファイルの保存に失敗しました</string>
+    <string name="file_save_success">ファイルが保存されました</string>
+    <string name="file_saved_path">保存先：</string>
+    <string name="need_storage_permission">ストレージへのアクセス権限が必要です</string>
+    <string name="save_text">ファイルに保存</string>
+    <string name="select_image">画像を選択</string>
+    <string name="selected_image">画像を選択しました</string>
+    <string name="storage_permission_denied">ストレージのアクセス権限が拒否されました</string>
+    <string name="save_color">カラー保存</string>
+    <string name="qrcode_short_label">QRコード</string>
+    <string name="qrcode_long_label">QRコードに変換</string>
+    <string name="pagedl_short_label">ページDL</string>
+    <string name="pagedl_long_label">ページをダウンロード</string>
+    <string name="asciiart_short_label">ASCIIアート</string>
+    <string name="asciiart_long_label">画像をASCIIアートに変換</string>
+    <string name="txtphoto_short_label">TXT画像</string>
+    <string name="txtphoto_long_label">TXTを画像に変換</string>
+    <string name="bm_long_label">ブックマークを開く</string>
+    <string name="bm_short_label">ブックマーク</string>
+    <string name="error" msgid="9197457880925804499">"エラー"</string>
+    <string name="digit0" msgid="8069590963464434135">"0"</string>
+    <string name="digit1" msgid="8535041374797804029">"1"</string>
+    <string name="digit2" msgid="8977354203154316247">"2"</string>
+    <string name="digit3" msgid="148544090755132760">"3"</string>
+    <string name="digit4" msgid="2199490603838247678">"4"</string>
+    <string name="digit5" msgid="7568514524384173087">"5"</string>
+    <string name="digit6" msgid="6705952561049362551">"6"</string>
+    <string name="digit7" msgid="658125644218958447">"7"</string>
+    <string name="digit8" msgid="3134686906411558886">"8"</string>
+    <string name="digit9" msgid="765379157698748031">"9"</string>
+    <string name="del" msgid="6248896117422989693">"削除"</string>
+    <string name="clear" msgid="8103610981407459768">"消去"</string>
+    <string name="sin" msgid="6793866152659175277">"sin"</string>
+    <string name="cos" msgid="6901841853098114414">"cos"</string>
+    <string name="tan" msgid="7957459816738554960">"tan"</string>
+    <string name="e" msgid="1377847800971731483">"e"</string>
+    <string name="ln" msgid="6888500680285403344">"ln"</string>
+    <string name="lg" msgid="873623857385418182">"log"</string>
+    <string name="leftParen" msgid="4850643713953092099">"("</string>
+    <string name="rightParen" msgid="3177971166159324016">")"</string>
+    <string name="basic" msgid="7691469861698059753">"標準機能"</string>
+    <string name="advanced" msgid="7122495413742976492">"関数機能"</string>
+    <string name="clear_history" msgid="8458043980601165012">"履歴消去"</string>
+    <string name="text_copied_toast" msgid="5801480710472541833">"テキストをコピーしました。"</string>
+    <string name="leftParenDesc" msgid="8446428211982811379">"左かっこ"</string>
+    <string name="rightParenDesc" msgid="9133691645148976523">"右かっこ"</string>
+    <string name="factorialDesc" msgid="9217024218012761574">"階乗"</string>
+    <string name="lnDesc" msgid="1052579286300842270">"自然対数"</string>
+    <string name="lgDesc" msgid="6490920451513731160">"対数"</string>
+    <string name="sqrtDesc" msgid="2247252128762219267">"平方根"</string>
+    <string name="divDesc" msgid="7442623079124315427">"除算"</string>
+    <string name="mulDesc" msgid="9003016819648670694">"乗算"</string>
+    <string name="plusDesc" msgid="3145322700823848264">"足す"</string>
+    <string name="minusDesc" msgid="5033462008907390900">"引く"</string>
+    <string name="dotDesc" msgid="5253752241630161722">"小数点"</string>
+    <string name="powerDesc" msgid="9034898318444176910">"累乗"</string>
+    <string name="delDesc" msgid="8211175878012032240">"削除"</string>
+    <string name="clearDesc" msgid="8015748901120751476">"クリア"</string>
+    <string name="tanDesc" msgid="2055554933130702423">"タンジェント"</string>
+    <string name="sinDesc" msgid="6563285042235077204">"サイン"</string>
+    <string name="cosDesc" msgid="4048942450207926538">"コサイン"</string>
+    <string name="eDesc" msgid="6709583372168924068">"自然対数の底"</string>
+    <string name="piDesc" msgid="8838151606775021517">"パイ"</string>
+    <string name="equalDesc" msgid="4164435100263313101">"イコール"</string>
+    <string-array name="operatorDescs">
+        <item msgid="7903565108986789641">"左かっこ"</item>
+        <item msgid="1688156211934459752">"右かっこ"</item>
+        <item msgid="6664829080840305856">"階乗"</item>
+        <item msgid="2880199289575144121">"自然対数"</item>
+        <item msgid="4398774906998694599">"対数"</item>
+        <item msgid="1791869359785943266">"平方根"</item>
+        <item msgid="6833720171974254459">"割る"</item>
+        <item msgid="2646574635189709515">"掛ける"</item>
+        <item msgid="3487936384379753697">"足す"</item>
+        <item msgid="8608534484562258856">"引く"</item>
+        <item msgid="3456824579675198186">"ポイント"</item>
+        <item msgid="4528629783180278651">"累乗"</item>
+        <item msgid="4050948027333760159">"タンジェント"</item>
+        <item msgid="8716478860618683850">"サイン"</item>
+        <item msgid="3203211483560707480">"コサイン"</item>
+        <item msgid="8587490959348493065">"パイ"</item>
+        <item msgid="8134315487552198394">"イコール"</item>
+    </string-array>
+    <string name="div">\u00f7</string>
+    <string name="mul">\u00d7</string>
+    <string name="plus">+</string>
+    <string name="minus">\u2212</string>
+    <string name="dot">.</string>
+    <string name="equal">=</string>
+    <string name="enter">\u2193</string>
+    <string translate="false" name="sin_mathematical_value">sin</string>
+    <string translate="false" name="cos_mathematical_value">cos</string>
+    <string translate="false" name="tan_mathematical_value">tan</string>
+    <string name="pi">\u03c0</string>
+    <string translate="false" name="e_mathematical_value">e</string>
+    <string translate="false" name="ln_mathematical_value">ln</string>
+    <string translate="false" name="lg_mathematical_value">lg</string>
+    <string name="sqrt">\u221a</string>
+    <string name="power">^</string>
+    <string name="factorial">!</string>
+    <string-array name="operators" translatable="false">
+        <item>(</item>
+        <item>)</item>
+        <item>!</item>
+        <item>ln</item>
+        <item>log</item>
+        <item>\u221a</item>
+        <item>\u00f7</item>
+        <item>\u00d7</item>
+        <item>+</item>
+        <item>\u2212</item>
+        <item>.</item>
+        <item>^</item>
+        <item>tan</item>
+        <item>sin</item>
+        <item>cos</item>
+        <item>\u03c0</item>
+        <item>=</item>
+    </string-array>
+    </resources>

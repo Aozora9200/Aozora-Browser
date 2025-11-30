@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
+
+    <PreferenceCategory
+        android:title="帯域幅の管理">
+
+        <CheckBoxPreference
+            android:key="intentJump"
+            android:title="URLスキーム"
+            android:summary="サイトからアプリストアやアプリを起動するURLスキーム機能を有効化する"/>
+
+        <CheckBoxPreference
+            android:key="block"
+            android:title="画像をブロック"
+            android:summary="サイト内の画像表示を無効化する"/>
+
+    </PreferenceCategory>
+</PreferenceScreen>

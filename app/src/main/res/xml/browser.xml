@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
+
+    <CheckBoxPreference
+        android:key="desktop"
+        android:title="デスクトップモード"
+        android:summary="PC版のサイト表示をリクエストする"/>
+
+    <CheckBoxPreference
+        android:key="CT3UA"
+        android:title="CT3UA"
+        android:summary="チャレンジパッドのユーザーエージェントを有効化する"/>
+
+    <CheckBoxPreference
+        android:key="UA"
+        android:title="ガラケーUA"
+        android:summary="ガラケーのユーザーエージェントをリクエストする"/>
+
+    <Preference
+        android:key="default"
+        android:title="デフォルトのブラウザに設定" />
+
+    <Preference
+        android:key="general"
+        android:title="全般" />
+
+    <Preference
+        android:key="security"
+        android:title="プライバシーとセキュリティ" />
+
+    <Preference
+        android:key="detail"
+        android:title="高度な設定" />
+
+    <Preference
+        android:key="bandwidth"
+        android:title="帯域幅の管理" />
+
+</PreferenceScreen>

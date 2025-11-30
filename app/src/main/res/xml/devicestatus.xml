@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
+
+    <PreferenceCategory android:title="">
+        <Preference
+            android:key="batterystatus"
+            android:summary="エラー"
+            android:title="電池の状態:" />
+        <Preference
+            android:key="battery"
+            android:summary="--%"
+            android:title="電池残量" />
+        <Preference
+            android:key="networkstatus"
+            android:summary="エラー"
+            android:title="ネットワーク接続の状態:" />
+        <Preference
+            android:key="getpropinfo"
+            android:pivotX="50%"
+            android:pivotY="50%"
+            android:fromDegrees="0"
+            android:toDegrees="180"
+            android:icon="@drawable/ic_qs_certificate_info"
+            android:title="デバイスのgetprop情報" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

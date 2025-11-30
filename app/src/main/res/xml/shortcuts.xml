@@ -1,0 +1,45 @@
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="shortcut_id_secret"
+        android:icon="@drawable/ic_new_incognito_holo_dark"
+        android:shortcutShortLabel="@string/secretmode"
+        android:shortcutLongLabel="@string/secretmode">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.aozora.aozora"
+            android:targetClass="com.aozora.aozora.SecretActivity" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="shortcut_id_notepad"
+        android:icon="@drawable/notepad"
+        android:shortcutShortLabel="@string/notepad"
+        android:shortcutLongLabel="@string/notepad">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.aozora.aozora"
+            android:targetClass="com.aozora.aozora.notepad" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="shortcut_id_cal"
+        android:icon="@drawable/calculator"
+        android:shortcutShortLabel="@string/calculator"
+        android:shortcutLongLabel="@string/calculator">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.aozora.aozora"
+            android:targetClass="com.aozora.aozora.Calculator" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="qrcode_convert"
+        android:icon="@drawable/camera"
+        android:shortcutShortLabel="@string/qrcode_short_label"
+        android:shortcutLongLabel="@string/scanqrcode">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.aozora.aozora"
+            android:targetClass="com.aozora.aozora.QrCameraActivity"/>
+    </shortcut>
+</shortcuts>

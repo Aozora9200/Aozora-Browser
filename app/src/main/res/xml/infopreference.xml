@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
+
+    <Preference
+        android:key="devicestatus"
+        android:summary="電池やネットワークなどの情報のステータス"
+        android:title="端末の状態" />
+    <Preference
+        android:key="legal"
+        android:title="法的情報" />
+    <Preference
+        android:title="アプリ名"
+        android:summary="@string/app_name"/>
+    <Preference
+        android:key="appversion"
+        android:title="Appバージョン"
+        android:summary="@string/version"/>
+    <Preference
+        android:key="buildnumber"
+        android:title="ビルド番号"
+        android:summary="@string/build"/>
+
+</PreferenceScreen>

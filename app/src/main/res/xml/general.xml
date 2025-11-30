@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
+<PreferenceCategory
+    android:title="アプリ設定">
+
+    <CheckBoxPreference
+        android:key="reload"
+        android:title="スワイプで再読み込み"
+        android:summary="ページの最上部で上から下にスワイプし、再読み込みする。"/>
+
+    <CheckBoxPreference
+        android:key="progress"
+        android:title="プログレスバーのアニメーション"
+        android:summary="プログレスバー進行時のアニメーションを有効化する"/>
+
+    <CheckBoxPreference
+        android:key="zoom"
+        android:title="ズームボタンの表示"
+        android:summary="ページのスクロール時にズームボタンを表示する"/>
+
+    <CheckBoxPreference
+        android:key="hidebottom"
+        android:title="下部メニューバーを自動的に隠す"
+        android:summary="スクロール時に下部メニューバーを自動的に隠す"/>
+
+    <CheckBoxPreference
+        android:key="batteryalert"
+        android:title="バッテリー残量低下の通知"
+        android:summary="充電されていない状態でバッテリー残量が20%を切った場合、残量低下の通知を表示する"/>
+
+    <CheckBoxPreference
+        android:key="boot"
+        android:title="起動画面"
+        android:summary="アプリ起動時に起動画面を表示する"/>
+    <CheckBoxPreference
+        android:key="bootsound"
+        android:title="起動音"
+        android:summary="アプリ起動時に起動音を再生する"/>
+
+    <CheckBoxPreference
+        android:key="touchEffect"
+        android:title="タップを表示"
+        android:summary="タップを視覚化する"/>
+
+    <CheckBoxPreference
+        android:key="update"
+        android:title="更新情報を表示"
+        android:summary="アプリの更新がある場合、起動時に通知する"/>
+
+</PreferenceCategory>
+</PreferenceScreen>
