@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- Devices running Android 13 (API level 33) or higher -->
+    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+
+    <!-- To handle the reselection within the app on devices running Android 14
+         or higher if your app targets Android 14 (API level 34) or higher.  -->
+    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
+    <uses-feature android:name="android.hardware.camera" android:required="false"/>
+    <uses-feature android:name="android.hardware.microphone" android:required="false" />
+
+    <queries>
+        <!-- カメラ -->
+        <intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE" />
+        </intent>
+        <!-- ギャラリー -->
+        <intent>
+            <action android:name="android.intent.action.GET_CONTENT" />
+        </intent>
+        <intent>
+            <action android:name="android.provider.MediaStore.RECORD_SOUND"/>
+        </intent>
+
+        <!-- PDFを開くアプリ -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:mimeType="application/pdf" />
+        </intent>
+
+        <!-- 一般的なファイルビューア（動画・画像など） -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:mimeType="*/*" />
+        </intent>
+    </queries>
+
+    <application
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:theme="@style/Theme.AozoraBrowser"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/aozora"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/aozora"
+        android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
+        android:launchMode="singleTop"
+        tools:targetApi="31">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="stateHidden|adjustNothing"
+            android:configChanges="orientation|screenSize">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="file" />
+                <data android:scheme="content" />
+                <data android:mimeType="text/html" />
+            </intent-filter>
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts"/>
+            <meta-data android:name="android.webkit.WebView.EnableSafeBrowsing" android:value="true"/>
+        </activity>
+        <activity
+            android:name=".BootingActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AozoraBrowser">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+        </activity>
+        <activity
+            android:name=".WebSiteSettingsActivity"
+            android:label="@string/websiteSettings"
+            android:icon="@mipmap/ic_launcher_settings"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/Base.Theme.AozoraApp"/>
+        <activity
+            android:name=".geoSettingsActivity"
+            android:label="@string/geoSettings"
+            android:icon="@mipmap/ic_launcher_settings"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/Base.Theme.AozoraApp"/>
+        <activity
+            android:name=".toolsActivity"
+            android:label="@string/tool"
+            android:theme="@style/Base.Theme.AozoraTools"/>
+        <activity
+            android:name=".TabListActivity"
+            android:label=""
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/Base.Theme.AozoraTools"/>
+        <activity
+            android:name=".TabListSecretActivity"
+            android:label=""
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/Base.Theme.AozoraTools"/>
+        <activity
+            android:name=".SetupActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Holo.NoActionBar"/>
+        <activity
+            android:name=".HelpActivity"
+            android:theme="@android:style/Theme.Holo.NoActionBar"/>
+        <activity
+            android:name=".AozoraHelp"
+            android:theme="@style/Base.Theme.AozoraTools"/>
+        <activity
+            android:name=".NewFeatures"
+            android:theme="@style/Base.Theme.AozoraTools"/>
+        <activity
+            android:name=".DataUsage"
+            android:theme="@style/Base.Theme.AozoraTools"/>
+        <activity
+            android:name=".HelpProgress"
+            android:theme="@android:style/Theme.Holo.NoActionBar"/>
+        <activity
+            android:name=".SetupProgress"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Holo.NoActionBar"/>
+        <activity
+            android:name=".SetupResult"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Holo.NoActionBar"/>
+        <activity
+            android:name=".DownloadListActivity"
+            android:icon="@drawable/download"
+            android:label="@string/download"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/Base.Theme.AozoraApp"/>
+        <activity
+            android:name=".Ior1orl"
+            android:label="I or 1 or l"
+            android:icon="@mipmap/ior1orl"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/Base.Theme.AozoraApp"/>
+        <activity
+            android:name=".txtphoto"
+            android:label="@string/txtphoto"
+            android:icon="@drawable/txttophoto"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/Base.Theme.AozoraApp"/>
+        <activity
+            android:name=".asciiart"
+            android:label="@string/asciiart"
+            android:icon="@drawable/photototxt"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/Base.Theme.AozoraApp"/>
+        <activity
+            android:name=".pagedl"
+            android:label="@string/pagedlTools"
+            android:icon="@drawable/covergloobus"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/Base.Theme.AozoraApp"/>
+        <activity
+            android:name=".num"
+            android:label="@string/calculator"
+            android:icon="@drawable/calculator"
+            android:theme="@style/Base.Theme.AozoraApp"/>
+
+        <activity
+            android:name=".Calculator"
+            android:label="@string/calculator"
+            android:icon="@drawable/calculator"
+            android:theme="@android:style/Theme.Holo.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:exported="true">
+            <intent-filter>
+                <category android:name="android.intent.category.APP_CALCULATOR"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".QrCodeActivity"
+            android:label="@string/qrcodeTools"
+            android:icon="@drawable/qr_545582"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/Base.Theme.AozoraApp"/>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/settings"
+            android:configChanges="orientation|screenSize"
+            android:icon="@mipmap/ic_launcher_settings"
+            android:screenOrientation="unspecified"
+            android:theme="@android:style/Theme.Holo"/>
+        <activity
+            android:name=".PageHistoryActivity"
+            android:label="@string/history"
+            android:configChanges="orientation|screenSize"
+            android:icon="@drawable/transparent_vector"
+            android:screenOrientation="unspecified"
+            android:theme="@style/Base.Theme.AozoraApp"/>
+        <activity
+            android:name=".info"
+            android:label="@string/deviceinfo"
+            android:configChanges="orientation|screenSize"
+            android:icon="@mipmap/ic_launcher_settings"
+            android:screenOrientation="unspecified"
+            android:theme="@android:style/Theme.Holo"/>
+        <activity
+            android:name=".legal"
+            android:label="@string/legal"
+            android:configChanges="orientation|screenSize"
+            android:icon="@mipmap/ic_launcher_settings"
+            android:screenOrientation="unspecified"
+            android:theme="@android:style/Theme.Holo"/>
+        <activity
+            android:name=".devicestatus"
+            android:label="@string/devicestatus"
+            android:configChanges="orientation|screenSize"
+            android:icon="@mipmap/ic_launcher_settings"
+            android:screenOrientation="unspecified"
+            android:theme="@android:style/Theme.Holo"/>
+        <activity
+            android:name=".themeSettings"
+            android:label="@string/theme"
+            android:icon="@mipmap/ic_launcher_settings"
+            android:screenOrientation="unspecified"
+            android:theme="@android:style/Theme.Holo"/>
+        <activity
+            android:name=".wallpaperSettings"
+            android:label="@string/wallpaperSettings"
+            android:configChanges="orientation|screenSize"
+            android:icon="@mipmap/ic_launcher_settings"
+            android:screenOrientation="unspecified"
+            android:theme="@android:style/Theme.Holo"/>
+        <activity
+            android:name=".SettingsBrowserActivity"
+            android:label="@string/browserSettings"
+            android:configChanges="orientation|screenSize"
+            android:icon="@mipmap/ic_launcher_settings"
+            android:screenOrientation="unspecified"
+            android:theme="@android:style/Theme.Holo"/>
+        <activity
+            android:name=".reset"
+            android:label="@string/backupandreset"
+            android:configChanges="orientation|screenSize"
+            android:icon="@mipmap/ic_launcher_settings"
+            android:screenOrientation="unspecified"
+            android:theme="@style/Base.Theme.AozoraApp"/>
+        <activity
+            android:name=".SecretActivity"
+            android:label="@string/secretmode"
+            android:theme="@style/Theme.AozoraBrowser"
+            android:windowSoftInputMode="stateHidden|adjustNothing"
+            android:configChanges="orientation|screenSize"/>
+        <activity
+            android:name=".exec"
+            android:label="exec"
+            android:icon="@mipmap/ic_launcher_settings"
+            android:theme="@style/Base.Theme.AozoraApp"
+            android:windowSoftInputMode="stateHidden"
+            android:configChanges="orientation|screenSize"/>
+        <activity
+            android:name=".grepmd5appActivity"
+            android:label="grep-i/md5"
+            android:icon="@drawable/search_page"
+            android:theme="@style/Base.Theme.AozoraApp"/>
+        <activity
+            android:name=".htmlview"
+            android:label="@string/htmleditor"
+            android:icon="@drawable/html"
+            android:theme="@style/Base.Theme.AozoraApp"
+            android:exported="true">
+        <intent-filter>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="file" />
+            <data android:scheme="content" />
+            <data android:mimeType="text/html" />
+        </intent-filter>
+        </activity>
+        <activity
+            android:name=".notepad"
+            android:label="@string/notepad"
+            android:icon="@drawable/notepad"
+            android:theme="@style/Base.Theme.AozoraApp"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="content" />
+                <data android:scheme="file" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".QrCameraActivity"
+            android:label="@string/scanqrcode"
+            android:icon="@drawable/camera"
+            android:theme="@android:style/Theme.Holo"/>
+        <activity
+            android:name=".QrCaptureActivity"
+            android:screenOrientation="fullUser"
+            android:stateNotNeeded="true"
+            android:theme="@android:style/Theme.Holo.NoActionBar" />
+        <activity
+            android:name=".FileManager"
+            android:label="@string/filemanager"
+            android:icon="@drawable/files"
+            android:theme="@style/Base.Theme.AozoraApp"/>
+        <activity
+            android:name=".SavedPagesActivity"
+            android:theme="@style/Base.Theme.AozoraApp"/>
+        <activity
+            android:name=".WebViewActivity"
+            android:theme="@style/Base.Theme.AozoraApp"/>
+        <activity
+            android:name=".SavedBookMarkActivity"
+            android:theme="@style/Base.Theme.AozoraApp"/>
+        <activity
+            android:name=".HistoryActivity"
+            android:theme="@style/Base.Theme.AozoraApp"/>
+        <activity
+            android:name=".BmHisActivity"
+            android:theme="@style/Base.Theme.AozoraApp"/>
+        <activity
+            android:name=".HisBMActivity"
+            android:theme="@style/Base.Theme.AozoraApp"/>
+        <activity
+            android:name=".DebugActivity"
+            android:theme="@style/Base.Theme.AozoraApp"/>
+        <activity
+            android:name=".PlatLogoActivity"
+            android:exported="true"
+            android:icon="@drawable/h_platlogo"
+            android:label="@string/h_egg_name"
+            android:theme="@android:style/Theme.Wallpaper.NoTitleBar.Fullscreen"/>
+
+        <provider android:name="androidx.core.content.FileProvider" android:authorities="com.aozora.aozora.fileprovider" android:exported="false" android:grantUriPermissions="true">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths"/>
+        </provider>
+
+        <activity
+            android:name=".SettingsGeneralActivity"
+            android:label="@string/general"
+            android:configChanges="orientation|screenSize"
+            android:icon="@mipmap/ic_launcher_settings"
+            android:screenOrientation="unspecified"
+            android:theme="@android:style/Theme.Holo"/>
+
+        <activity
+            android:name=".SettingsSecurityActivity"
+            android:label="@string/privacyandsecurity"
+            android:configChanges="orientation|screenSize"
+            android:icon="@mipmap/ic_launcher_settings"
+            android:screenOrientation="unspecified"
+            android:theme="@android:style/Theme.Holo"/>
+
+        <activity
+            android:name=".SettingsAdvancedActivity"
+            android:label="@string/advancedsettings"
+            android:configChanges="orientation|screenSize"
+            android:icon="@mipmap/ic_launcher_settings"
+            android:screenOrientation="unspecified"
+            android:theme="@android:style/Theme.Holo"/>
+
+        <activity
+            android:name=".SettingsBandwidthActivity"
+            android:label="@string/bandwidthmanagement"
+            android:configChanges="orientation|screenSize"
+            android:icon="@mipmap/ic_launcher_settings"
+            android:screenOrientation="unspecified"
+            android:theme="@android:style/Theme.Holo"/>
+        
+    </application>
+
+</manifest>
