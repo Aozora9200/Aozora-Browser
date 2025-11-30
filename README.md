@@ -2,8 +2,7 @@
 ![AozoraBrowser_Header](https://github.com/user-attachments/assets/e38147c9-b482-4b01-b750-4b4118aaa560)
 
 
-- Android の WebView を活用した
-- Coara Browser 基準の軽量マルチタブ方式の Android 4.4風 Web ブラウザです。
+- Coara Browser 基準の軽量マルチタブ方式の Android 4.4風 WebView ブラウザです。
 - 動作バージョン Android 4.4 ～ Android 15
 
 ## 概要
@@ -25,10 +24,13 @@
 - **スクリーンショット撮影**  
   PixelCopy を利用して画面全体のスクリーンショットを撮影し、画像ファイルとして保存します。
 
+- **QRコードの読み取り**  
+  QRコードを読み取り、サイトにアクセスできます。
+
 ## ライセンス
 Apache License, Version 2.0
 ###
-使用ライブリ等については下記のNOTICEをご覧ください。
+使用ライブラリ等については下記のNOTICEをご覧ください。
 #####
 [NOTICE](./NOTICE.md)  
 ---
