@@ -15,6 +15,7 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <!-- Devices running Android 13 (API level 33) or higher -->
     <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
@@ -214,10 +215,10 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/settings"
-            android:configChanges="orientation|screenSize"
+            android:configChanges="orientation|screenSize|uiMode"
             android:icon="@mipmap/ic_launcher_settings"
             android:screenOrientation="unspecified"
-            android:theme="@android:style/Theme.Holo"/>
+            android:theme="@style/Base.Theme.AozoraApp"/>
         <activity
             android:name=".PageHistoryActivity"
             android:label="@string/history"
@@ -228,48 +229,48 @@
         <activity
             android:name=".info"
             android:label="@string/deviceinfo"
-            android:configChanges="orientation|screenSize"
+            android:configChanges="orientation|screenSize|uiMode"
             android:icon="@mipmap/ic_launcher_settings"
             android:screenOrientation="unspecified"
-            android:theme="@android:style/Theme.Holo"/>
+            android:theme="@style/Base.Theme.AozoraApp"/>
         <activity
             android:name=".legal"
             android:label="@string/legal"
-            android:configChanges="orientation|screenSize"
+            android:configChanges="orientation|screenSize|uiMode"
             android:icon="@mipmap/ic_launcher_settings"
             android:screenOrientation="unspecified"
-            android:theme="@android:style/Theme.Holo"/>
+            android:theme="@style/Base.Theme.AozoraApp"/>
         <activity
             android:name=".devicestatus"
             android:label="@string/devicestatus"
-            android:configChanges="orientation|screenSize"
+            android:configChanges="orientation|screenSize|uiMode"
             android:icon="@mipmap/ic_launcher_settings"
             android:screenOrientation="unspecified"
-            android:theme="@android:style/Theme.Holo"/>
+            android:theme="@style/Base.Theme.AozoraApp"/>
         <activity
             android:name=".themeSettings"
             android:label="@string/theme"
             android:icon="@mipmap/ic_launcher_settings"
             android:screenOrientation="unspecified"
-            android:theme="@android:style/Theme.Holo"/>
+            android:theme="@style/Base.Theme.AozoraApp"/>
         <activity
             android:name=".wallpaperSettings"
             android:label="@string/wallpaperSettings"
             android:configChanges="orientation|screenSize"
             android:icon="@mipmap/ic_launcher_settings"
             android:screenOrientation="unspecified"
-            android:theme="@android:style/Theme.Holo"/>
+            android:theme="@style/Base.Theme.AozoraApp"/>
         <activity
             android:name=".SettingsBrowserActivity"
             android:label="@string/browserSettings"
-            android:configChanges="orientation|screenSize"
+            android:configChanges="orientation|screenSize|uiMode"
             android:icon="@mipmap/ic_launcher_settings"
             android:screenOrientation="unspecified"
-            android:theme="@android:style/Theme.Holo"/>
+            android:theme="@style/Base.Theme.AozoraApp"/>
         <activity
             android:name=".reset"
             android:label="@string/backupandreset"
-            android:configChanges="orientation|screenSize"
+            android:configChanges="orientation|screenSize|uiMode"
             android:icon="@mipmap/ic_launcher_settings"
             android:screenOrientation="unspecified"
             android:theme="@style/Base.Theme.AozoraApp"/>
@@ -374,34 +375,44 @@
         <activity
             android:name=".SettingsGeneralActivity"
             android:label="@string/general"
-            android:configChanges="orientation|screenSize"
+            android:configChanges="orientation|screenSize|uiMode"
             android:icon="@mipmap/ic_launcher_settings"
             android:screenOrientation="unspecified"
-            android:theme="@android:style/Theme.Holo"/>
+            android:theme="@style/Base.Theme.AozoraApp"/>
 
         <activity
             android:name=".SettingsSecurityActivity"
             android:label="@string/privacyandsecurity"
-            android:configChanges="orientation|screenSize"
+            android:configChanges="orientation|screenSize|uiMode"
             android:icon="@mipmap/ic_launcher_settings"
             android:screenOrientation="unspecified"
-            android:theme="@android:style/Theme.Holo"/>
+            android:theme="@style/Base.Theme.AozoraApp"/>
 
         <activity
             android:name=".SettingsAdvancedActivity"
             android:label="@string/advancedsettings"
-            android:configChanges="orientation|screenSize"
+            android:configChanges="orientation|screenSize|uiMode"
             android:icon="@mipmap/ic_launcher_settings"
             android:screenOrientation="unspecified"
-            android:theme="@android:style/Theme.Holo"/>
+            android:theme="@style/Base.Theme.AozoraApp"/>
 
         <activity
             android:name=".SettingsBandwidthActivity"
             android:label="@string/bandwidthmanagement"
-            android:configChanges="orientation|screenSize"
+            android:configChanges="orientation|screenSize|uiMode"
             android:icon="@mipmap/ic_launcher_settings"
             android:screenOrientation="unspecified"
-            android:theme="@android:style/Theme.Holo"/>
+            android:theme="@style/Base.Theme.AozoraApp"/>
+
+        <activity
+            android:name=".AZ_MOV"
+            android:exported="true"
+            android:theme="@style/Theme.AozoraBrowser"/>
+
+        <activity
+            android:name=".BootingMOV"
+            android:exported="true"
+            android:theme="@style/Theme.AozoraBrowser"/>
         
     </application>
 
