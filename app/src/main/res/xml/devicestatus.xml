@@ -24,8 +24,7 @@
             android:pivotY="50%"
             android:fromDegrees="0"
             android:toDegrees="180"
-            android:icon="@drawable/ic_qs_certificate_info"
-            android:title="デバイスのgetprop情報" />
+            android:title="デバイス情報" />
     </PreferenceCategory>
 
 </PreferenceScreen>

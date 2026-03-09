@@ -10,12 +10,10 @@
 
         <Preference
             android:key="Browser"
-            android:icon="@drawable/ic_qs_wifi_full_4"
             android:title="ブラウザ設定" />
 
         <Preference
             android:key="network"
-            android:icon="@drawable/ic_qs_signal_full_4"
             android:title="データ使用状況" />
 
     </PreferenceCategory>
@@ -25,17 +23,14 @@
 
         <Preference
             android:key="Storage"
-            android:icon="@drawable/storage"
             android:title="ストレージ" />
 
         <Preference
             android:key="Theme"
-            android:icon="@drawable/ic_qs_certificate_info"
             android:title="テーマ" />
 
         <Preference
             android:key="Wallpaper"
-            android:icon="@drawable/ic_qs_certificate_info"
             android:title="壁紙" />
 
     </PreferenceCategory>
@@ -74,7 +69,6 @@
             android:pivotY="50%"
             android:fromDegrees="0"
             android:toDegrees="180"
-            android:icon="@drawable/ic_qs_certificate_info"
             android:title="端末情報" />
     </PreferenceCategory>
 
