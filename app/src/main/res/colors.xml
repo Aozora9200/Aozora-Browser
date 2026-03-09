@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="textdark">#757575</color>
+    <color name="progressblack">#88000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="white_mov">#FFFEFEFE</color>
+    <color name="progresswhite">#88FFFFFF</color>
+    <color name="popupdark">#99000000</color>
+    <color name="popupwhite">#99FFFFFF</color>
+    <color name="magic_flame">#00ffffff</color>
+    <color name="button_text">#ffffffff</color>
+    <color name="backgroundWhite">#99ffffff</color>
+    <color name="backgroundBlack">#99000000</color>
+    <color name="tabactionbarwhite">#cccccc</color>
+    <color name="tabactionbarblack">#333333</color>
+</resources>
