@@ -174,61 +174,6 @@ public class infoFragment extends PreferenceFragment {
         }
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        ListView listView = (ListView) view.findViewById(android.R.id.list);
-        listView.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
-            @Override
-            public void onChildViewAdded(View parent, View child) {
-                String targetKey = "legal";
-                String statusKey = "devicestatus";
-                Preference pref = findPreference("legal");
-                if (pref != null && child.findViewById(android.R.id.title) != null) {
-                    TextView title = (TextView) child.findViewById(android.R.id.title);
-                    title.setTextColor(Color.GRAY);
-                }
-                if (pref != null && child.findViewById(android.R.id.summary) != null) {
-                    TextView title = (TextView) child.findViewById(android.R.id.summary);
-                    title.setTextColor(Color.GRAY);
-                }
-
-                // child が Preference の 1行分のレイアウト
-                TextView title = (TextView) child.findViewById(android.R.id.title);
-                TextView summary = (TextView) child.findViewById(android.R.id.summary);
-
-                // タイトルが一致している場合に色を変える
-                Preference targetPref = findPreference(targetKey);
-                Preference statusPref = findPreference(statusKey);
-                if (targetPref != null && title != null &&
-                        targetPref.getTitle().equals(title.getText())) {
-                    title.setTextColor(Color.WHITE);
-                }
-
-                if (targetPref != null && summary != null &&
-                        targetPref.getSummary() != null &&
-                        targetPref.getSummary().equals(summary.getText())) {
-                    summary.setTextColor(Color.GRAY);
-                }
-
-                if (statusPref != null && title != null &&
-                        statusPref.getTitle().equals(title.getText())) {
-                    title.setTextColor(Color.WHITE);
-                }
-
-                if (statusPref != null && summary != null &&
-                        statusPref.getSummary() != null &&
-                        statusPref.getSummary().equals(summary.getText())) {
-                    summary.setTextColor(Color.GRAY);
-                }
-            }
-
-            @Override
-            public void onChildViewRemoved(View parent, View child) {}
-        });
-    }
-
     private View getPasswordInputView() {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         return inflater.inflate(R.layout.dialog_password, null);

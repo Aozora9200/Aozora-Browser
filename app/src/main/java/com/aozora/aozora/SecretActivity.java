@@ -48,6 +48,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Parcel;
+import android.os.Vibrator;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -198,6 +199,7 @@ public class SecretActivity extends Activity {
     private static Method sSetDatabaseEnabledMethod;
     private static Method sSetAppCacheEnabledMethod;
     private static Method sSetAppCachePathMethod;
+    private Vibrator vib;
 
     private FrameLayout fullscreenContainer;
     private View customView;
@@ -390,6 +392,7 @@ public class SecretActivity extends Activity {
         donttouch = findViewById(R.id.donttouch);
         forwardView = findViewById(R.id.forwardView);
         backView = findViewById(R.id.backView);
+        vib = (Vibrator)getSystemService(VIBRATOR_SERVICE);
 
         applySavedPopup();
         applySavedArrow();
@@ -2665,6 +2668,12 @@ public class SecretActivity extends Activity {
         return new WebViewClient() {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                SharedPreferences setupprefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+                boolean ProgressBarAnimation = setupprefs.getBoolean("ProgressBarAnimation", true);
+                boolean Vibrate = setupprefs.getBoolean("Vibrate", true);
+                if (Vibrate) {
+                    vib.vibrate(20);
+                }
                 if (loadTabnoHideurl) {
                     nohideurl=true;
                 }
@@ -2689,8 +2698,6 @@ public class SecretActivity extends Activity {
                 if (!noUpdateUrl) {
                     updateUrlBar(view);
                 }
-                SharedPreferences setupprefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
-                boolean ProgressBarAnimation = setupprefs.getBoolean("ProgressBarAnimation", true);
                 progressBar.setVisibility(View.VISIBLE);
                 if (ProgressBarAnimation) {
                     onProgressChanged(10);

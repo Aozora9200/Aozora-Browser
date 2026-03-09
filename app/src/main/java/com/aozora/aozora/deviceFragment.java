@@ -13,6 +13,9 @@ import android.os.BatteryManager;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +28,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 
 public class deviceFragment extends PreferenceFragment {
 
@@ -152,58 +157,61 @@ public class deviceFragment extends PreferenceFragment {
         }
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        ListView listView = (ListView) view.findViewById(android.R.id.list);
-        listView.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
-            @Override
-            public void onChildViewAdded(View parent, View child) {
-                String targetKey = "getpropinfo";
-                Preference pref = findPreference("getpropinfo");
-                if (pref != null && child.findViewById(android.R.id.title) != null) {
-                    TextView title = (TextView) child.findViewById(android.R.id.title);
-                    title.setTextColor(Color.GRAY);
-                }
-                if (pref != null && child.findViewById(android.R.id.summary) != null) {
-                    TextView title = (TextView) child.findViewById(android.R.id.summary);
-                    title.setTextColor(Color.GRAY);
-                }
-
-                // child が Preference の 1行分のレイアウト
-                TextView title = (TextView) child.findViewById(android.R.id.title);
-                TextView summary = (TextView) child.findViewById(android.R.id.summary);
-
-                // タイトルが一致している場合に色を変える
-                Preference targetPref = findPreference(targetKey);
-                if (targetPref != null && title != null &&
-                        targetPref.getTitle().equals(title.getText())) {
-                    title.setTextColor(Color.WHITE);
-                }
-
-                if (targetPref != null && summary != null &&
-                        targetPref.getSummary() != null &&
-                        targetPref.getSummary().equals(summary.getText())) {
-                    summary.setTextColor(Color.GRAY);
-                }
-            }
-
-            @Override
-            public void onChildViewRemoved(View parent, View child) {}
-        });
-    }
-
     private void showDeviceInfo() {
-        StringBuilder result = new StringBuilder();
+        SpannableStringBuilder result = new SpannableStringBuilder();
         try {
             Process process = Runtime.getRuntime().exec("getprop");
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
+            String[][] props = {
+                    {"ro.product.model", "Model"},
+                    {"ro.product.manufacturer", "Manufacturer"},
+                    {"ro.product.brand", "Carrier"},
+                    {"ro.system.build.id", "Build Id"},
+                    {"ro.system.build.version.release", "OS Version"},
+                    {"ro.vndk.version", "VNDK"},
+                    {"ro.system.build.version.sdk", "SDK"},
+                    {"ro.hardware", "SOC"},
+                    {"ro.build.type", "Build Type"},
+                    {"ro.product.locale", "Language"},
+                    {"ro.sf.lcd_density", "Density"},
+                    {"ro.boot.baseband", "BaseBand"},
+                    {"ro.boot.slot_suffix", "Slot"}
+            };
+
+            Map<String, String> propValues = new HashMap<>();
+
             while ((line = reader.readLine()) != null) {
-                result.append(line).append("\n");
+                if (!line.startsWith("[")) continue;
+                int keyStart = line.indexOf('[') + 1;
+                int keyEnd = line.indexOf(']');
+                int valueStart = line.indexOf('[', keyEnd) + 1;
+                int valueEnd = line.indexOf(']', valueStart);
+
+                if (keyStart < 0 || keyEnd < 0 || valueStart < 0 || valueEnd < 0) continue;
+                String key = line.substring(keyStart, keyEnd).trim();
+                String value = line.substring(valueStart, valueEnd).trim();
+
+                if (key.startsWith("ro.")) {
+                    propValues.put(key, value);
+                }
             }
             reader.close();
+
+            for (String[] prop : props) {
+                String label = prop[1] + "  ";
+                String val = propValues.getOrDefault(prop[0], "不明");
+
+                result.append(label);
+                int start = result.length();
+                result.append(val).append("\n");
+                int end = result.length();
+                result.setSpan(
+                        new ForegroundColorSpan(0xFF448AFF),
+                        start, end,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                );
+            }
         } catch (Exception e) {
             result.append("取得失敗");
         }

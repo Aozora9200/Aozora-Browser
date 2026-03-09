@@ -20,9 +20,16 @@ import java.util.Collections;
 
 public class SettingsActivity extends Activity {
 
+    private static final String PREFS_NAME = "theme_prefs";
+    private static final String KEY_THEME = "selected_theme";
+    private static final int THEME_LIGHT = 0;
+    private static final int THEME_DARK = 1;
+    private static final int THEME_SYSTEM = 2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        applySavedTheme();
         setContentView(R.layout.settings);
 
         // Action Bar が表示されているか確認
@@ -39,6 +46,25 @@ public class SettingsActivity extends Activity {
         // Action Bar が表示されているか確認
         if (getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    private void applySavedTheme() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        int theme = prefs.getInt(KEY_THEME, THEME_SYSTEM);
+        int black = getResources().getColor(R. color. backgroundBlack);
+        int white = getResources().getColor(R. color. backgroundWhite);
+
+        switch (theme) {
+            case THEME_LIGHT:
+                setTheme(android.R.style.Theme_Holo_Light);
+                break;
+            case THEME_DARK:
+                setTheme(android.R.style.Theme_Holo);
+                break;
+            case THEME_SYSTEM:
+            default:
+                break;
         }
     }
 

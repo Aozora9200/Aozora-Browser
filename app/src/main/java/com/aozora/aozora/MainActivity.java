@@ -49,6 +49,8 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.Parcel;
 
+import android.os.Vibrator;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
@@ -213,6 +215,8 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
             startActivity(Intent.createChooser(shareIntent, "共有"));
         }
     }
+
+    private Vibrator vib;
 
     private Toast toast;
     private static final Pattern CACHE_MODE_PATTERN = Pattern.compile("(^|[/.])(?:(chatx2|chatx|chat|auth|login|disk|cgi|session|cloud))($|[/.])", Pattern.CASE_INSENSITIVE);
@@ -446,6 +450,7 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
         donttouch = findViewById(R.id.donttouch);
         forwardView = findViewById(R.id.forwardView);
         backView = findViewById(R.id.backView);
+        vib = (Vibrator)getSystemService(VIBRATOR_SERVICE);
 
         applySavedPopup();
         applySavedArrow();
@@ -813,7 +818,7 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
         Uri uri = intent.getData();
 
         if (Intent.ACTION_VIEW.equals(action) && uri != null) {
-            addNewTab(uri.toString());
+            load(uri.toString());
         } else {
             return;
         }
@@ -2190,7 +2195,7 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
         float density = getResources().getDisplayMetrics().density;
         int screenWidthPx = getResources().getDisplayMetrics().widthPixels;
         int columnWidthPx = (int) (columnWidthDp * density);
-        int spanCount = Math.max(1, screenWidthPx / columnWidthPx); // 最低3列確保
+        int spanCount = Math.max(1, screenWidthPx / columnWidthPx); // 最低1列確保
         // --------------------------------------
 
         recycler.setLayoutManager(new GridLayoutManager(this, spanCount));
@@ -3005,8 +3010,14 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
         return new WebViewClient() {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                SharedPreferences setupprefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+                boolean ProgressBarAnimation = setupprefs.getBoolean("ProgressBarAnimation", true);
+                boolean Vibrate = setupprefs.getBoolean("Vibrate", true);
+                if (Vibrate) {
+                    vib.vibrate(20);
+                }
                 if (loadTabnoHideurl) {
-                    nohideurl=true;
+                    nohideurl = true;
                 }
                 isLoading = true;
                 Animation anim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fade);
@@ -3029,8 +3040,6 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
                 if (!noUpdateUrl) {
                     updateUrlBar(view);
                 }
-                SharedPreferences setupprefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
-                boolean ProgressBarAnimation = setupprefs.getBoolean("ProgressBarAnimation", true);
                 progressBar.setVisibility(View.VISIBLE);
                 if (ProgressBarAnimation) {
                     onProgressChanged(10);

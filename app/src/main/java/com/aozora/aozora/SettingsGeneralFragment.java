@@ -30,6 +30,8 @@ public class SettingsGeneralFragment extends PreferenceFragment {
     private CheckBoxPreference reloadPref;
     private CheckBoxPreference progressBarAnimation;
     private CheckBoxPreference zoomPref;
+    private CheckBoxPreference vibPref;
+    private CheckBoxPreference boot1thPref;
     private CheckBoxPreference bootPref;
     private CheckBoxPreference bootSoundPref;
     private CheckBoxPreference hidebottomPref;
@@ -55,6 +57,8 @@ public class SettingsGeneralFragment extends PreferenceFragment {
         reloadPref = (CheckBoxPreference) findPreference("reload");
         progressBarAnimation = (CheckBoxPreference) findPreference("progress");
         zoomPref = (CheckBoxPreference) findPreference("zoom");
+        vibPref = (CheckBoxPreference) findPreference("vibrate");
+        boot1thPref = (CheckBoxPreference) findPreference("boot1thmov");
         bootPref = (CheckBoxPreference) findPreference("boot");
         bootSoundPref = (CheckBoxPreference) findPreference("bootsound");
         hidebottomPref = (CheckBoxPreference) findPreference("hidebottom");
@@ -68,6 +72,8 @@ public class SettingsGeneralFragment extends PreferenceFragment {
         boolean hidebottom = setupprefs.getBoolean("hidebottom", false);
         boolean batteryalert = setupprefs.getBoolean("batteryalert", true);
         boolean zoombutton = setupprefs.getBoolean("zoomButton", true);
+        boolean Vibrate = setupprefs.getBoolean("Vibrate", true);
+        boolean boot1thMov = setupprefs.getBoolean("isMov", false);
         boolean bootScreen = setupprefs.getBoolean("bootScreen", true);
         boolean bootSound = setupprefs.getBoolean("bootSound", true);
         if (reload) {
@@ -84,6 +90,20 @@ public class SettingsGeneralFragment extends PreferenceFragment {
             batteryalertPref.setChecked(true);
         } else {
             batteryalertPref.setChecked(false);
+        }
+        if (Vibrate) {
+            vibPref.setChecked(true);
+        } else {
+            vibPref.setChecked(false);
+        }
+        if (boot1thMov) {
+            boot1thPref.setChecked(true);
+            bootPref.setEnabled(false);
+            bootSoundPref.setEnabled(false);
+        } else {
+            boot1thPref.setChecked(false);
+            bootPref.setEnabled(true);
+            bootSoundPref.setEnabled(true);
         }
         if (bootScreen) {
             bootPref.setChecked(true);
@@ -186,6 +206,40 @@ public class SettingsGeneralFragment extends PreferenceFragment {
                 SharedPreferences prefAni = getActivity().getSharedPreferences("AppPrefs", MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefAni.edit();
                 editor.putBoolean("zoomButton", false);
+                editor.apply();
+            }
+            return true;
+        });
+
+        vibPref.setOnPreferenceChangeListener((preference, newValue) -> {
+            // チェックステータス取得
+            boolean check = (Boolean) newValue;
+            if (check) {
+                SharedPreferences prefAni = getActivity().getSharedPreferences("AppPrefs", MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefAni.edit();
+                editor.putBoolean("Vibrate", true);
+                editor.apply();
+            } else {
+                SharedPreferences prefAni = getActivity().getSharedPreferences("AppPrefs", MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefAni.edit();
+                editor.putBoolean("Vibrate", false);
+                editor.apply();
+            }
+            return true;
+        });
+
+        boot1thPref.setOnPreferenceChangeListener((preference, newValue) -> {
+            // チェックステータス取得
+            boolean check = (Boolean) newValue;
+            if (check) {
+                SharedPreferences prefAni = getActivity().getSharedPreferences("AppPrefs", MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefAni.edit();
+                editor.putBoolean("isMov", true);
+                editor.apply();
+            } else {
+                SharedPreferences prefAni = getActivity().getSharedPreferences("AppPrefs", MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefAni.edit();
+                editor.putBoolean("isMov", false);
                 editor.apply();
             }
             return true;
