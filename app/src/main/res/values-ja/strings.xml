@@ -3,7 +3,7 @@
     <string name="h_egg_name">Honeycomb</string>
     <string name="version">3.1.0</string>
     <string name="build">AZ31A</string>
-    <string name="password_key"></string>
+    <string name="password_key">HoneyCombAZ2100</string>
 
     <string name="websiteSettings">ウェブサイト設定</string>
     <string name="geoSettings">位置情報の権限設定</string>
@@ -28,6 +28,7 @@
     <string name="notepad">メモ帳</string>
     <string name="scanqrcode">QRコードをスキャン</string>
     <string name="filemanager">ファイルマネージャ</string>
+    <string name="filemanager_long">ファイルの管理アプリ</string>
     <string name="general">全般</string>
     <string name="privacyandsecurity">プライバシーとセキュリティ</string>
     <string name="advancedsettings">高度な設定</string>
