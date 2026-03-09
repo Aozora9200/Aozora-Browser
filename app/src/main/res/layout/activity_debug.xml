@@ -87,4 +87,10 @@
         android:id="@+id/license"
         android:text="ライセンス"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/az_mov_flag"
+        android:text="AZ_MOVフラグの初期化(isFirstMov)"/>
+
 </LinearLayout>
