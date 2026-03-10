@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Aozora</string>
     <string name="h_egg_name">Honeycomb</string>
-    <string name="version">3.1.0</string>
-    <string name="build">AZ31A</string>
-    <string name="password_key">HoneyCombAZ2100</string>
+    <string name="version">3.1.1</string>
+    <string name="build">AZ31B</string>
+    <string name="password_key"></string>
 
     <string name="websiteSettings">ウェブサイト設定</string>
     <string name="geoSettings">位置情報の権限設定</string>
