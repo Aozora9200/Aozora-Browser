@@ -38,11 +38,6 @@
         android:summary="サイト推移時に端末を少々振動させる"/>
 
     <CheckBoxPreference
-        android:key="boot1thmov"
-        android:title="1th 起動画面"
-        android:summary="1周年記念の新起動画面を表示する(有効時、通常起動画面と起動音は使用できません。)"/>
-
-    <CheckBoxPreference
         android:key="boot"
         android:title="起動画面"
         android:summary="アプリ起動時に起動画面を表示する"/>
