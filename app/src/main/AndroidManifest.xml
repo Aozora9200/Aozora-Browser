@@ -258,7 +258,7 @@
             android:configChanges="orientation|screenSize"
             android:icon="@mipmap/ic_launcher_settings"
             android:screenOrientation="unspecified"
-            android:theme="@style/Base.Theme.AozoraApp"/>
+            android:theme="@android:style/Theme.Holo"/>
         <activity
             android:name=".SettingsBrowserActivity"
             android:label="@string/browserSettings"
