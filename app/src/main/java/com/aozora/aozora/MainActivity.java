@@ -818,7 +818,10 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
         Uri uri = intent.getData();
 
         if (Intent.ACTION_VIEW.equals(action) && uri != null) {
-            load(uri.toString());
+            addNewTab("file:///android_asset/index.html");
+            new Handler().postDelayed(() -> {
+                load(uri.toString());
+            }, 2000);
         } else {
             return;
         }
@@ -3496,15 +3499,29 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
             }
 
             // データベースに保存
-            SQLiteDatabase db = dbH.getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put("url", url);
-            values.put("title", title);
-            values.put("screenshot_path", imageFile.getAbsolutePath());
-            values.put("date_saved", dateSaved);
-            db.insert("pages", null, values);
+            //SQLiteDatabase db = dbH.getWritableDatabase();
+            //ContentValues values = new ContentValues();
+            //values.put("url", url);
+            //values.put("title", title);
+            //values.put("screenshot_path", imageFile.getAbsolutePath());
+            //values.put("date_saved", dateSaved);
+            //db.insert("pages", null, values);
 
-            Toast.makeText(this, "ページを保存しました", Toast.LENGTH_SHORT).show();
+            String archivePath = new File(getFilesDir(),
+                    "page_" + System.currentTimeMillis() + ".mht").getAbsolutePath();
+
+            webView.saveWebArchive(archivePath, false, value -> {
+                // 保存完了後
+                SQLiteDatabase db = dbH.getWritableDatabase();
+                ContentValues values = new ContentValues();
+                values.put("url", archivePath);
+                values.put("title", title);
+                values.put("screenshot_path", imageFile.getAbsolutePath());
+                values.put("date_saved", dateSaved);
+                db.insert("pages", null, values);
+
+                Toast.makeText(this, "ページをオフライン保存しました", Toast.LENGTH_SHORT).show();
+            });
         });
     }
 

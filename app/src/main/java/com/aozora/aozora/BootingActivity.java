@@ -64,7 +64,15 @@ public class BootingActivity extends Activity {
         super.onCreate(savedInstanceState);
         applySavedTheme();
         SharedPreferences setupprefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
-        boolean bootScreen = setupprefs.getBoolean("bootScreen", true);
+        boolean isFirstMov = setupprefs.getBoolean("isFirstMov", true);
+        if (isFirstMov) {
+            Intent intent = new Intent(this, AZ_MOV.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
+        boolean bootScreen = setupprefs.getBoolean("bootScreen", false);
         if (!bootScreen) {
             Intent intent = new Intent(this, MainActivity.class);
             finish(); // ← 今のアクティビティを閉じたい場合
@@ -255,7 +263,7 @@ public class BootingActivity extends Activity {
         mainHandler.post(() -> {
             //if (splashIcon != null && finalBitmap != null) splashIcon.setImageBitmap(finalBitmap);
             SharedPreferences setupprefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
-            boolean bootSound = setupprefs.getBoolean("bootSound", true);
+            boolean bootSound = setupprefs.getBoolean("bootSound", false);
             if (bootSound) {
                 playBootSound();
             }
