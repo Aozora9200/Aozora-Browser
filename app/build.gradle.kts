@@ -12,10 +12,10 @@ android {
 
     defaultConfig {
         applicationId = "com.aozora.aozora"
-        minSdk = 23
+        minSdk = 24
         targetSdk = 34
-        versionCode = 4
-        versionName = "3.0.1"
+        versionCode = 7
+        versionName = "3.1.2"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
