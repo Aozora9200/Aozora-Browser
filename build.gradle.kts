@@ -7,6 +7,7 @@ plugins {
 buildscript {
     repositories {
         google()
+        mavenCentral()
     }
     dependencies {
         classpath("com.google.android.gms:oss-licenses-plugin:0.10.7")
