@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
-    <foreground android:drawable="@mipmap/aozora" />
-    <background android:drawable="@mipmap/aozora" />
-    <monochrome android:drawable="@drawable/aozora_monochrome" />
+  <background android:drawable="@mipmap/aozora_black_adaptive_back"/>
+  <foreground android:drawable="@mipmap/aozora_black_adaptive_fore"/>
 </adaptive-icon>
