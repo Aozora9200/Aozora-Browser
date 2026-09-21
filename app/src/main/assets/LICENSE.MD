@@ -509,15 +509,6 @@ url: https://developer.android.com/jetpack/androidx/releases/appcompat
 
 ===========================================
 
-** Coara Browser **
-copyrightHolder: © coara-chocomaru
-license: The Apache License, Version 2.0
-licenseUrl: https://github.com/coara-chocomaru/coara-browser/blob/main/LICENSE
-url: https://github.com/coara-chocomaru/coara-browser/
-These functions are integrated into the foundation of this app.
-
-===========================================
-
 ** Image2Ascii **
 copyrightHolder: © coara-chocomaru
 license: The Apache License, Version 2.0
@@ -636,6 +627,42 @@ url: https://android.googlesource.com/platform/packages/providers/DownloadProvid
 It uses icons, etc.
 
 ===========================================
+## Third-party assets
+
+This project includes a Lottie animation obtained from LottieFiles.
+
+Licensed under the Lottie Simple License (FL 9.13.21).
+Creator: Mahendra Bhunwal
+Source: https://lottiefiles.com/jp/free-animation/create-new-password-TNyC6zOgdV
+Source: https://lottiefiles.com/free-animation/forgot-password-LnXpOADths
+Source: https://lottiefiles.com/free-animation/loading-DfIUY8jZpX
+
+Creator: Yogesh Kumar
+Source: https://lottiefiles.com/free-animation/wrong-18EAb3paBE
+
+Creator: Md. Imam Hossain
+Source: https://lottiefiles.com/free-animation/employee-content-kltnU8Nsev
+
+Licensed CC BY 4.0
+https://rive.app/marketplace/18218-34168-load-test/
+この作品は load test REMIX（phil9l 作）であり、CC BY 4.0 の下でライセンスされています。
+
+https://rive.app/marketplace/1030-7717-loader-icon/
+この作品は Loader icon（guidorosso 作）であり、CC BY 4.0 の下でライセンスされています。
+===========================================
+## Special Thanks
+
+** Coara Browser **
+copyrightHolder: © coara-chocomaru
+license: The Apache License, Version 2.0
+licenseUrl: https://github.com/coara-chocomaru/coara-browser/blob/main/LICENSE
+url: https://github.com/coara-chocomaru/coara-browser/
+These functions are integrated into the foundation of this app.
+
+私に技術提供してくれたこと、私をプログラマーの道へと導いてくれた Coara 氏に感謝
+Aozora は 自作ブラウザの基盤に Coara Browser を取り込んで作られました。
+
+===========================================
 
 ## 商標通知
 
@@ -650,7 +677,7 @@ It uses icons, etc.
 
 ---
 
-Copyright (c) 2025 Aozora9200
+Copyright (c) 2026 Aozora9200
 
 ---
 
