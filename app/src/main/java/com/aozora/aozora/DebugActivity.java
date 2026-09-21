@@ -19,6 +19,7 @@ public class DebugActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_debug);
+        TouchEffectView.attach(getWindow());
         Button clearCache = findViewById(R.id.buttonCache);
         CheckBox securityAlert = findViewById(R.id.securityAlert);
         CheckBox acceptCookies = findViewById(R.id.acceptCookies);
@@ -31,6 +32,7 @@ public class DebugActivity extends Activity {
         CheckBox PopupBlock = findViewById(R.id.popupblock);
         CheckBox TouchEffect = findViewById(R.id.touchEffect);
         Button license = findViewById(R.id.license);
+        Button AZMOVFLAG = findViewById(R.id.az_mov_flag);
         clearCache.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -213,6 +215,16 @@ public class DebugActivity extends Activity {
         });
         license.setOnClickListener(v -> {
 
+        });
+
+        AZMOVFLAG.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putBoolean("isFirstMov", true);
+                editor.apply();
+            }
         });
     }
 }

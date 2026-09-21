@@ -81,6 +81,7 @@ public class BootingActivity extends Activity {
             return;
         }
         setContentView(R.layout.booting);
+        TouchEffectView.attach(getWindow());
         Background = findViewById(R.id.background);
         applySavedBackground();
         applyBackTheme();

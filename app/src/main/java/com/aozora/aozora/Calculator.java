@@ -57,6 +57,7 @@ public class Calculator extends Activity implements PanelSwitcher.Listener, Logi
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM,
                 WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         setContentView(R.layout.main);
+        TouchEffectView.attach(getWindow());
         mPager = (ViewPager) findViewById(R.id.panelswitch);
         if (mPager != null) {
             mPager.setAdapter(new PageAdapter(mPager));

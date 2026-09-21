@@ -46,6 +46,7 @@ public class WebSiteSettingsActivity extends Activity {
         super.onCreate(savedInstanceState);
         applySavedTheme();
         setContentView(R.layout.activity_website_list);
+        TouchEffectView.attach(getWindow());
 
         Background = findViewById(R.id.background);
         applySavedBackground();

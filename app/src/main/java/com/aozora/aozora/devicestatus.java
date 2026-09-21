@@ -22,6 +22,7 @@ public class devicestatus extends Activity {
         super.onCreate(savedInstanceState);
         applySavedTheme();
         setContentView(R.layout.devicestatus);
+        TouchEffectView.attach(getWindow());
 
         // Action Bar が表示されているか確認
         if (getActionBar() != null) {

@@ -62,6 +62,7 @@ public class AozoraHelp extends Activity {
         super.onCreate(savedInstanceState);
         applySavedTheme();
         setContentView(R.layout.aozora_help);
+        TouchEffectView.attach(getWindow());
         Background = findViewById(R.id.background);
         applySavedBackground();
         applyBackTheme();
@@ -280,7 +281,7 @@ public class AozoraHelp extends Activity {
                 Animation anim = AnimationUtils.loadAnimation(AozoraHelp.this, R.anim.slide_in_up_low);
                 tutorial.startAnimation(anim);
                 tutorial.setVisibility(View.VISIBLE);
-                String animation_path = "android.resource://" + getPackageName() + "/" + R.raw.boot;
+                String animation_path = "android.resource://" + getPackageName() + "/" + R.raw.password;
                 String title = getString(R.string.help_boot_title);
                 String detail = getString(R.string.help_boot_detail);
                 tutorialSetting(animation_path, title, detail);

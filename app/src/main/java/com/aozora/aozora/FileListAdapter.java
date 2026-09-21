@@ -1,183 +1,192 @@
 package com.aozora.aozora;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.os.Build;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class FileListAdapter extends ArrayAdapter<FileItem> {
-    private LayoutInflater inflater;
+
+    private static final int SELECTED_COLOR = 0xFFCCE5FF; // 明るめの青
+    private static final ExecutorService BG = Executors.newFixedThreadPool(2);
+    private static final Handler MAIN = new Handler(Looper.getMainLooper());
+
+    // 拡張子 → アイコン。getView のたびに endsWith を何十回も回さないためのテーブル
+    private static final Map<String, Integer> ICONS = new HashMap<>();
+
+    static {
+        put(R.drawable.picture, "jpg", "jpeg", "png", "webp", "svg");
+        put(R.drawable.music, "mp3", "wav", "aiff", "aif", "aifc", "afc", "aac", "m4a",
+                "ogg", "oga", "wma", "flac", "alac", "midi");
+        put(R.drawable.pdf, "pdf", "pptx", "ppsx", "pptm", "ppt", "key");
+        put(R.drawable.zip, "zip");
+        put(R.drawable.text, "txt", "rtf", "wps", "xml", "xps", "js", "xlsx", "xls", "xlsb",
+                "json", "css", "dot", "dotm", "dotx", "odt", "docx", "doc", "docm");
+        put(R.drawable.unknownfile, "xz", "gz", "tar", "7z");
+        put(R.drawable.html, "html", "mht", "mhtml", "htm");
+        put(R.drawable.iso, "iso", "img", "vhd", "dmg", "vmdk");
+        put(R.drawable.movie, "mp4", "avi", "mov", "wmv", "flv", "webm", "mpg", "mkv", "asf", "gif", "vob");
+    }
+
+    private static void put(int res, String... exts) {
+        for (String e : exts) ICONS.put(e, res);
+    }
+
+    private static class Holder {
+        LinearLayout root;
+        ImageView icon;
+        TextView name;
+        TextView day;
+        TextView size;
+        FileItem bound; // 非同期結果を反映してよいか判定するため
+    }
+
+    private final LayoutInflater inflater;
     private final FileManager activity;
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
+    private final LruCache<String, Drawable> apkIcons = new LruCache<>(64);
 
     public FileListAdapter(FileManager context, List<FileItem> items) {
         super(context, 0, items);
         this.activity = context;
-        inflater = LayoutInflater.from(context);
+        this.inflater = LayoutInflater.from(context);
+    }
+
+    /** アダプタを作り直さずに中身だけ差し替える（通知は1回だけ） */
+    public void setItems(List<FileItem> items) {
+        setNotifyOnChange(false);
+        clear();
+        addAll(items);
+        notifyDataSetChanged();
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        FileItem item = getItem(position);
+        Holder h;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.file_list_item, parent, false);
-        }
-
-        LinearLayout root = convertView.findViewById(R.id.itemRoot);
-        ImageView icon = convertView.findViewById(R.id.imageIcon);
-        TextView text = convertView.findViewById(R.id.textFileName);
-        TextView textDay = convertView.findViewById(R.id.textFileDay);
-        TextView textSize = convertView.findViewById(R.id.textFileSize);
-
-        File file = item.file;
-        text.setText(item.getDisplayName());
-
-        if (item.isDirectory) {
-            icon.setImageResource(R.drawable.folder);
+            h = new Holder();
+            h.root = convertView.findViewById(R.id.itemRoot);
+            h.icon = convertView.findViewById(R.id.imageIcon);
+            h.name = convertView.findViewById(R.id.textFileName);
+            h.day = convertView.findViewById(R.id.textFileDay);
+            h.size = convertView.findViewById(R.id.textFileSize);
+            convertView.setTag(h);
         } else {
-            String name = item.file.getName().toLowerCase();
-            if (name.endsWith(".jpg") || name.endsWith(".jpeg") || name.endsWith(".png") || name.endsWith(".webp") || name.endsWith(".svg")) {
-                icon.setImageResource(R.drawable.picture);
-            } else if (
-                    name.endsWith(".mp3") ||
-                            name.endsWith(".wav") ||
-                            name.endsWith(".aiff") ||
-                            name.endsWith(".aif") ||
-                            name.endsWith(".aifc") ||
-                            name.endsWith(".afc") ||
-                            name.endsWith(".aac") ||
-                            name.endsWith(".m4a") ||
-                            name.endsWith(".ogg") ||
-                            name.endsWith(".oga") ||
-                            name.endsWith(".wma") ||
-                            name.endsWith(".flac") ||
-                            name.endsWith(".alac") ||
-                            name.endsWith(".midi")) {
-                icon.setImageResource(R.drawable.music);
-            } else if (name.endsWith(".pdf") ||
-                    name.endsWith(".pptx") ||
-                    name.endsWith(".ppsx") ||
-                    name.endsWith(".pptm") ||
-                    name.endsWith(".ppt") ||
-                    name.endsWith(".key")) {
-                icon.setImageResource(R.drawable.pdf);
-            } else if (name.endsWith(".zip")) {
-                icon.setImageResource(R.drawable.zip);
-            } else if (
-                    name.endsWith(".txt") ||
-                            name.endsWith(".rtf") ||
-                            name.endsWith(".wps") ||
-                            name.endsWith(".xml") ||
-                            name.endsWith(".xps") ||
-                            name.endsWith(".js") ||
-                            name.endsWith(".xlsx") ||
-                            name.endsWith(".xls") ||
-                            name.endsWith(".xlsb") ||
-                            name.endsWith(".json") ||
-                            name.endsWith(".css") ||
-                            name.endsWith(".dot") ||
-                            name.endsWith(".dotm") ||
-                            name.endsWith(".dotx") ||
-                            name.endsWith(".odt") ||
-                            name.endsWith(".docx") ||
-                            name.endsWith(".doc") ||
-                            name.endsWith(".docm")) {
-                icon.setImageResource(R.drawable.text);
-            } else if (
-                    name.endsWith(".xz") ||
-                    name.endsWith(".gz") ||
-                    name.endsWith(".tar") ||
-                    name.endsWith(".7z")) {
-                icon.setImageResource(R.drawable.unknownfile);
-            } else if (name.endsWith(".html") ||
-                    name.endsWith(".mht") ||
-                    name.endsWith(".mhtml") ||
-                    name.endsWith(".htm")) {
-                icon.setImageResource(R.drawable.html);
-            } else if (name.endsWith(".iso")
-                    || name.endsWith(".img")
-                    || name.endsWith(".vhd")
-                    || name.endsWith(".dmg")
-                    || name.endsWith(".vmdk")) {
-                icon.setImageResource(R.drawable.iso);
-            } else if (
-                    name.endsWith(".mp4") ||
-                    name.endsWith(".avi") ||
-                    name.endsWith(".mov") ||
-                    name.endsWith(".wmv") ||
-                    name.endsWith(".flv") ||
-                    name.endsWith(".webm") ||
-                    name.endsWith(".mpg") ||
-                    name.endsWith(".mkv") ||
-                    name.endsWith(".asf") ||
-                    name.endsWith(".gif") ||
-                    name.endsWith(".vob")) {
-                icon.setImageResource(R.drawable.movie);
-            } else if (name.endsWith(".apk") || name.endsWith(".apkm")) {
-                try {
-                    android.content.pm.PackageManager pm = activity.getPackageManager();
-                    android.content.pm.PackageInfo pi = pm.getPackageArchiveInfo(file.getAbsolutePath(), 0);
-
-                    if (pi != null) {
-                        pi.applicationInfo.sourceDir = file.getAbsolutePath();
-                        pi.applicationInfo.publicSourceDir = file.getAbsolutePath();
-                        icon.setImageDrawable(pm.getApplicationIcon(pi.applicationInfo));
-                    } else {
-                        icon.setImageResource(R.drawable.apk);
-                    }
-                } catch (Exception e) {
-                    icon.setImageResource(R.drawable.apk);
-                }
-            } else {
-                icon.setImageResource(R.drawable.file);
-            }
+            h = (Holder) convertView.getTag();
         }
 
-        // 📅 情報表示
-        String info;
-        String day;
-        String dateStr = dateFormat.format(new Date(file.lastModified()));
+        FileItem item = getItem(position);
+        h.bound = item;
 
-        if (file.isDirectory()) {
-            File[] children = file.listFiles();
-            int count = (children != null) ? children.length : 0;
-            info = "項目数: " + count;
-            day = "　作成日: " + dateStr;
+        h.name.setText(item.getDisplayName());
+        bindIcon(h, item);
+        bindInfo(h, item);
 
-        } else {
-            info = readableFileSize(file.length());
-            day = "　作成日: " + dateStr;
-        }
-        textSize.setText(info);
-        textDay.setText(day);
+        String date = item.getDateText();
+        h.day.setText(date.isEmpty() ? "" : "　作成日: " + date);
 
-        // 背景色変更（明るめの青）
-        if (activity.selectedFiles.contains(item.file)) {
-            root.setBackgroundColor(Color.parseColor("#CCE5FF"));
-        } else {
-            root.setBackgroundColor(Color.TRANSPARENT);
-        }
-
+        h.root.setBackgroundColor(activity.isSelected(item.file) ? SELECTED_COLOR : 0x00000000);
         return convertView;
     }
 
-    private String readableFileSize(long size) {
-        if (size <= 0) return "0 B";
-        final String[] units = new String[]{"B", "KB", "MB", "GB", "TB"};
-        int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
-        return String.format(Locale.getDefault(), "%.1f %s",
-                size / Math.pow(1024, digitGroups), units[digitGroups]);
+    private void bindIcon(final Holder h, final FileItem item) {
+        if (item.isDirectory) {
+            h.icon.setImageResource(R.drawable.folder);
+            return;
+        }
+
+        String name = item.file.getName().toLowerCase(Locale.ROOT);
+        int dot = name.lastIndexOf('.');
+        String ext = dot >= 0 ? name.substring(dot + 1) : "";
+
+        if (!item.isZipEntry() && (ext.equals("apk") || ext.equals("apkm"))) {
+            bindApkIcon(h, item);
+            return;
+        }
+
+        Integer res = ICONS.get(ext);
+        h.icon.setImageResource(res != null ? res : R.drawable.file);
     }
 
+    private void bindApkIcon(final Holder h, final FileItem item) {
+        final String path = item.file.getAbsolutePath();
+        final String key = path + "@" + item.time;
+
+        Drawable cached = apkIcons.get(key);
+        if (cached != null) {
+            h.icon.setImageDrawable(cached);
+            return;
+        }
+
+        h.icon.setImageResource(R.drawable.apk);
+        BG.execute(() -> {
+            final Drawable d = loadApkIcon(path);
+            if (d == null) return;
+            apkIcons.put(key, d);
+            MAIN.post(() -> {
+                if (h.bound == item) h.icon.setImageDrawable(d);
+            });
+        });
+    }
+
+    private Drawable loadApkIcon(String path) {
+        try {
+            PackageManager pm = activity.getPackageManager();
+            PackageInfo pi = pm.getPackageArchiveInfo(path, 0);
+            if (pi == null || pi.applicationInfo == null) return null;
+            pi.applicationInfo.sourceDir = path;
+            pi.applicationInfo.publicSourceDir = path;
+            return pm.getApplicationIcon(pi.applicationInfo);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private void bindInfo(final Holder h, final FileItem item) {
+        if (!item.isDirectory) {
+            h.size.setText(FileItem.formatSize(item.size));
+            return;
+        }
+        if (item.isParentLink) {
+            h.size.setText("");
+            return;
+        }
+
+        int count = item.childCount;
+        if (count >= 0) {
+            h.size.setText("項目数: " + count);
+            return;
+        }
+
+        // 項目数は listFiles が重いので、表示された行だけバックグラウンドで数える
+        h.size.setText("項目数: -");
+        if (item.childCountRequested) return;
+        item.childCountRequested = true;
+        final File dir = item.file;
+        BG.execute(() -> {
+            String[] list = dir.list();
+            final int c = list != null ? list.length : 0;
+            item.childCount = c;
+            MAIN.post(() -> {
+                if (h.bound == item) h.size.setText("項目数: " + c);
+            });
+        });
+    }
 }

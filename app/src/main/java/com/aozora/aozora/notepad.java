@@ -43,7 +43,7 @@ public class notepad extends Activity {
         super.onCreate(savedInstanceState);
         applySavedTheme();
         setContentView(R.layout.notepad);
-
+        TouchEffectView.attach(getWindow());
         editText = findViewById(R.id.editText);
         Button btnSave = findViewById(R.id.btnSave);
         Button btnLoad = findViewById(R.id.btnLoad);

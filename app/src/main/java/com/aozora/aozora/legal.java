@@ -22,7 +22,7 @@ public class legal extends Activity {
         super.onCreate(savedInstanceState);
         applySavedTheme();
         setContentView(R.layout.legal);
-
+        TouchEffectView.attach(getWindow());
         // Action Bar が表示されているか確認
         if (getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(true);

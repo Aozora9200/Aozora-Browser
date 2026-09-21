@@ -119,6 +119,7 @@ public class DownloadListActivity extends Activity {
         super.onCreate(savedInstanceState);
         applySavedTheme();
         setContentView(R.layout.activity_download_history);
+        TouchEffectView.attach(getWindow());
         Background = findViewById(R.id.background);
         applySavedBackground();
         applyBackTheme();

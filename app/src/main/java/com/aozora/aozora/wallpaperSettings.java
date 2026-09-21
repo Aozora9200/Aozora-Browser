@@ -31,6 +31,7 @@ public class wallpaperSettings extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wallpapersettings);
+        TouchEffectView.attach(getWindow());
         backgroundButton = findViewById(R.id.background_example_image);
         Spinner spinner = findViewById(R.id.setup_backgroundList);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(

@@ -29,6 +29,7 @@ public class SetupProgress extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.setup_progress);
+        TouchEffectView.attach(getWindow());
         speedText = findViewById(R.id.setupdownloadlog);
         progressText = findViewById(R.id.progressText);
         progressBar = findViewById(R.id.setup_progress);
@@ -60,7 +61,7 @@ public class SetupProgress extends Activity {
                     // セットアップ完了 → フラグ更新
                     SharedPreferences prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
                     SharedPreferences.Editor editor = prefs.edit();
-                    editor.putBoolean("isFirstRun", false);
+                    editor.putBoolean("isFirstRun_v2", false);
                     editor.apply();
                     startActivity(new Intent(this, BootingActivity.class));
                     finish();

@@ -131,6 +131,7 @@ public class QrCodeActivity extends Activity {
         });
 
         setContentView(layout);
+        TouchEffectView.attach(getWindow());
     }
 
     private void applySavedTheme() {

@@ -27,7 +27,7 @@ public class QrCameraActivity extends Activity {
         IntentIntegrator integrator = new IntentIntegrator(this);
         integrator.setCaptureActivity(QrCaptureActivity.class); // ← カスタムアクティビティを指定
         integrator.setPrompt("QRコードをスキャンしてください");
-        integrator.setBeepEnabled(true);
+        integrator.setBeepEnabled(false);
         integrator.setOrientationLocked(false);
         integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
         integrator.setCameraId(0);  // デフォルトカメラ

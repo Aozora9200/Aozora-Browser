@@ -23,7 +23,7 @@ public class SettingsAdvancedActivity extends Activity {
         super.onCreate(savedInstanceState);
         applySavedTheme();
         setContentView(R.layout.settings_advanced);
-
+        TouchEffectView.attach(getWindow());
         // Action Bar が表示されているか確認
         if (getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(false);

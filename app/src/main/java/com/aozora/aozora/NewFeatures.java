@@ -59,6 +59,7 @@ public class NewFeatures extends Activity {
         super.onCreate(savedInstanceState);
         applySavedTheme();
         setContentView(R.layout.activity_newfeatures);
+        TouchEffectView.attach(getWindow());
         Background = findViewById(R.id.background);
         applySavedBackground();
         applyBackTheme();

@@ -20,6 +20,7 @@ public class PlatLogoActivity extends Activity {
         content.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
 
         setContentView(content);
+        TouchEffectView.attach(getWindow());
     }
 
     @Override

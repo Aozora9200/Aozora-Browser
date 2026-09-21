@@ -23,7 +23,7 @@ public class SettingsBrowserActivity extends Activity {
         super.onCreate(savedInstanceState);
         applySavedTheme();
         setContentView(R.layout.settings_browser);
-
+        TouchEffectView.attach(getWindow());
         // Action Bar が表示されているか確認
         if (getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(false);
@@ -69,6 +69,17 @@ public class SettingsBrowserActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        SharedPreferences setupprefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        boolean rebootApp = setupprefs.getBoolean("rebootApp", false);
+        if (rebootApp) {
+            finish();
+            overridePendingTransition(0, 0);
+        }
     }
 
     @Override

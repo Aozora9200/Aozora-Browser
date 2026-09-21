@@ -60,7 +60,7 @@ public class themeSettings extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.themesettings);
-
+        TouchEffectView.attach(getWindow());
         themeButton = findViewById(R.id.theme_example_image);
         themeButton.setImageResource(R.drawable.aozora_default);
         backButton = findViewById(R.id.backButton);
@@ -257,6 +257,7 @@ public class themeSettings extends Activity {
         switch (theme) {
             case THEME_LIGHT:
                 themeButton.setImageResource(R.drawable.aozora_white);
+                popupButton.setImageResource(R.mipmap.aozora1);
                 themeButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -279,6 +280,7 @@ public class themeSettings extends Activity {
                 break;
             case THEME_DARK:
                 themeButton.setImageResource(R.drawable.aozora_dark);
+                popupButton.setImageResource(R.mipmap.aozora);
                 themeButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -297,6 +299,7 @@ public class themeSettings extends Activity {
             case THEME_SYSTEM:
             default:
                 themeButton.setImageResource(R.drawable.aozora_default);
+                popupButton.setImageResource(R.mipmap.aozora1);
                 themeButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -330,7 +333,7 @@ public class themeSettings extends Activity {
         new AlertDialog.Builder(this)
                 .setMessage("テーマの変更を反映するには再起動が必要です")
                 .setPositiveButton("キャンセル", (dialog, which) -> {
-                    
+
                 })
                 .setNegativeButton("再起動", (dialog, which) -> {
                     //Intent intent = new Intent(this, BootingActivity.class);

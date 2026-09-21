@@ -69,6 +69,7 @@ public class grepmd5appActivity extends Activity {
         super.onCreate(savedInstanceState);
         applySavedTheme();
         setContentView(R.layout.activity_grep);
+        TouchEffectView.attach(getWindow());
         Background = findViewById(R.id.background);
         applySavedBackground();
         applyBackTheme();

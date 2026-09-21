@@ -41,6 +41,7 @@ public class exec extends Activity {
         super.onCreate(savedInstanceState);
         applySavedTheme();
         setContentView(R.layout.exec);
+        TouchEffectView.attach(getWindow());
         webView = findViewById(R.id.webview);
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);

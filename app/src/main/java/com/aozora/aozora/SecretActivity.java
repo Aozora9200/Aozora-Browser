@@ -77,6 +77,7 @@ import android.view.MotionEvent;
 import android.view.PixelCopy;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
@@ -259,6 +260,7 @@ public class SecretActivity extends Activity {
     private boolean zoomEnabled = false;
     private boolean defaultLoadsImagesAutomatically;
     private boolean defaultLoadsImagesAutomaticallyInitialized = false;
+    private boolean skipLockOnce = false;
     private AlertDialog dialog;
     // 選択されたURLとタイプを保持
     private String selectedUrl;
@@ -329,6 +331,14 @@ public class SecretActivity extends Activity {
 
     private static final int REQUEST_LOCATION = 1;
     private SharedPreferences geoPrefs;
+    private PasswordManager passwordManager;
+    private boolean authenticated = false;
+
+    private static final String STARTUP_PASSWORD = "startup_password";
+
+    private static final int REQUEST_UNLOCK = 2001;
+    private boolean lockShowing = false;
+
 
     static {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
@@ -365,9 +375,23 @@ public class SecretActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        passwordManager = new PasswordManager(this);
+
+        SharedPreferences setupprefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        boolean usePassWordonStartup = setupprefs.getBoolean(STARTUP_PASSWORD, true);
+        boolean useSecretSecurity = setupprefs.getBoolean("useSecretSecurity", false);
+
+        if (useSecretSecurity) {
+            //おお
+            getWindow().setFlags(
+                    WindowManager.LayoutParams.FLAG_SECURE,
+                    WindowManager.LayoutParams.FLAG_SECURE
+            );
+        }
         applySavedTheme();
 
         setContentView(R.layout.activity_main);
+        TouchEffectView.attach(getWindow());
         effectLayer = findViewById(R.id.effectLayer);
         urlEditText = findViewById(R.id.urlEditText);
         backButton = findViewById(R.id.backButton);
@@ -649,7 +673,6 @@ public class SecretActivity extends Activity {
             }
         });
 
-        SharedPreferences setupprefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
         boolean isSwipeReload = setupprefs.getBoolean("isSwipeReload", true);
         swipeRefreshLayout.setEnabled(isSwipeReload);
 
@@ -1744,6 +1767,34 @@ public class SecretActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        AozoraApplication_Kansi app = (AozoraApplication_Kansi) getApplication();
+        if (skipLockOnce) {
+            // ファイル選択から戻ってきた → ロックせずフラグだけ消費する
+            skipLockOnce = false;
+            app.clearAppWentToBackground();
+        } else if (app.isAppWentToBackground()) {
+            app.clearAppWentToBackground();
+
+            if (authenticated) {
+                authenticated = false;
+            } else if (passwordManager.isPasswordSet() && !lockShowing) {
+                lockShowing = true;
+                Intent intent = new Intent(this, PasswordActivity.class);
+                intent.putExtra(
+                        "destination_activity",
+                        "SecretActivity"
+                );
+                intent.putExtra(
+                        "requirePasswordOnFirstLaunch",
+                        false
+                );
+
+                intent.putExtra("usePasswordSkip", true);
+                intent.putExtra("return_to_caller", true);
+                startActivityForResult(intent, REQUEST_UNLOCK);
+                // finish() と return は削除（以降の処理は通常どおり実行）
+            }
+        }
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             // API 24 以上のときだけ実行する処理
             if (connectivityManager != null) {
@@ -3645,7 +3696,15 @@ public class SecretActivity extends Activity {
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 intent.setType("*/*");
 
-                startActivityForResult(Intent.createChooser(intent, "ファイルを選択"), FILE_CHOOSER_REQUEST_CODE);
+                SecretActivity.this.skipLockOnce = true;
+                try {
+                    startActivityForResult(Intent.createChooser(intent, "ファイルを選択"), FILE_CHOOSER_REQUEST_CODE);
+                } catch (Exception e) {
+                    SecretActivity.this.skipLockOnce = false; // 起動失敗時は戻す
+                    SecretActivity.this.filePathCallback = null;
+                    filePathCallback.onReceiveValue(null);
+                    return false;
+                }
                 return true;
             }
             @Override

@@ -11,6 +11,7 @@ public class HelpActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
+        TouchEffectView.attach(getWindow());
         helpClose = findViewById(R.id.help_close);
 
         helpClose.setOnClickListener(new View.OnClickListener() {

@@ -14,7 +14,7 @@ public class reset extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.backupandreset);
-
+        TouchEffectView.attach(getWindow());
         // Action Bar が表示されているか確認
         if (getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(true);

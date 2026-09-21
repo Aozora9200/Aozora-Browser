@@ -23,7 +23,7 @@ public class SettingsSecurityActivity extends Activity {
         super.onCreate(savedInstanceState);
         applySavedTheme();
         setContentView(R.layout.settings_security);
-
+        TouchEffectView.attach(getWindow());
         // Action Bar が表示されているか確認
         if (getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(false);

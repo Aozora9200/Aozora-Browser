@@ -20,7 +20,7 @@ public class HistoryActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
-
+        TouchEffectView.attach(getWindow());
         expandableListView = findViewById(R.id.expandableListView);
         DBHistory dbHelper = new DBHistory(this);
         historyMap = dbHelper.getHistoryByCategory();

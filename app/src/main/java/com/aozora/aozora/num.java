@@ -27,7 +27,7 @@ public class num extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.num);
-
+        TouchEffectView.attach(getWindow());
         editText = (EditText) findViewById(R.id.editTextNumber);
         resultView = (TextView) findViewById(R.id.textViewResult);
 

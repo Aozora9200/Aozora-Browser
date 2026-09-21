@@ -23,6 +23,7 @@ public class HisBMActivity extends TabActivity {
         super.onCreate(savedInstanceState);
         applySavedTheme();
         setContentView(R.layout.bmhistab);
+        TouchEffectView.attach(getWindow());
         initTabs();
         // Action Bar が表示されているか確認
         if (getActionBar() != null) {

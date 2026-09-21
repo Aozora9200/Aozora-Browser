@@ -62,6 +62,7 @@ public class TabListActivity extends Activity implements OnTabActionListener {
         super.onCreate(savedInstanceState);
         applySavedTheme();
         setContentView(R.layout.activity_tab_list); // XML を読み込む
+        TouchEffectView.attach(getWindow());
 
         TabManager holder = TabManager.getInstance();
         this.webViews = holder.getTabs();

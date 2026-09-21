@@ -10,7 +10,7 @@ public class WebViewActivity extends Activity {
         super.onCreate(savedInstanceState);
         WebView webView = new WebView(this);
         setContentView(webView);
-
+        TouchEffectView.attach(getWindow());
         String url = getIntent().getStringExtra("url");
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl(url);

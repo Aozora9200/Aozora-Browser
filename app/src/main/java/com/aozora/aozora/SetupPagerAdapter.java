@@ -165,11 +165,18 @@ public class SetupPagerAdapter extends PagerAdapter {
             CheckBox desktopcheck = view.findViewById(R.id.setup_checkbox_desktop);
             CheckBox uacheck = view.findViewById(R.id.setup_checkbox_ua);
             CheckBox bottomcheck = view.findViewById(R.id.setup_checkbox_bottom);
+            CheckBox swipecheck = view.findViewById(R.id.setup_checkbox_swipe);
             SharedPreferences setupprefs = activity.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
             SharedPreferences prefs = activity.getSharedPreferences("AppPrefs", MODE_PRIVATE);
             boolean hidebottom = prefs.getBoolean("hidebottom", false);
             deskuaEnabled = setupprefs.getBoolean(KEY_DESKUA_ENABLED, false);
             ua_Enabled = setupprefs.getBoolean(KEY_UA_ENABLED, false);
+            boolean swipeEnabled = prefs.getBoolean("isSwipeReload", true);
+            if (swipeEnabled) {
+                swipecheck.setChecked(true);
+            } else {
+                swipecheck.setChecked(false);
+            }
             if (deskuaEnabled) {
                 desktopcheck.setChecked(true);
                 uacheck.setChecked(false);
@@ -187,6 +194,21 @@ public class SetupPagerAdapter extends PagerAdapter {
             } else {
                 bottomcheck.setChecked(false);
             }
+            swipecheck.setOnClickListener(v -> {
+                // チェックステータス取得
+                boolean check = swipecheck.isChecked();
+                if (check) {
+                    SharedPreferences swipeprefs = activity.getSharedPreferences("AppPrefs", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = swipeprefs.edit();
+                    editor.putBoolean("isSwipeReload", true);
+                    editor.apply();
+                } else {
+                    SharedPreferences swipeprefs = activity.getSharedPreferences("AppPrefs", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = swipeprefs.edit();
+                    editor.putBoolean("isSwipeReload", false);
+                    editor.apply();
+                }
+            });
             bottomcheck.setOnClickListener(v -> {
                 // チェックステータス取得
                 boolean check = bottomcheck.isChecked();

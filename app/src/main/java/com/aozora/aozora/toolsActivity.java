@@ -50,6 +50,7 @@ public class toolsActivity extends Activity {
         super.onCreate(savedInstanceState);
         applySavedTheme();
         setContentView(R.layout.activity_tools);
+        TouchEffectView.attach(getWindow());
         Background = findViewById(R.id.background);
         applySavedBackground();
         applyBackTheme();
@@ -91,6 +92,7 @@ public class toolsActivity extends Activity {
         items.add(new PopupMenuItem(R.drawable.notepad, "メモ帳"));
         items.add(new PopupMenuItem(R.drawable.camera, "QRコードのスキャン"));
         items.add(new PopupMenuItem(R.drawable.files, "ファイルマネージャ"));
+        items.add(new PopupMenuItem(R.drawable.ic_battery, "Battery Capacity"));
         items.add(new PopupMenuItem(R.drawable.negapoji, "ネガポジ"));
         items.add(new PopupMenuItem(R.mipmap.translate, "翻訳"));
         items.add(new PopupMenuItem(R.drawable.picture, "スクリーンショット"));
@@ -171,6 +173,12 @@ public class toolsActivity extends Activity {
                     break;
                 case 12:
                     new Handler().postDelayed(() -> {
+                        startActivity(new Intent(toolsActivity.this, BatteryCapacity.class));
+                        overridePendingTransition(R.anim.slide_in_up_low, R.anim.no_animation);
+                    }, 0);
+                    break;
+                case 13:
+                    new Handler().postDelayed(() -> {
                         Intent result = new Intent();
                         result.putExtra("action", "negapoji");
                         setResult(RESULT_OK, result);
@@ -178,7 +186,7 @@ public class toolsActivity extends Activity {
                         overridePendingTransition(R.anim.no_animation,  R.anim.fadeout);
                     }, 0);
                     break;
-                case 13:
+                case 14:
                     new Handler().postDelayed(() -> {
                         Intent result = new Intent();
                         result.putExtra("action", "translate");
@@ -187,7 +195,7 @@ public class toolsActivity extends Activity {
                         overridePendingTransition(R.anim.no_animation,  R.anim.fadeout);
                     }, 0);
                     break;
-                case 14:
+                case 15:
                     new Handler().postDelayed(() -> {
                         Intent result = new Intent();
                         result.putExtra("action", "screenshot");

@@ -33,7 +33,7 @@ public class SetupActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
-
+        TouchEffectView.attach(getWindow());
         viewPager = findViewById(R.id.viewPager);
         btnPrev = findViewById(R.id.btnPrev);
         btnNext = findViewById(R.id.btnNext);
@@ -74,7 +74,7 @@ public class SetupActivity extends Activity {
                 if (position == layouts.length - 1) {
                     btnNext.setText("開始");
                 } else {
-                    btnNext.setText("＞");
+                    btnNext.setText("次へ");
                 }
             }
         });

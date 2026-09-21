@@ -79,6 +79,7 @@ import android.view.MotionEvent;
 import android.view.PixelCopy;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
@@ -152,6 +153,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
@@ -215,6 +217,8 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
             startActivity(Intent.createChooser(shareIntent, "共有"));
         }
     }
+    // パスワードマネージャー。起動時にパスワードを要求する
+    private PasswordManager passwordManager;
 
     private Vibrator vib;
 
@@ -259,6 +263,15 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
     private List<SavedPage> pageList = new ArrayList<>();
 
     public ArrayList<WebView> tabs = new ArrayList<>();
+    // tabs とインデックス整合。WebView が破棄されてもタブIDを保持する。
+    private final ArrayList<Integer> tabIds = new ArrayList<>();
+    private static final int MAX_LOADED_TABS = 3;
+    // 先頭が最新使用タブ。要素は tabs のインデックス。
+    private final LinkedList<Integer> tabLru = new LinkedList<>();
+    private final Handler tabUnloadHandler = new Handler(Looper.getMainLooper());
+    private static final long TAB_UNLOAD_DELAY_MS = 20_000;
+    private static final Object TAB_UNLOAD_TOKEN = new Object();
+    private final Runnable tabUnloadRunnable = this::unloadColdTabs;
     private ArrayList<TabInfo> tabInfos = new ArrayList<>();
     private int currentTabIndex = 0;
     private TabListAdapter tabListAdapter = null;
@@ -272,6 +285,9 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
     private boolean ct3uaEnabled = false;
     private boolean jsEnabled = false;
     private boolean imgBlockEnabled = false;
+    //private boolean wentToBackground = false; ←アプリ復帰時のパスワード要求するか判定で試行錯誤で入れた没データ
+    private boolean authenticated = false;
+    private boolean batteryReceiverRegistered = false;
 
     private WebView preloadedWebView = null;
 
@@ -317,6 +333,7 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
             "https://api.github.com/repos/Aozora9200/Aozora-Browser/releases/latest";
     private boolean isLoading = false; // ページ読み込み中かどうか
     private boolean isNewTab = false;
+    private boolean skipLockOnce = false;
 
     private ConnectivityManager connectivityManager;
     private ConnectivityManager.NetworkCallback networkCallback;
@@ -377,6 +394,11 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
     private static final int REQUEST_LOCATION = 1;
     private SharedPreferences geoPrefs;
 
+    private static final String STARTUP_PASSWORD = "startup_password";
+
+    private static final int REQUEST_UNLOCK = 2001;
+    private boolean lockShowing = false;
+
     static {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             try {
@@ -423,9 +445,61 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        passwordManager = new PasswordManager(this);
+
+        SharedPreferences setupprefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        boolean isFirstRun = setupprefs.getBoolean("isFirstRun_v2", true);
+
+        if (isFirstRun) {
+            // 初回起動 → セットアップ画面へ
+            Intent intent = new Intent(this, SetupActivity.class);
+            startActivity(intent);
+            finish(); // MainActivityを閉じてセットアップから開始
+        }
+        boolean usePassWordonStartup = setupprefs.getBoolean(STARTUP_PASSWORD, true);
+        boolean useSecretSecurity = setupprefs.getBoolean("useSecretSecurity", false);
+
+        if (useSecretSecurity) {
+            //おお
+            getWindow().setFlags(
+                    WindowManager.LayoutParams.FLAG_SECURE,
+                    WindowManager.LayoutParams.FLAG_SECURE
+            );
+        }
+        authenticated =
+                getIntent().getBooleanExtra("authenticated", false);
+
+        if (passwordManager.isPasswordSet() && !authenticated) {
+
+            if (usePassWordonStartup) {
+                Intent intent = new Intent(this, PasswordActivity.class);
+
+                intent.putExtra(
+                        "destination_activity",
+                        "MainActivity"
+                );
+
+                intent.putExtra(
+                        "requirePasswordOnFirstLaunch",
+                        true
+                );
+
+                intent.putExtra(
+                        "usePasswordSkip",
+                        true
+                );
+
+                startActivity(intent);
+
+                finish();
+            }
+
+        }
+
         applySavedTheme();
 
         setContentView(R.layout.activity_main);
+        TouchEffectView.attach(getWindow());
         effectLayer = findViewById(R.id.effectLayer);
         urlEditText = findViewById(R.id.urlEditText);
         backButton = findViewById(R.id.backButton);
@@ -459,16 +533,6 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
         donttouch.setVisibility(View.GONE);
 
         geoPrefs = getSharedPreferences("GeoPermissionStore", MODE_PRIVATE);
-
-        SharedPreferences setupprefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
-        boolean isFirstRun = setupprefs.getBoolean("isFirstRun", true);
-
-        if (isFirstRun) {
-            // 初回起動 → セットアップ画面へ
-            Intent intent = new Intent(this, SetupActivity.class);
-            startActivity(intent);
-            finish(); // MainActivityを閉じてセットアップから開始
-        }
 
         wifi = findViewById(R.id.wifi);
 
@@ -1618,7 +1682,7 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
                 url.equals("file:///android_asset/index.html") ||
                         url.equals("file:///android_asset/help.html") ||
                         url.equals("file:///android_asset/index_white.html") ||
-                                url.equals("file:///android_asset/error.html")
+                        url.equals("file:///android_asset/error.html")
         )) {
             siteTitle.setText("ブラウザ");
             siteUrl.setText(""); // URLを非表示
@@ -1642,7 +1706,7 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
         if (url != null && (
                 url.equals("file:///android_asset/index.html") ||
                         url.equals("file:///android_asset/help.html") ||
-                                url.equals("file:///android_asset/index_white.html")
+                        url.equals("file:///android_asset/index_white.html")
         )) {
             new AlertDialog.Builder(this)
                     .setTitle("ℹ\uFE0F ページ情報")
@@ -1973,6 +2037,30 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+
+        // 今後 getIntent() でも新しい Intent を取得できるようにする
+        setIntent(intent);
+
+        // 外部から ACTION_VIEW でURLが渡された場合
+        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            Uri uri = intent.getData();
+
+            if (uri != null) {
+                String url = uri.toString();
+
+                // 新しいタブで開く
+                addNewTab("file:///android_asset/index.html");
+
+                // WebViewの準備を待ってURLを読み込む
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    load(url);
+                }, 500);
+            }
+
+            return;
+        }
+
+        // 既存の「url」extraも維持
         String url = intent.getStringExtra("url");
         if (url != null && !url.isEmpty()) {
             load(url);
@@ -1993,6 +2081,30 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
     @Override
     protected void onResume() {
         super.onResume();
+        AozoraApplication_Kansi app = (AozoraApplication_Kansi) getApplication();
+        if (skipLockOnce) {
+            // ファイル選択から戻ってきた → ロックせずフラグだけ消費する
+            skipLockOnce = false;
+            app.clearAppWentToBackground();
+        } else if (app.isAppWentToBackground()) {
+            app.clearAppWentToBackground();
+
+            if (authenticated) {
+                authenticated = false;
+            } else if (passwordManager.isPasswordSet() && !lockShowing) {
+                lockShowing = true;
+                Intent intent = new Intent(this, PasswordActivity.class);
+                intent.putExtra(
+                        "requirePasswordOnFirstLaunch",
+                        false
+                );
+
+                intent.putExtra("usePasswordSkip", true);
+                intent.putExtra("return_to_caller", true);
+                startActivityForResult(intent, REQUEST_UNLOCK);
+                // finish() と return は削除（以降の処理は通常どおり実行）
+            }
+        }
         SharedPreferences setupprefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
         boolean rebootApp = setupprefs.getBoolean("rebootApp", false);
         if (rebootApp) {
@@ -2017,7 +2129,14 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
             updateConnectionStatus();
         }
         // バッテリー残量更新開始
-        registerReceiver(batteryReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        if (!batteryReceiverRegistered) {
+            registerReceiver(
+                    batteryReceiver,
+                    new IntentFilter(Intent.ACTION_BATTERY_CHANGED)
+            );
+
+            batteryReceiverRegistered = true;
+        }
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             // API 24 以上のときだけ実行する処理
             if (telephonyManager != null) {
@@ -2045,7 +2164,7 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
             bmbutton.setImageResource(R.drawable.bookmark_star);
         } else {
             bmbutton.setImageResource(R.drawable.bookmark_black);
-        } // 独自のリフレッシュ処理を呼ぶ
+        }
     }
 
     @Override
@@ -2104,7 +2223,7 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
         //MenuItem jsItem = menu.findItem(R.id.action_js);
         //if (jsItem != null) jsItem.setChecked(jsEnabled);
         return super.onPrepareOptionsMenu(menu);
-       }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -2149,18 +2268,18 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
         } else if (itemId == R.id.action_translate) {
             translatePageToJapanese();
             return true;
-        //} else if (itemId == R.id.action_js) {
-        //    if (item.isChecked()) {
-        //        disablejs();
-        //        jsEnabled = false;
-        //        Toast.makeText(MainActivity.this, "JavaScript無効", Toast.LENGTH_SHORT).show();
-        //    } else {
-        //        enablejs();
-        //        jsEnabled = true;
-        //        Toast.makeText(MainActivity.this, "JavaScript有効", Toast.LENGTH_SHORT).show();
-        //    }
-        //    item.setChecked(jsEnabled);
-        //    pref.edit().putBoolean(KEY_JS_ENABLED, jsEnabled).apply();
+            //} else if (itemId == R.id.action_js) {
+            //    if (item.isChecked()) {
+            //        disablejs();
+            //        jsEnabled = false;
+            //        Toast.makeText(MainActivity.this, "JavaScript無効", Toast.LENGTH_SHORT).show();
+            //    } else {
+            //        enablejs();
+            //        jsEnabled = true;
+            //        Toast.makeText(MainActivity.this, "JavaScript有効", Toast.LENGTH_SHORT).show();
+            //    }
+            //    item.setChecked(jsEnabled);
+            //    pref.edit().putBoolean(KEY_JS_ENABLED, jsEnabled).apply();
         } else if (itemId == R.id.action_settings) {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivityForResult(intent, 1001); // requestCode を指定
@@ -2171,6 +2290,14 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
     public void onRefresh() {
         WebView webView = getCurrentWebView();
         if (webView != null) webView.reload();
+    }
+
+    private int getPopupBottomOffset() {
+        View decor = getWindow().getDecorView();
+        int[] loc = new int[2];
+        bottomBar.getLocationInWindow(loc); // translationY も反映される
+        int offset = decor.getHeight() - loc[1];
+        return Math.max(0, offset); // bottomBar が隠れているときは 0
     }
 
     private void popupLight(View anchor) {
@@ -2189,7 +2316,7 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
         currentPopupWindow.setBackgroundDrawable(new ColorDrawable());
         currentPopupWindow.setOutsideTouchable(true);
         currentPopupWindow.setAnimationStyle(R.style.PopupAnimation);
-        currentPopupWindow.showAtLocation(anchor, Gravity.BOTTOM, 0, 0);
+        currentPopupWindow.showAtLocation(anchor, Gravity.BOTTOM, 0, getPopupBottomOffset());
 
         RecyclerView recycler = popupView.findViewById(R.id.popupRecycler);
 
@@ -2321,7 +2448,7 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
         currentPopupWindow.setBackgroundDrawable(new ColorDrawable());
         currentPopupWindow.setOutsideTouchable(true);
         currentPopupWindow.setAnimationStyle(R.style.PopupAnimation);
-        currentPopupWindow.showAtLocation(anchor, Gravity.BOTTOM, 0, 0);
+        currentPopupWindow.showAtLocation(anchor, Gravity.BOTTOM, 0, getPopupBottomOffset());
 
         RecyclerView recycler = popupView.findViewById(R.id.popupRecycler);
 
@@ -3072,7 +3199,7 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
                             urlhere.equals("file:///android_asset/index.html") ||
                                     urlhere.equals("file:///android_asset/index_white.html") ||
                                     urlhere.equals("file:///android_asset/help.html") ||
-                                            urlhere.equals("file:///android_asset/error.html")
+                                    urlhere.equals("file:///android_asset/error.html")
                     )) {
                         nohideurl = true;
                     } else {
@@ -3318,7 +3445,7 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
                             // パッケージ不明 → 検索にフォールバック
                             Uri marketUri = Uri.parse("market://search?q=" + Uri.parse(url).getScheme());
                             if (intentJump) {
-                            startActivity(new Intent(Intent.ACTION_VIEW, marketUri));
+                                startActivity(new Intent(Intent.ACTION_VIEW, marketUri));
                             }
                         }
                     }
@@ -3347,8 +3474,8 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
                     webViewContainer.startAnimation(anim);
                     webViewContainer.setVisibility(View.INVISIBLE);
                     new Handler().postDelayed(() -> {
-                    WebView webView = tabs.get(currentTabIndex);
-                    webView.goBack();
+                        WebView webView = tabs.get(currentTabIndex);
+                        webView.goBack();
                     }, 100);
                     new Handler().postDelayed(() -> {
                         String html = "<!DOCTYPE html>" +
@@ -3750,7 +3877,7 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
                 currentUrl.equals("file:///android_asset/index.html") ||
                         currentUrl.equals("file:///android_asset/help.html") ||
                         currentUrl.equals("file:///android_asset/index_white.html") ||
-                                currentUrl.equals("file:///android_asset/error.html")
+                        currentUrl.equals("file:///android_asset/error.html")
         )) {
             urlEditText.setText(""); // URLを非表示
             bmbutton.setVisibility(View.GONE);
@@ -4064,7 +4191,15 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 intent.setType("*/*");
 
-                startActivityForResult(Intent.createChooser(intent, "ファイルを選択"), FILE_CHOOSER_REQUEST_CODE);
+                MainActivity.this.skipLockOnce = true; // ← 追加
+                try {
+                    startActivityForResult(Intent.createChooser(intent, "ファイルを選択"), FILE_CHOOSER_REQUEST_CODE);
+                } catch (Exception e) {
+                    MainActivity.this.skipLockOnce = false; // 起動失敗時は戻す
+                    MainActivity.this.filePathCallback = null;
+                    filePathCallback.onReceiveValue(null);
+                    return false;
+                }
                 return true;
             }
             @Override
@@ -4375,7 +4510,7 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
                                                 copyLink(selectedUrl);
                                             }
                                         } else if (which == 2) {
-                                           downloadLink(selectedUrl);
+                                            downloadLink(selectedUrl);
                                         } else if (which == 3 && !isDataUrlLocal) {
                                             if (selectedUrl != null && !selectedUrl.isEmpty()) {
                                                 saveImage(selectedUrl);
@@ -4681,39 +4816,32 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
     private void switchToTab(int index) {
         if (index < 0 || index >= tabs.size()) return;
 
-        // ✅ 全てのWebViewを非表示に
+        WebView currentWebView = ensureTabLoaded(index);
+        if (currentWebView == null) return;
+
+        // ✅ 全てのWebViewを非表示に（破棄済みはスキップ）
         for (WebView webView : tabs) {
-            webView.setVisibility(View.GONE);
+            if (webView != null) webView.setVisibility(View.GONE);
         }
 
-        // ✅ 選択したタブを表示
-        WebView currentWebView = tabs.get(index);
         currentWebView.setVisibility(View.VISIBLE);
-        currentWebView.requestLayout(); // 再描画をリクエスト
-        currentWebView.invalidate(); // 画面を再描画
-        zoomButton.setOnZoomInClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                currentWebView.zoomBy(1.5f);
-            }
-        });
+        currentWebView.requestLayout();
+        currentWebView.invalidate();
 
-        zoomButton.setOnZoomOutClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                nohideurl = true;
-                currentWebView.zoomBy(0.5f);
-                new Handler().postDelayed(() -> {
-                    nohideurl = false;
-                }, 200);
-            }
+        currentTabIndex = index;
+        touchTabLru(index);
+
+        zoomButton.setOnZoomInClickListener(v -> currentWebView.zoomBy(1.5f));
+        zoomButton.setOnZoomOutClickListener(v -> {
+            nohideurl = true;
+            currentWebView.zoomBy(0.5f);
+            new Handler().postDelayed(() -> nohideurl = false, 200);
         });
 
         String url = currentWebView.getUrl();
+        if (url == null) url = "";
 
         ImageButton bmbutton = findViewById(R.id.action_bookmark);
-
-        // SQLiteOpenHelper 例: dbbm
         SQLiteDatabase db = dbbm.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM pages WHERE url = ?", new String[]{url});
 
@@ -4723,83 +4851,76 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
         }
         cursor.close();
 
-        if (isBookmarked) {
-            bmbutton.setImageResource(R.drawable.bookmark_star);
-        } else {
-            bmbutton.setImageResource(R.drawable.bookmark_black);
-        }
+        bmbutton.setImageResource(isBookmarked
+                ? R.drawable.bookmark_star
+                : R.drawable.bookmark_black);
 
-        // JavaScript を使用して Favicon を取得
-        currentWebView.evaluateJavascript("(function() { " +
-                "var link = document.querySelector('link[rel~=\"icon\"]');" +
-                "return link ? link.href : ''; " +
-                "})()", new ValueCallback<String>() {
-            @Override
-            public void onReceiveValue(String value) {
-                value = value.replace("\"", ""); // 取得した URL の " を削除
-                if (!value.isEmpty()) {
-                    new DownloadFaviconTask().execute(value);
-                } else {
-                    faviconImageView.setImageResource(R.drawable.transparent_vector); // デフォルトアイコン
-                }
-            }
-        });
+        currentWebView.evaluateJavascript(
+                "(function() { " +
+                        "var link = document.querySelector('link[rel~=\"icon\"]');" +
+                        "return link ? link.href : ''; " +
+                        "})()",
+                value -> {
+                    value = value.replace("\"", "");
+                    if (!value.isEmpty()) {
+                        new DownloadFaviconTask().execute(value);
+                    } else {
+                        faviconImageView.setImageResource(R.drawable.transparent_vector);
+                    }
+                });
 
-        currentTabIndex = index;
         urlEditText.setText(currentWebView.getUrl());
         updateUrlBar(currentWebView);
         updateNavigationButtons();
-        // 🔹 タブ復元時にタイトルが `null` の場合、強制的に取得
-        if (tabInfos.get(index).getTitle().equals("読込中...")) {
-            tabInfos.get(index).setTitle(currentWebView.getTitle());
+
+        if (index < tabInfos.size() && "読込中...".equals(tabInfos.get(index).getTitle())) {
+            String title = currentWebView.getTitle();
+            tabInfos.get(index).setTitle(title);
             if (tabListAdapter != null) {
                 tabListAdapter.notifyDataSetChanged();
             }
         }
-        updateNavigationButtons();
+
         showUrlBar();
-        WebView webtitle = tabs.get(currentTabIndex);
-        String pageUrl = webtitle.getUrl();
+
+        String pageUrl = currentWebView.getUrl();
         if (pageUrl.equals("file:///android_asset/index.html") ||
                 pageUrl.equals("file:///android_asset/index_white.html")) {
             sitename.setText("Aozora");
         } else {
-            String pageTitle = webtitle.getTitle();
+            String pageTitle = currentWebView.getTitle();
             sitename.setText(pageTitle);
         }
         if (pageUrl != null && (
                 pageUrl.equals("file:///android_asset/index.html") ||
                         pageUrl.equals("file:///android_asset/help.html") ||
                         pageUrl.equals("file:///android_asset/index_white.html") ||
-                                pageUrl.equals("file:///android_asset/error.html")
+                        pageUrl.equals("file:///android_asset/error.html")
         )) {
             nohideurl = true;
         } else {
             nohideurl = false;
         }
+
         saveTabsState();
 
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                WebView webView = tabs.get(currentTabIndex);
-                // updateUrlBar(webView);
-                // JavaScript を使用して Favicon を取得
-                webView.evaluateJavascript("(function() { " +
-                        "var link = document.querySelector('link[rel~=\"icon\"]');" +
-                        "return link ? link.href : ''; " +
-                        "})()", new ValueCallback<String>() {
-                    @Override
-                    public void onReceiveValue(String value) {
-                        value = value.replace("\"", ""); // 取得した URL の " を削除
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            WebView webView = getCurrentWebView();
+            if (webView == null) return;
+
+            webView.evaluateJavascript(
+                    "(function() { " +
+                            "var link = document.querySelector('link[rel~=\"icon\"]');" +
+                            "return link ? link.href : ''; " +
+                            "})()",
+                    value -> {
+                        value = value.replace("\"", "");
                         if (!value.isEmpty()) {
                             new DownloadFaviconTask().execute(value);
                         } else {
-                            faviconImageView.setImageResource(R.drawable.transparent_vector); // デフォルトアイコン
+                            faviconImageView.setImageResource(R.drawable.transparent_vector);
                         }
-                    }
-                });
-            }
+                    });
         }, 2500);
     }
 
@@ -4821,45 +4942,48 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
         if (index < 0 || index >= tabs.size()) return;
 
         WebView webView = tabs.remove(index);
+        int closedId = tabIds.remove(index);
+
         tabSnapshots.remove(webView);
         tabInfos.remove(index);
-        webViewContainer.removeView(webView); // 🔹 WebView を削除
+        webViewContainer.removeView(webView);
+
+        if (webView != null) {
+            android.view.animation.Animation fadeOut =
+                    android.view.animation.AnimationUtils.loadAnimation(this, R.anim.tab_out);
+            webView.startAnimation(fadeOut);
+            webView.stopLoading();
+            webView.onPause();
+            webView.destroy();
+            originalUserAgents.remove(webView);
+            webViewFavicons.remove(webView);
+        }
+
+        new File(getFilesDir(), "tab_state_" + closedId + ".dat").delete();
+        new File(getFilesDir(), "tab_snapshot_" + closedId + ".png").delete();
+
+        tabLru.remove((Integer) index);
+        for (int i = 0; i < tabLru.size(); i++) {
+            int v = tabLru.get(i);
+            if (v > index) tabLru.set(i, v - 1);
+        }
 
         if (tabs.isEmpty()) {
+            currentTabIndex = -1;
             newStartPage();
         } else {
-            currentTabIndex = Math.max(0, currentTabIndex - 1);
+            if (currentTabIndex > index) {
+                currentTabIndex--;
+            } else if (currentTabIndex >= tabs.size()) {
+                currentTabIndex = tabs.size() - 1;
+            }
         }
 
-        android.view.animation.Animation fadeIn =
-                android.view.animation.AnimationUtils.loadAnimation(this, R.anim.tab_out);
-        webView.startAnimation(fadeIn);
+        if (listAdapter != null) listAdapter.notifyDataSetChanged();
 
-        String url = webView.getUrl();
-
-        ImageButton bmbutton = findViewById(R.id.action_bookmark);
-
-        // SQLiteOpenHelper 例: dbbm
-        SQLiteDatabase db = dbbm.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM pages WHERE url = ?", new String[]{url});
-
-        boolean isBookmarked = false;
-        if (cursor.moveToFirst()) {
-            isBookmarked = cursor.getInt(0) > 0;
+        if (!tabs.isEmpty()) {
+            switchToTab(currentTabIndex);
         }
-        cursor.close();
-
-        if (isBookmarked) {
-            bmbutton.setImageResource(R.drawable.bookmark_star);
-        } else {
-            bmbutton.setImageResource(R.drawable.bookmark_black);
-        }
-        if (listAdapter != null) {
-            listAdapter.notifyDataSetChanged(); // ← 全ページ再描画（シンプルに）
-            // もしページ単位で削除通知するなら：
-            // listAdapter.notifyItemRemoved(index / 4);
-        }
-        switchToTab(currentTabIndex);
         updateTabCount();
     }
 
@@ -5140,6 +5264,12 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_UNLOCK) {
+            lockShowing = false;
+            if (resultCode != RESULT_OK) finishAffinity();
+            super.onActivityResult(requestCode, resultCode, data);
+            return;
+        }
         if (requestCode == REQUEST_HISTORY && resultCode == RESULT_OK && data != null) {
             // URLが返ってきた場合 → そのままWebViewで開く
             String url = data.getStringExtra("selected_url");
@@ -5451,25 +5581,44 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
     }
 
     private void closeAllTabs() {
-        if (!tabInfos.isEmpty()) {
-            tabInfos.clear();
-            tabs.clear();
-            currentTabIndex = -1;
-            tabSnapshots.clear();
-            webViewContainer.removeView(webView);
-
-            // UI更新を確実に反映した後、新規タブを追加
-            new Handler(Looper.getMainLooper()).post(() -> {
-                newStartPage();
-                Toast.makeText(this, "すべてのタブを閉じました", Toast.LENGTH_SHORT).show();
-                if (dialog != null && dialog.isShowing()) {
-                    dialog.dismiss();
-                }
-            });
-
-        } else {
+        if (tabs.isEmpty()) {
             Toast.makeText(this, "タブがありません", Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        tabUnloadHandler.removeCallbacks(tabUnloadRunnable);
+
+        for (WebView wv : tabs) {
+            if (wv != null) {
+                try {
+                    webViewContainer.removeView(wv);
+                    wv.stopLoading();
+                    wv.onPause();
+                    wv.destroy();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        tabs.clear();
+        tabIds.clear();
+        tabLru.clear();
+        tabInfos.clear();
+        tabSnapshots.clear();
+        webViewFavicons.clear();
+        originalUserAgents.clear();
+        currentTabIndex = -1;
+
+        webViewContainer.removeAllViews();
+
+        new Handler(Looper.getMainLooper()).post(() -> {
+            newStartPage();
+            Toast.makeText(this, "すべてのタブを閉じました", Toast.LENGTH_SHORT).show();
+            if (dialog != null && dialog.isShowing()) {
+                dialog.dismiss();
+            }
+        });
     }
 
     public void onTabClose(int position) {
@@ -5505,10 +5654,13 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
     private void addNewTab(String url) {
         isNewTab = true;
         int newId = nextTabId++;
+
         WebView webView = createWebView(newId);
+        webView.setTag(newId);
         webView.loadUrl(url);
 
         tabs.add(webView);
+        tabIds.add(newId);
 
         // ✅ タブ情報を必ず追加
         if (tabInfos.size() < tabs.size()) {
@@ -5523,71 +5675,56 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
         webView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             @Override
             public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if (nohideurl) return; // 読み込み中は隠さない
+                if (nohideurl) return;
 
                 if (scrollY > lastScrollY + 30) {
-                    // ↓ 下スクロール → URLバー隠す
                     checkHideUrlBar();
                 } else if (scrollY < lastScrollY - 30) {
-                    // ↑ 上スクロール → URLバー再表示
                     showUrlBar();
                 }
                 lastScrollY = scrollY;
             }
         });
-        zoomButton.setOnZoomInClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                webView.zoomBy(1.5f);
-            }
+
+        zoomButton.setOnZoomInClickListener(v -> webView.zoomBy(1.5f));
+        zoomButton.setOnZoomOutClickListener(v -> {
+            nohideurl = true;
+            webView.zoomBy(0.5f);
+            new Handler().postDelayed(() -> nohideurl = false, 200);
         });
 
-        zoomButton.setOnZoomOutClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                nohideurl = true;
-                webView.zoomBy(0.5f);
-                new Handler().postDelayed(() -> {
-                    nohideurl = false;
-                }, 200);
-            }
-        });
         switchToTab(tabs.size() - 1);
         updateTabCount();
-        new Handler().postDelayed(() -> {
-            isNewTab = false;
-        }, 500);
+        new Handler().postDelayed(() -> isNewTab = false, 500);
     }
 
     // ✅ タブ状態の保存
+    // ✅ タブ状態の保存
     private void saveTabsState() {
         JSONArray tabsArray = new JSONArray();
-        for (int i = 0; i < tabs.size(); i++) {
-            WebView webView = tabs.get(i);
-            int id = (int) webView.getTag();
-            String url = webView.getUrl();
-            if (url == null) url = "";
-            JSONObject obj = new JSONObject();
-            try {
-                obj.put("id", id);
-                obj.put("url", url);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            tabsArray.put(obj);
 
-            // ✅ WebViewの状態を保存
-            Bundle state = new Bundle();
-            webView.saveState(state);
-            saveBundleToFile(state, "tab_state_" + id + ".dat");
-            if (tabSnapshots.containsKey(webView)) {
+        for (int i = 0; i < tabs.size(); i++) {
+            int id = tabIds.get(i);
+            WebView webView = tabs.get(i);
+            String url = "";
+
+            if (webView != null) {
+                url = webView.getUrl();
+                if (url == null) url = "";
+
+                Bundle state = new Bundle();
+                webView.saveState(state);
+                saveBundleToFile(state, "tab_state_" + id + ".dat");
+
                 Bitmap snap = tabSnapshots.get(webView);
                 if (snap != null) {
                     final int finalIdForSnap = id;
                     final Bitmap finalSnap = snap;
                     backgroundExecutor.execute(() -> {
                         try {
-                            File outFile = new File(getFilesDir(), "tab_snapshot_" + finalIdForSnap + ".png");
+                            File outFile = new File(
+                                    getFilesDir(),
+                                    "tab_snapshot_" + finalIdForSnap + ".png");
                             try (FileOutputStream fos = new FileOutputStream(outFile)) {
                                 finalSnap.compress(Bitmap.CompressFormat.PNG, 80, fos);
                                 fos.flush();
@@ -5597,15 +5734,36 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
                         }
                     });
                 }
+            } else {
+                // 破棄済みタブは state ファイルが unloadTab() で保存済み。
+                TabInfo info = (i < tabInfos.size()) ? tabInfos.get(i) : null;
+                if (info != null && info.getUrl() != null) {
+                    url = info.getUrl();
+                }
             }
+
+            JSONObject obj = new JSONObject();
+            try {
+                obj.put("id", id);
+                obj.put("url", url);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            tabsArray.put(obj);
         }
-        int currentTabId = (int) getCurrentWebView().getTag();
+
+        if (tabIds.isEmpty()) return;
+
+        int currentIndex = Math.max(0, Math.min(currentTabIndex, tabIds.size() - 1));
+        int currentTabId = tabIds.get(currentIndex);
+
         prefs.edit()
                 .putString(KEY_TABS, tabsArray.toString())
                 .putInt(KEY_CURRENT_TAB_ID, currentTabId)
                 .apply();
     }
 
+    // ✅ タブ状態の読み込み
     // ✅ タブ状態の読み込み
     private void loadTabsState() {
         loadTabnoHideurl = true;
@@ -5614,124 +5772,259 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
 
         try {
             JSONArray array = new JSONArray(json);
+
             tabs.clear();
+            tabIds.clear();
             tabInfos.clear();
+            tabLru.clear();
             webViewContainer.removeAllViews();
-            int maxId = 0;
+
+            int maxId = -1;
 
             for (int i = 0; i < array.length(); i++) {
                 JSONObject obj = array.getJSONObject(i);
                 int id = obj.getInt("id");
                 String url = obj.getString("url");
 
+                tabIds.add(id);
+                tabInfos.add(new TabInfo("読込中...", url, null));
+
                 File snapFile = new File(getFilesDir(), "tab_snapshot_" + id + ".png");
                 if (snapFile.exists()) {
                     try {
                         Bitmap bm = BitmapFactory.decodeFile(snapFile.getAbsolutePath());
                         if (bm != null) {
-                            WebView webView = tabs.get(i);
-                            tabSnapshots.put(webView, bm);
+                            // WebViewがまだ存在しないため、ロード後に必要に応じて関連付ける。
+                            // 既存のスナップショットファイルはそのまま保持する。
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
 
+                // 起動時は既存挙動を保つため各タブを一度生成し、復元後にLRU解放する。
                 WebView webView = createWebView(id);
                 webView.setTag(id);
-                if (id > maxId) maxId = id;
                 tabs.add(webView);
-                tabInfos.add(new TabInfo("読込中...", url, null)); // ✅ タブ情報を追加
                 webViewContainer.addView(webView);
+                webView.setVisibility(View.GONE);
+
                 webView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
                     @Override
                     public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                        if (nohideurl) return; // 読み込み中は隠さない
+                        if (nohideurl) return;
 
                         if (scrollY > lastScrollY + 30) {
-                            // ↓ 下スクロール → URLバー隠す
                             checkHideUrlBar();
                         } else if (scrollY < lastScrollY - 30) {
-                            // ↑ 上スクロール → URLバー再表示
                             showUrlBar();
                         }
                         lastScrollY = scrollY;
                     }
                 });
-                zoomButton.setOnZoomInClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        webView.zoomBy(1.5f);
-                    }
+
+                zoomButton.setOnZoomInClickListener(v -> webView.zoomBy(1.5f));
+                zoomButton.setOnZoomOutClickListener(v -> {
+                    nohideurl = true;
+                    webView.zoomBy(0.5f);
+                    new Handler().postDelayed(() -> nohideurl = false, 200);
                 });
 
-                zoomButton.setOnZoomOutClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        nohideurl = true;
-                        webView.zoomBy(0.5f);
-                        new Handler().postDelayed(() -> {
-                            nohideurl = false;
-                        }, 200);
-                    }
-                });
                 Bundle state = loadBundleFromFile("tab_state_" + id + ".dat");
                 if (state != null) {
                     webView.restoreState(state);
-                } else {
+                } else if (url != null && !url.isEmpty()) {
                     webView.loadUrl(url);
                 }
+
+                if (id > maxId) maxId = id;
+                tabLru.addLast(i);
             }
+
             nextTabId = maxId + 1;
 
             if (tabs.isEmpty()) {
-                newStartPage(); // ✅ タブがない場合、初期タブを作成
-            } else {
-                boolean found = false;
-                for (int i = 0; i < tabs.size(); i++) {
-                    if ((int) tabs.get(i).getTag() == currentTabId) {
-                        currentTabIndex = i;
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found) currentTabIndex = 0;
+                newStartPage();
+                return;
             }
+
+            currentTabIndex = 0;
+            for (int i = 0; i < tabIds.size(); i++) {
+                if (tabIds.get(i) == currentTabId) {
+                    currentTabIndex = i;
+                    break;
+                }
+            }
+
+            // 現在タブをMRU先頭に移動。
+            touchTabLru(currentTabIndex);
+
             new Handler().postDelayed(() -> {
                 switchToTab(currentTabIndex);
             }, 1000);
-            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    WebView webView = tabs.get(currentTabIndex);
-                    //updateUrlBar(webView);
-                    // JavaScript を使用して Favicon を取得
-                    webView.evaluateJavascript("(function() { " +
-                            "var link = document.querySelector('link[rel~=\"icon\"]');" +
-                            "return link ? link.href : ''; " +
-                            "})()", new ValueCallback<String>() {
-                        @Override
-                        public void onReceiveValue(String value) {
-                            value = value.replace("\"", ""); // 取得した URL の " を削除
+
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                WebView current = getCurrentWebView();
+                if (current == null) return;
+
+                current.evaluateJavascript(
+                        "(function() { " +
+                                "var link = document.querySelector('link[rel~=\"icon\"]');" +
+                                "return link ? link.href : ''; " +
+                                "})()",
+                        value -> {
+                            value = value.replace("\"", "");
                             if (!value.isEmpty()) {
                                 new DownloadFaviconTask().execute(value);
                             } else {
-                                faviconImageView.setImageResource(R.drawable.transparent_vector); // デフォルトアイコン
+                                faviconImageView.setImageResource(R.drawable.transparent_vector);
                             }
-                        }
-                    });
-                    loadTabnoHideurl = false;
-                }
+                        });
+                loadTabnoHideurl = false;
             }, 2500);
 
         } catch (JSONException e) {
             e.printStackTrace();
-            newStartPage(); // ✅ JSONエラー時も初期タブを作成
+            newStartPage();
         }
     }
 
     private WebView getCurrentWebView() {
-        return tabs.get(currentTabIndex);
+        if (currentTabIndex < 0 || currentTabIndex >= tabs.size()) return null;
+        return ensureTabLoaded(currentTabIndex);
+    }
+
+    /** 破棄済みのタブなら復元して WebView を返す。ロード済みならそのまま返す。 */
+    private WebView ensureTabLoaded(int index) {
+        if (index < 0 || index >= tabs.size()) return null;
+
+        WebView wv = tabs.get(index);
+        if (wv != null) return wv;
+
+        int id = tabIds.get(index);
+        WebView newWebView = createWebView(id);
+        newWebView.setTag(id);
+
+        Bundle state = loadBundleFromFile("tab_state_" + id + ".dat");
+        if (state != null) {
+            newWebView.restoreState(state);
+        } else {
+            TabInfo info = (index < tabInfos.size()) ? tabInfos.get(index) : null;
+            String url = (info != null && info.getUrl() != null)
+                    ? info.getUrl()
+                    : "file:///android_asset/index.html";
+            newWebView.loadUrl(url);
+        }
+
+        webViewContainer.addView(newWebView);
+        newWebView.setVisibility(View.GONE);
+
+        newWebView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (nohideurl) return;
+
+                if (scrollY > lastScrollY + 30) {
+                    checkHideUrlBar();
+                } else if (scrollY < lastScrollY - 30) {
+                    showUrlBar();
+                }
+                lastScrollY = scrollY;
+            }
+        });
+
+        tabs.set(index, newWebView);
+        return newWebView;
+    }
+
+    /** バックグラウンドタブのWebView実体だけを破棄してメモリを解放する。 */
+    private void unloadTab(int index) {
+        if (index < 0 || index >= tabs.size()) return;
+        if (index == currentTabIndex) return;
+
+        WebView wv = tabs.get(index);
+        if (wv == null) return;
+
+        int id = tabIds.get(index);
+
+        try {
+            Bundle state = new Bundle();
+            wv.saveState(state);
+            saveBundleToFile(state, "tab_state_" + id + ".dat");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Bitmap snap = tabSnapshots.get(wv);
+        if (snap != null) {
+            final Bitmap finalSnap = snap;
+            backgroundExecutor.execute(() -> {
+                try {
+                    File outFile = new File(getFilesDir(), "tab_snapshot_" + id + ".png");
+                    try (FileOutputStream fos = new FileOutputStream(outFile)) {
+                        finalSnap.compress(Bitmap.CompressFormat.PNG, 80, fos);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+
+        webViewContainer.removeView(wv);
+        wv.stopLoading();
+        wv.onPause();
+        wv.destroy();
+
+        originalUserAgents.remove(wv);
+        webViewFavicons.remove(wv);
+        tabSnapshots.remove(wv);
+        tabs.set(index, null);
+    }
+
+    /** LRUを更新し、一定時間後に冷えたタブを解放する。 */
+    private void touchTabLru(int index) {
+        if (index < 0 || index >= tabs.size()) return;
+
+        tabLru.remove((Integer) index);
+        tabLru.addFirst(index);
+
+        tabUnloadHandler.removeCallbacks(tabUnloadRunnable);
+        tabUnloadHandler.postDelayed(tabUnloadRunnable, TAB_UNLOAD_DELAY_MS);
+    }
+
+    private void unloadColdTabs() {
+        java.util.Set<Integer> keep = new java.util.HashSet<>();
+        if (currentTabIndex >= 0 && currentTabIndex < tabs.size()) {
+            keep.add(currentTabIndex);
+        }
+
+        for (int idx : tabLru) {
+            if (idx < 0 || idx >= tabs.size()) continue;
+            if (tabs.get(idx) == null) continue;
+            if (keep.size() >= MAX_LOADED_TABS) break;
+            keep.add(idx);
+        }
+
+        for (int i = 0; i < tabs.size(); i++) {
+            if (!keep.contains(i)) {
+                unloadTab(i);
+            }
+        }
+    }
+
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+
+        if (level >= android.content.ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN) {
+            for (int i = 0; i < tabs.size(); i++) {
+                if (i != currentTabIndex) {
+                    unloadTab(i);
+                }
+            }
+        } else if (level >= android.content.ComponentCallbacks2.TRIM_MEMORY_RUNNING_LOW) {
+            unloadColdTabs();
+        }
     }
 
     // ✅ WebViewの状態をファイルに保存
@@ -5911,7 +6204,14 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
             }
         }
         // バッテリー残量更新停止
-        unregisterReceiver(batteryReceiver);
+        if (batteryReceiverRegistered) {
+            try {
+                unregisterReceiver(batteryReceiver);
+            } catch (IllegalArgumentException e) {
+                // すでに解除されていた場合
+            }
+            batteryReceiverRegistered = false;
+        }
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             if (telephonyManager != null) {
                 telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE);
@@ -5921,6 +6221,13 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
         // 戻ってきたときに実行したい処理
         saveTabsState();
         webView.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        //wentToBackground = true;
     }
 
     @Override
