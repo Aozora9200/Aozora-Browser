@@ -56,7 +56,10 @@
         </intent>
     </queries>
 
+    <!-- android:launchMode="singleTop" -->
+
     <application
+        android:name=".AozoraApplication_Kansi"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:theme="@style/Theme.AozoraBrowser"
@@ -70,6 +73,7 @@
         tools:targetApi="31">
         <activity
             android:name=".MainActivity"
+            android:launchMode="singleTop"
             android:exported="true"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="stateHidden|adjustNothing"
@@ -276,6 +280,7 @@
         <activity
             android:name=".SecretActivity"
             android:label="@string/secretmode"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.AozoraBrowser"
             android:windowSoftInputMode="stateHidden|adjustNothing"
             android:configChanges="orientation|screenSize"/>
@@ -412,6 +417,43 @@
             android:name=".BootingMOV"
             android:exported="true"
             android:theme="@style/Theme.AozoraBrowser"/>
+
+        <activity
+            android:name=".LockSettingsActivity"
+            android:launchMode="singleTop"
+            android:exported="false"
+            android:theme="@style/Theme.AozoraBrowser"/>
+
+        <activity
+            android:name=".PasswordSettingActivity"
+            android:launchMode="singleTop"
+            android:exported="false"
+            android:theme="@style/Theme.AozoraBrowser"/>
+
+        <activity
+            android:name=".PinSettingActivity"
+            android:launchMode="singleTop"
+            android:exported="false"
+            android:theme="@style/Theme.AozoraBrowser"/>
+
+        <activity
+            android:name=".PasswordActivity"
+            android:launchMode="singleTop"
+            android:exported="false"
+            android:theme="@style/Theme.AozoraBrowser"/>
+
+        <activity
+            android:name=".Cant_Use_Aozora_Activity"
+            android:launchMode="singleTop"
+            android:exported="false"
+            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"/>
+
+        <activity
+            android:name=".BatteryCapacity"
+            android:launchMode="singleTop"
+            android:icon="@drawable/ic_battery"
+            android:exported="false"
+            android:theme="@style/BatteryCapacity.Holo"/>
         
     </application>
 
