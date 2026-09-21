@@ -14,8 +14,8 @@ android {
         applicationId = "com.aozora.aozora"
         minSdk = 24
         targetSdk = 34
-        versionCode = 7
-        versionName = "3.1.2"
+        versionCode = 9
+        versionName = "3.2.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -50,8 +50,10 @@ dependencies {
     implementation ("androidx.startup:startup-runtime:1.2.0")
     implementation ("androidx.emoji2:emoji2:1.5.0")
     implementation ("androidx.profileinstaller:profileinstaller:1.4.1")
+    implementation("androidx.cardview:cardview:1.0.0")
     implementation ("net.lingala.zip4j:zip4j:2.11.5")
     implementation ("com.airbnb.android:lottie:6.0.0")
+    implementation("app.rive:rive-android:9.13.9")
     implementation(libs.dagger)
     implementation(libs.dagger.compiler)
     implementation(libs.hilt.core)
