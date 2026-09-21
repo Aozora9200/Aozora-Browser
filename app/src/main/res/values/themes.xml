@@ -15,4 +15,8 @@
         <item name="android:windowEnterAnimation">@anim/slide_in_up</item>
         <item name="android:windowExitAnimation">@anim/slide_out_down</item>
     </style>
+    <style name="Theme.Aozora.Setup" parent="android:Theme.Holo.NoActionBar">
+        <item name="android:windowBackground">@color/setup_window_bg</item>
+        <item name="android:colorBackground">@color/setup_window_bg</item>
+    </style>
 </resources>

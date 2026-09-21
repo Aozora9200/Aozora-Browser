@@ -14,4 +14,34 @@
     <color name="backgroundBlack">#99000000</color>
     <color name="tabactionbarwhite">#cccccc</color>
     <color name="tabactionbarblack">#333333</color>
+    <color name="bg_root">#F2F4F7</color>
+    <color name="header_start">#2D6CDF</color>
+    <color name="header_end">#5B8DEF</color>
+    <color name="card_bg">#FFFFFF</color>
+    <color name="text_primary">#1B1F27</color>
+    <color name="text_secondary">#6B7280</color>
+    <color name="text_on_header">#FFFFFF</color>
+    <color name="accent">#2D6CDF</color>
+    <color name="health_good">#2E9E5B</color>
+    <color name="health_warn">#E0A82E</color>
+    <color name="health_bad">#D64545</color>
+    <color name="button_bg">#2D6CDF</color>
+    <color name="setup_primary">#ADC6FF</color>
+    <color name="setup_primary_pressed">#96B3F2</color>
+    <color name="setup_on_primary">#002E69</color>
+    <color name="setup_primary_container">#004494</color>
+    <color name="setup_secondary_container">#3F4759</color>
+    <color name="setup_secondary_container_pressed">#4B5468</color>
+    <color name="setup_on_secondary_container">#DBE2F9</color>
+    <color name="setup_card">#292A2F</color>
+    <color name="setup_card_highest">#34343A</color>
+    <color name="setup_on_card">#E3E2E9</color>
+    <color name="setup_on_card_variant">#C4C6D0</color>
+    <color name="setup_outline">#8E9099</color>
+    <color name="setup_track">#44474F</color>
+    <!--  背景写真（＋スクリム）の上に直接置く文字・ドット  -->
+    <color name="setup_on_scrim">#FFFFFF</color>
+    <color name="setup_on_scrim_variant">#D9DEEA</color>
+    <color name="setup_dot_inactive">#66FFFFFF</color>
+    <color name="setup_window_bg">#121318</color>
 </resources>
