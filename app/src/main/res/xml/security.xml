@@ -8,6 +8,16 @@
         android:title="プライバシーとセキュリティ">
 
         <Preference
+            android:key="password"
+            android:title="パスワードの設定"
+            android:summary="パスワードを設定し、起動時に入力を求めるようにできます"/>
+
+        <CheckBoxPreference
+            android:key="secretSecurity"
+            android:title="プレビューを非表示"
+            android:summary="外部ディスプレイやタスク一覧から、アプリの内容が閲覧できないように遮断します"/>
+
+        <Preference
             android:key="delcache"
             android:title="キャッシュを消去"
             android:summary="ローカルにキャッシュしたコンテンツとデータベースを消去する"/>

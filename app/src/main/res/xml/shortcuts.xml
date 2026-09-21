@@ -34,12 +34,12 @@
     </shortcut>
     <shortcut
         android:shortcutId="qrcode_convert"
-        android:icon="@drawable/camera"
-        android:shortcutShortLabel="@string/qrcode_short_label"
-        android:shortcutLongLabel="@string/scanqrcode">
+        android:icon="@drawable/files"
+        android:shortcutShortLabel="@string/filemanager"
+        android:shortcutLongLabel="@string/filemanager_long">
         <intent
             android:action="android.intent.action.VIEW"
             android:targetPackage="com.aozora.aozora"
-            android:targetClass="com.aozora.aozora.QrCameraActivity"/>
+            android:targetClass="com.aozora.aozora.FileManager"/>
     </shortcut>
 </shortcuts>
