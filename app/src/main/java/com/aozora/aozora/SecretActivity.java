@@ -2615,7 +2615,7 @@ public class SecretActivity extends Activity {
     public void load(String url) {
         tabs.get(currentTabIndex).loadUrl(url);
         tabInfos.get(currentTabIndex).setUrl(url);
-        
+
     }
 
     private void applyOptimizedSettings(WebSettings settings) {
@@ -3721,7 +3721,7 @@ public class SecretActivity extends Activity {
                 if (tabListAdapter != null) {
                     tabListAdapter.notifyDataSetChanged();
                 }
-                 // ✅ タイトル更新時に保存
+                // ✅ タイトル更新時に保存
             }
             @Override
             public void onReceivedIcon(WebView view, Bitmap icon) {
@@ -4407,7 +4407,7 @@ public class SecretActivity extends Activity {
         } else {
             nohideurl = false;
         }
-        
+
 
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
@@ -4930,31 +4930,15 @@ public class SecretActivity extends Activity {
 
     private void captureTabSnapshot(WebView webView) {
         if (webView == null) return;
-        Object tag = webView.getTag();
-        int id = -1;
-        if (tag instanceof Integer) id = (Integer) tag;
         int width = webView.getWidth();
         int height = webView.getHeight();
         if (width <= 0 || height <= 0) return;
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         webView.draw(canvas);
+        // シークレットのサムネイルはメモリ上にのみ保持し、ディスクには保存しない。
+        // (以前は通常タブと同じ tab_snapshot_<id>.png に書いており、ID衝突で通常タブの画像を上書きしていた)
         tabSnapshots.put(webView, bitmap);
-        if (id != -1) {
-            final int finalId = id;
-            final Bitmap finalBitmap = bitmap;
-            backgroundExecutor.execute(() -> {
-                try {
-                    File outFile = new File(getFilesDir(), "tab_snapshot_" + finalId + ".png");
-                    try (FileOutputStream fos = new FileOutputStream(outFile)) {
-                        finalBitmap.compress(Bitmap.CompressFormat.PNG, 80, fos);
-                        fos.flush();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
-        }
     }
 
     private void showTabMenu() {
@@ -5021,7 +5005,7 @@ public class SecretActivity extends Activity {
         }
         tabs.get(currentTabIndex).loadUrl(url);
         tabInfos.get(currentTabIndex).setUrl(url);
-        
+
     }
 
     private void closeKeyboard() {
@@ -5275,7 +5259,7 @@ public class SecretActivity extends Activity {
         }
         WebView webView = tabs.get(currentTabIndex);
         // 戻ってきたときに実行したい処理
-        
+
         webView.onPause();
     }
 
@@ -5309,7 +5293,7 @@ public class SecretActivity extends Activity {
                     webView.startAnimation(fadeIn);
                     closeTab(currentTabIndex);
                     WebView webViews = tabs.get(currentTabIndex);
-                    
+
                     webViews.onPause();
                     // 戻ってきたときに実行したい処理
                     String url = webViews.getUrl();

@@ -4959,8 +4959,7 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
             webViewFavicons.remove(webView);
         }
 
-        new File(getFilesDir(), "tab_state_" + closedId + ".dat").delete();
-        new File(getFilesDir(), "tab_snapshot_" + closedId + ".png").delete();
+        deleteTabFiles(closedId);
 
         tabLru.remove((Integer) index);
         for (int i = 0; i < tabLru.size(); i++) {
@@ -5505,6 +5504,9 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
         if (w <= 0 || h <= 0) {
             return;
         }
+        Object tag = webView.getTag();
+        final int id = (tag instanceof Integer) ? (Integer) tag : -1;
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             final Bitmap bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
             Handler handler = new Handler(Looper.getMainLooper());
@@ -5513,24 +5515,7 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
                 public void onPixelCopyFinished(int copyResult) {
                     if (copyResult == PixelCopy.SUCCESS) {
                         tabSnapshots.put(webView, bmp);
-                        Object tag = webView.getTag();
-                        int id = -1;
-                        if (tag instanceof Integer) id = (Integer) tag;
-                        if (id != -1) {
-                            final int finalId = id;
-                            final Bitmap finalBitmap = bmp;
-                            backgroundExecutor.execute(() -> {
-                                try {
-                                    File outFile = new File(getFilesDir(), "tab_snapshot_" + finalId + ".png");
-                                    try (FileOutputStream fos = new FileOutputStream(outFile)) {
-                                        finalBitmap.compress(Bitmap.CompressFormat.PNG, 80, fos);
-                                        fos.flush();
-                                    }
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            });
-                        }
+                        saveSnapshotFileAsync(id, bmp);
                     }
                 }
             }, handler);
@@ -5539,30 +5524,46 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
             Canvas canvas = new Canvas(bmp);
             root.draw(canvas);
             tabSnapshots.put(webView, bmp);
-            Object tag = webView.getTag();
-            int id = -1;
-            if (tag instanceof Integer) id = (Integer) tag;
-            if (id != -1) {
-                final int finalId = id;
-                final Bitmap finalBitmap = bmp;
-                backgroundExecutor.execute(() -> {
-                    try {
-                        File outFile = new File(getFilesDir(), "tab_snapshot_" + finalId + ".png");
-                        try (FileOutputStream fos = new FileOutputStream(outFile)) {
-                            finalBitmap.compress(Bitmap.CompressFormat.PNG, 80, fos);
-                            fos.flush();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
-            }
+            saveSnapshotFileAsync(id, bmp);
         }
+    }
+
+    /**
+     * サムネイルを tab_snapshot_<id>.png として保存する(再起動後も残す)。
+     * 一時ファイルに書いてから rename するので、読み込み側が書きかけを掴んだり、
+     * 同じIDへの同時書き込みで壊れたりしない。
+     */
+    private void saveSnapshotFileAsync(final int id, final Bitmap bmp) {
+        if (id < 0 || bmp == null) return;
+        backgroundExecutor.execute(() -> {
+            File tmp = new File(getFilesDir(),
+                    "tab_snapshot_" + id + "." + System.nanoTime() + ".tmp");
+            try {
+                try (FileOutputStream fos = new FileOutputStream(tmp)) {
+                    bmp.compress(Bitmap.CompressFormat.PNG, 80, fos);
+                    fos.flush();
+                }
+                File dest = new File(getFilesDir(), "tab_snapshot_" + id + ".png");
+                if (!tmp.renameTo(dest)) {
+                    tmp.delete();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                tmp.delete();
+            }
+        });
+    }
+
+    private void deleteTabFiles(int id) {
+        new File(getFilesDir(), "tab_state_" + id + ".dat").delete();
+        new File(getFilesDir(), "tab_snapshot_" + id + ".png").delete();
     }
 
     private void showTabMenu() {
         // タブ情報をシングルトンに保存
         TabManager.getInstance().setTabs(tabs, tabSnapshots, webViewContainer);
+        // 破棄済み(null)タブのタイトル表示と、再起動後のサムネイル読み込み用
+        TabManager.getInstance().setTabMeta(tabIds, tabInfos);
 
         Intent intent = new Intent(this, TabListActivity.class);
         intent.putExtra("currentTabIndex", currentTabIndex);
@@ -5599,6 +5600,10 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
                     e.printStackTrace();
                 }
             }
+        }
+
+        for (int closedId : tabIds) {
+            deleteTabFiles(closedId);
         }
 
         tabs.clear();
@@ -5707,6 +5712,7 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
             int id = tabIds.get(i);
             WebView webView = tabs.get(i);
             String url = "";
+            String title = null;
 
             if (webView != null) {
                 url = webView.getUrl();
@@ -5716,24 +5722,8 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
                 webView.saveState(state);
                 saveBundleToFile(state, "tab_state_" + id + ".dat");
 
-                Bitmap snap = tabSnapshots.get(webView);
-                if (snap != null) {
-                    final int finalIdForSnap = id;
-                    final Bitmap finalSnap = snap;
-                    backgroundExecutor.execute(() -> {
-                        try {
-                            File outFile = new File(
-                                    getFilesDir(),
-                                    "tab_snapshot_" + finalIdForSnap + ".png");
-                            try (FileOutputStream fos = new FileOutputStream(outFile)) {
-                                finalSnap.compress(Bitmap.CompressFormat.PNG, 80, fos);
-                                fos.flush();
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    });
-                }
+                // サムネイルは captureTabSnapshot() の時点で保存済みなのでここでは書き直さない。
+                title = webView.getTitle();
             } else {
                 // 破棄済みタブは state ファイルが unloadTab() で保存済み。
                 TabInfo info = (i < tabInfos.size()) ? tabInfos.get(i) : null;
@@ -5742,10 +5732,18 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
                 }
             }
 
+            // 読込前などで WebView から取れなければ TabInfo の値を使う。プレースホルダは保存しない。
+            if (title == null || title.isEmpty()) {
+                TabInfo ti = (i < tabInfos.size()) ? tabInfos.get(i) : null;
+                if (ti != null) title = ti.getTitle();
+            }
+            if (title == null || "読込中...".equals(title)) title = "";
+
             JSONObject obj = new JSONObject();
             try {
                 obj.put("id", id);
                 obj.put("url", url);
+                obj.put("title", title);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -5785,22 +5783,13 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
                 JSONObject obj = array.getJSONObject(i);
                 int id = obj.getInt("id");
                 String url = obj.getString("url");
+                String savedTitle = obj.optString("title", "");
 
                 tabIds.add(id);
-                tabInfos.add(new TabInfo("読込中...", url, null));
+                tabInfos.add(new TabInfo(savedTitle.isEmpty() ? "読込中..." : savedTitle, url, null));
 
-                File snapFile = new File(getFilesDir(), "tab_snapshot_" + id + ".png");
-                if (snapFile.exists()) {
-                    try {
-                        Bitmap bm = BitmapFactory.decodeFile(snapFile.getAbsolutePath());
-                        if (bm != null) {
-                            // WebViewがまだ存在しないため、ロード後に必要に応じて関連付ける。
-                            // 既存のスナップショットファイルはそのまま保持する。
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+                // サムネイル(tab_snapshot_<id>.png)はここでは読み込まない。
+                // タブ一覧を開いた時に TabSnapshotAdapter が必要な分だけ読む(全タブ分をメモリに載せない)。
 
                 // 起動時は既存挙動を保つため各タブを一度生成し、復元後にLRU解放する。
                 WebView webView = createWebView(id);
@@ -5955,19 +5944,11 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
             e.printStackTrace();
         }
 
-        Bitmap snap = tabSnapshots.get(wv);
-        if (snap != null) {
-            final Bitmap finalSnap = snap;
-            backgroundExecutor.execute(() -> {
-                try {
-                    File outFile = new File(getFilesDir(), "tab_snapshot_" + id + ".png");
-                    try (FileOutputStream fos = new FileOutputStream(outFile)) {
-                        finalSnap.compress(Bitmap.CompressFormat.PNG, 80, fos);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
+        // 破棄後もタブ一覧でタイトルを出せるよう、いまのタイトルを TabInfo に残す。
+        // (サムネイルは captureTabSnapshot() で保存済みなので、破棄時に書き直さない)
+        String unloadTitle = wv.getTitle();
+        if (unloadTitle != null && !unloadTitle.isEmpty() && index < tabInfos.size()) {
+            tabInfos.get(index).setTitle(unloadTitle);
         }
 
         webViewContainer.removeView(wv);

@@ -2,6 +2,8 @@ package com.aozora.aozora;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -27,6 +30,8 @@ public class TabSnapshotAdapter extends RecyclerView.Adapter<TabSnapshotAdapter.
     private final LayoutInflater inflater;
     private final OnTabActionListener listener;
     private final Set<Integer> closedTabs = new HashSet<>();
+    // ディスクから読んだサムネイル(タブID -> 1/4サイズ)。アダプタ生存中だけ保持。
+    private final LruCache<Integer, Bitmap> diskThumbCache = new LruCache<>(12);
 
     public TabSnapshotAdapter(Activity activity,
                               List<WebView> webViews,
@@ -93,14 +98,20 @@ public class TabSnapshotAdapter extends RecyclerView.Adapter<TabSnapshotAdapter.
                 ImageView close = tile.findViewById(R.id.tab_close);
 
                 if (tabIndex < webViews.size() && !closedTabs.contains(tabIndex)) {
+                    // メモリ節約のためバックグラウンドのタブは WebView が破棄され null になる。
                     WebView w = webViews.get(tabIndex);
-                    Bitmap bm = tabSnapshots.get(w);
+                    Bitmap bm = (w != null) ? tabSnapshots.get(w) : null;
                     if (bm != null) {
                         img.setImageBitmap(Bitmap.createScaledBitmap(
                                 bm, Math.max(1, bm.getWidth() / 4),
                                 Math.max(1, bm.getHeight() / 4), true));
+                    } else {
+                        // メモリに無ければ(再起動後 / WebView破棄後)ディスクの保存済み画像を使う
+                        Bitmap saved = loadSavedThumbnail(tabIndex);
+                        if (saved != null) img.setImageBitmap(saved);
                     }
-                    String t = w.getTitle();
+                    String t = (w != null) ? w.getTitle() : null;
+                    if (t == null || t.isEmpty()) t = TabManager.getInstance().getTabTitle(tabIndex);
                     if (t == null || t.isEmpty()) t = "読込中...";
                     title.setText(shortTitle(t));
                     title.setVisibility(View.VISIBLE);
@@ -173,6 +184,29 @@ public class TabSnapshotAdapter extends RecyclerView.Adapter<TabSnapshotAdapter.
             this.grid = grid;
             this.row1 = row1;
             this.row2 = row2;
+        }
+    }
+
+    /** tab_snapshot_<id>.png を 1/4 サイズで読み込む。通常タブ以外(ID不明)や画像なしは null。 */
+    private Bitmap loadSavedThumbnail(int tabIndex) {
+        Integer id = TabManager.getInstance().getTabId(tabIndex);
+        if (id == null) return null; // シークレットはここに来ない=ディスクに触れない
+
+        Bitmap cached = diskThumbCache.get(id);
+        if (cached != null) return cached;
+
+        File f = new File(activity.getFilesDir(), "tab_snapshot_" + id + ".png");
+        if (!f.exists()) return null;
+
+        try {
+            BitmapFactory.Options opts = new BitmapFactory.Options();
+            opts.inSampleSize = 4; // 表示側の 1/4 縮小と同じ大きさ
+            Bitmap bm = BitmapFactory.decodeFile(f.getAbsolutePath(), opts);
+            if (bm != null) diskThumbCache.put(id, bm);
+            return bm;
+        } catch (Throwable e) { // OOM 等でもタブ一覧は落とさない
+            e.printStackTrace();
+            return null;
         }
     }
 
