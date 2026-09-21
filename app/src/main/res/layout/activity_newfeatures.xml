@@ -61,7 +61,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center_horizontal"
-                android:src="@mipmap/aozora"/>
+                android:src="@mipmap/aozora1"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:text="Holoデザインを残しながらも、モダンなデザインを統合した使いやすいブラウザとなりました。"
+                android:text="パスワード保護機能を搭載し、デザインの仕上げや最適化を行い、美しさを向上させました。"
                 android:textColor="#888888"
                 android:textSize="20dp" />
 
@@ -94,7 +94,7 @@
                     android:layout_width="80dp"
                     android:layout_height="100dp"
                     android:layout_marginStart="20dp"
-                    android:src="@drawable/screenshot_topdark"
+                    android:src="@drawable/newfeatures_list1"
                     android:layout_gravity="left|center" />
 
                 <ImageButton
@@ -117,7 +117,7 @@
                         android:layout_gravity="top"
                         android:layout_marginEnd="30dp"
                         android:singleLine="true"
-                        android:text="モダンかつ懐かしいデザイン"
+                        android:text="青空を意識"
                         android:textSize="16sp"
                         android:textStyle="bold"/>
 
@@ -126,7 +126,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
                         android:layout_marginEnd="30dp"
-                        android:text="Coara Browser をベースに2011年頃のAndroid端末で主流だった立体的な Holo デザイン を使用しつつ モダンUI を取り込み、アニメーションや細部のデザインまでこだわりました。"
+                        android:text="モダンなデザインを意識しつつも、青空というコンセプトにふさわしい、水色、白色、黒色を基調としたデザインに。検索ページにて、時間帯によって壁紙が変わる機能も追加しました。"
                         android:textSize="10sp" />
 
                 </LinearLayout>
@@ -151,7 +151,7 @@
                     android:layout_width="80dp"
                     android:layout_height="100dp"
                     android:layout_marginStart="20dp"
-                    android:src="@drawable/helptools"
+                    android:src="@drawable/newfeatures_list2"
                     android:layout_gravity="left|center" />
 
                 <ImageButton
@@ -174,7 +174,7 @@
                         android:layout_gravity="top"
                         android:layout_marginEnd="30dp"
                         android:singleLine="true"
-                        android:text="多彩で便利なツール"
+                        android:text="パスワードで保護"
                         android:textSize="16sp"
                         android:textStyle="bold"/>
 
@@ -183,7 +183,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
                         android:layout_marginEnd="30dp"
-                        android:text="Aozora では、Coara Browser に搭載していたアプリを始め、様々なアプリや機能が搭載されています。ブラウジングをしながら、便利で多彩なツールを無料でご使用いただけます。"
+                        android:text="Aozora 3.2.0 では、パスワードで保護する機能を導入しました。また、アプリ履歴など外部から覗けないようにできる設定も追加し、大切な情報を守ります。"
                         android:textSize="10sp" />
 
                 </LinearLayout>
@@ -208,7 +208,7 @@
                     android:layout_width="80dp"
                     android:layout_height="100dp"
                     android:layout_marginStart="20dp"
-                    android:src="@drawable/screenshot_topwhite"
+                    android:src="@drawable/newfeatures_list3"
                     android:layout_gravity="left|center" />
 
                 <ImageButton
@@ -231,7 +231,7 @@
                         android:layout_gravity="top"
                         android:layout_marginEnd="30dp"
                         android:singleLine="true"
-                        android:text="幅広いカスタマイズ性"
+                        android:text="バッテリー健康度を確認"
                         android:textSize="16sp"
                         android:textStyle="bold"/>
 
@@ -240,7 +240,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
                         android:layout_marginEnd="30dp"
-                        android:text="今まで固定デザインだった背景や下部バーを自由にカスタマイズできるようになりました。また、白デザインにも対応し、明るくモダンなデザインを使えるようになりました。"
+                        android:text="バッテリーの最大容量を確認できるツールを導入。健康度をいつでも確認できます。"
                         android:textSize="10sp" />
 
                 </LinearLayout>
@@ -265,7 +265,7 @@
                     android:layout_width="80dp"
                     android:layout_height="100dp"
                     android:layout_marginStart="20dp"
-                    android:src="@drawable/screenshot_settings"
+                    android:src="@drawable/newfeatures_list4"
                     android:layout_gravity="left|center" />
 
                 <ImageButton
@@ -288,7 +288,7 @@
                         android:layout_gravity="top"
                         android:layout_marginEnd="30dp"
                         android:singleLine="true"
-                        android:text="まとめられた設定"
+                        android:text="ファイルマネージャーの改良"
                         android:textSize="16sp"
                         android:textStyle="bold"/>
 
@@ -297,7 +297,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
                         android:layout_marginEnd="30dp"
-                        android:text="今まで2つ存在していた設定を1つにまとめ、簡単に設定ができるようになりました。また、ツールと設定を分けることにより、ダイレクトにツールを開けるようになり、目的の項目が見つけやすくなりました。"
+                        android:text="最適化を行い、ラグを削減しました。また、ZIP展開、閲覧機能を搭載し、ZIPファイルの操作はこのファイルマネージャー1つで完結するようになりました。ホーム画面で、アイコン長押しでファイルマネージャーを開くこともできます。"
                         android:textSize="10sp" />
 
                 </LinearLayout>
@@ -309,7 +309,8 @@
                 android:layout_height="120dp"
                 android:layout_marginTop="10dp"
                 android:orientation="vertical"
-                android:foreground="@drawable/nav_button_background">
+                android:foreground="@drawable/nav_button_background"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="80dp"

@@ -1,33 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="デフォルトのブラウザに設定しますか?"
-        android:paddingTop="40dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:textColor="#BBBBBB"
-        android:textSize="30sp" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:scrollbars="none">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="デフォルトのブラウザに設定すると、他アプリからサイトを開く際に、デフォルトで Aozora が開くようになります。"
-        android:paddingTop="10dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:textColor="#BBBBBB"
-        android:textSize="15sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="32dp">
 
-    <Button
-        android:id="@+id/setup_default"
-        android:layout_gravity="center"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:text="設定する"
-        />
+            <!-- トーナルな円の上にアプリアイコン -->
+            <FrameLayout
+                android:layout_width="128dp"
+                android:layout_height="128dp"
+                android:background="@drawable/bg_icon_circle">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@null"
+                    android:src="@mipmap/aozora" />
+            </FrameLayout>
+
+            <TextView
+                style="@style/Aozora.Text.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:gravity="center"
+                android:text="デフォルトのブラウザに設定しますか?" />
+
+            <TextView
+                style="@style/Aozora.Text.Body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:text="デフォルトのブラウザに設定すると、他アプリからサイトを開く際に、デフォルトで Aozora が開くようになります。" />
+
+            <Button
+                android:id="@+id/setup_default"
+                style="@style/Aozora.Button.Filled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:minWidth="160dp"
+                android:text="設定する" />
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

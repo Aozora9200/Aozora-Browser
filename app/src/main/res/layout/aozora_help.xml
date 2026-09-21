@@ -200,7 +200,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="left"
-            android:text="・起動画面や起動音を消す方法を知る" />
+            android:text="・パスワード設定の方法を知る" />
 
         </FrameLayout>
 

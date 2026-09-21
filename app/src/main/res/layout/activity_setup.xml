@@ -1,69 +1,96 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:background="@color/setup_window_bg">
 
-    <FrameLayout
+    <!-- 背景写真（ID は既存コードから参照されるためそのまま） -->
+    <ImageView
+        android:id="@+id/backgroundImage"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop"
+        android:src="@drawable/setupback" />
 
-        <ImageView
-            android:id="@+id/backgroundImage"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/setupback" />
-
-        <ImageView
-            android:id="@+id/background"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#99000000"
-            android:visibility="gone"/>
-
-    <!-- ページ切り替え部分 -->
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPager"
+    <!-- 常時表示のグラデーションスクリム（文字の可読性を確保） -->
+    <View
+        android:id="@+id/setupScrim"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"/>
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_setup_scrim" />
 
-    <!-- ボタン部分 -->
+    <!-- 既存コード用に残している追加スクリム（元と同じく初期は非表示） -->
+    <ImageView
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:contentDescription="@null"
+        android:visibility="gone" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_gravity="bottom"
-        android:orientation="horizontal"
-        android:padding="5dp">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btnPrev"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#33000000"
-            android:text="＜"
-            android:textColor="#FFFFFFFF"/>
-
-        <TextView
+        <!-- ページ切り替え部分 -->
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
-        <Button
-            android:id="@+id/btnNext"
-            android:layout_width="80dp"
+        <!-- ナビゲーション：戻る（丸アイコン）／ページドット／次へ（ピル） -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#33000000"
-            android:text="＞"
-            android:textColor="#FFFFFFFF"/>
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="16dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="8dp">
+
+            <!-- Button 型のまま。アイコンだけを中央に置くため左右 padding を等しくしている -->
+            <Button
+                android:id="@+id/btnPrev"
+                style="@style/Aozora.Button.Tonal"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:contentDescription="戻る"
+                android:drawableLeft="@drawable/ic_arrow_back_tonal"
+                android:drawablePadding="0dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:text="" />
+
+            <!-- コード側で pageIndicator.setViewPager(viewPager) を呼ぶとドットが動きます -->
+            <com.aozora.aozora.PageIndicatorView
+                android:id="@+id/pageIndicator"
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/btnNext"
+                style="@style/Aozora.Button.Filled"
+                android:layout_width="wrap_content"
+                android:layout_height="56dp"
+                android:drawablePadding="8dp"
+                android:drawableRight="@drawable/ic_arrow_forward_on_primary"
+                android:paddingLeft="28dp"
+                android:paddingRight="20dp"
+                android:text="次へ" />
+        </LinearLayout>
     </LinearLayout>
 
-        <com.aozora.aozora.TouchEffectView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clickable="false"
-            android:focusable="false"/>
+    <!-- タッチエフェクト（最前面・タッチは素通し） -->
+    <com.aozora.aozora.TouchEffectView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="false"
+        android:focusable="false" />
 
-    </FrameLayout>
-</LinearLayout>
+</FrameLayout>

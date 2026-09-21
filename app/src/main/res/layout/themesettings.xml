@@ -89,7 +89,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@mipmap/aozora"
+            android:src="@mipmap/aozora1"
             android:background="@drawable/nav_button_background"
             android:contentDescription="スタート" />
         <ImageButton

@@ -1,74 +1,116 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/framebackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
+    android:background="@color/setup_window_bg">
 
+    <!-- 元は android:background だったため引き伸ばされていました。src + centerCrop に修正 -->
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@drawable/transparent_vector"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="40dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:text="スピーディーで快適なブラウジング体験を"
-        android:textColor="#BBBBBB"
-        android:textSize="30sp" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:textColor="#BBBBBB"
-        android:text="Aozora は軽量なWeb ブラウザです。
-        幅広いデバイスに対応した快適性とユーザーインターフェースを備えています。"
-        android:textSize="20sp" />
-
-    <TextView
+        android:id="@+id/backgroundImage"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="40dp"/>
+        android:layout_height="match_parent"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop"
+        android:src="@drawable/setupback" />
 
-    <View
+    <!-- 元の #99000000 をグラデーションに置き換え（ID と表示状態は維持） -->
+    <ImageView
+        android:id="@+id/background"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#CCCCCC" />
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_setup_scrim"
+        android:contentDescription="@null" />
 
-    <TextView
-        android:id="@+id/progressText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="5dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:textColor="#BBBBBB"
-        android:text=""
-        android:textSize="15sp" />
-
-    <ProgressBar
-        android:id="@+id/setup_progress"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:max="100"
-        android:progress="0"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="10dp"/>
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="32dp">
 
-    <TextView
-        android:id="@+id/setupdownloadlog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="15dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:textColor="#BBBBBB"
-        android:text=""
-        android:textSize="10sp" />
+        <!-- くるくる回るリングの中にアプリアイコン -->
+        <FrameLayout
+            android:layout_width="168dp"
+            android:layout_height="168dp">
 
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottieLoading"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@null"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/lottie_loading" />
 
-</LinearLayout>
+            <ImageView
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_gravity="center"
+                android:contentDescription="@null"
+                android:src="@mipmap/aozora1" />
+        </FrameLayout>
+
+        <TextView
+            style="@style/Aozora.Text.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:gravity="center"
+            android:text="スピーディーで快適なブラウジング体験を" />
+
+        <TextView
+            style="@style/Aozora.Text.Body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:text="Aozora は軽量なWeb ブラウザです。\n幅広いデバイスに対応した快適性とユーザーインターフェースを備えています。" />
+
+        <!-- 進捗カード -->
+        <androidx.cardview.widget.CardView
+            style="@style/Aozora.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/progressText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:text=""
+                    android:textColor="@color/setup_on_card"
+                    android:textSize="14sp" />
+
+                <ProgressBar
+                    android:id="@+id/setup_progress"
+                    style="@style/Aozora.Progress"
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp"
+                    android:layout_marginTop="12dp"
+                    android:indeterminate="false"
+                    android:max="100"
+                    android:progress="0" />
+
+                <TextView
+                    android:id="@+id/setupdownloadlog"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="monospace"
+                    android:text=""
+                    android:textColor="@color/setup_on_card_variant"
+                    android:textSize="11sp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</FrameLayout>
