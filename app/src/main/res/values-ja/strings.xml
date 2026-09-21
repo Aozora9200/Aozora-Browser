@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Aozora</string>
     <string name="h_egg_name">Honeycomb</string>
-    <string name="version">3.1.2</string>
-    <string name="build">AZ31C</string>
-    <string name="password_key">HoneyCombAZ2100</string>
+    <string name="version">3.2.0</string>
+    <string name="build">AZ32A</string>
+    <string name="password_key"></string>
 
     <string name="websiteSettings">ウェブサイト設定</string>
     <string name="geoSettings">位置情報の権限設定</string>
@@ -54,8 +54,8 @@
     <string name="help_switchtab_detail">タブを切り替えるには、タブボタンをタップし、切り替えるタブを選択します。タブ一覧のメニューボタンから、すべてのタブを閉じることができます。</string>
 
     <!-- Boot Screen -->
-    <string name="help_boot_title">起動画面や起動音を消す</string>
-    <string name="help_boot_detail">起動画面や起動音を消すには、\nブラウザ設定の「アプリ設定の項目」から「起動画面」「起動音」のチェックを外すことで消すことができます。</string>
+    <string name="help_boot_title">パスワードを設定する</string>
+    <string name="help_boot_detail">パスワードを設定することで、他者からデータを守ることができます。\n設定、「ブラウザ設定」の「プライバシーとセキュリティ」から「パスワードの設定」を選ぶことで設定することができます。</string>
 
     <!-- Settings -->
     <string name="help_settings_title">設定を開く</string>
@@ -215,4 +215,26 @@
         <item>\u03c0</item>
         <item>=</item>
     </string-array>
+    <string name="header_title">バッテリー最大容量</string>
+    <string name="header_subtitle">現在の推定最大容量を計測します</string>
+    <string name="label_health">バッテリー健康度</string>
+    <string name="label_design_capacity">設計容量</string>
+    <string name="label_current_capacity">現在の推定最大容量</string>
+    <string name="label_level">現在の充電残量</string>
+    <string name="label_voltage">電圧</string>
+    <string name="label_temperature">温度</string>
+    <string name="label_technology">バッテリー種別</string>
+    <string name="label_status">充電状態</string>
+    <string name="unit_mah">%1$d mAh</string>
+    <string name="unit_percent">%1$d%%</string>
+    <string name="unit_voltage">%1$.2f V</string>
+    <string name="unit_temperature">%1$.1f ℃</string>
+    <string name="btn_refresh">再計測する</string>
+    <string name="note_text">※ この数値は端末のシステム情報から推定した参考値です。実際のバッテリー診断結果と多少異なる場合があります。より正確な数値を得るには、満充電に近い状態で計測してください。</string>
+    <string name="status_charging">充電中</string>
+    <string name="status_discharging">放電中</string>
+    <string name="status_full">満充電</string>
+    <string name="status_not_charging">非充電</string>
+    <string name="status_unknown">不明</string>
+    <string name="value_unavailable">取得できません</string>
     </resources>
