@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 行・プレビュー画像の押下フィードバック（Holo の青いハイライトを避ける） -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true" android:drawable="@color/setup_dot_inactive" />
+    <item android:drawable="@android:color/transparent" />
+</selector>

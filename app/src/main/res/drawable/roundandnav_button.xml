@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="?android:attr/colorControlHighlight">
+
+    <!-- 通常時の背景 -->
+    <item>
+        <shape android:shape="rectangle">
+
+            <solid android:color="#00FFFFFF"/>
+
+            <corners android:radius="25dp"/>
+
+            <stroke
+                android:width="2dp"
+                android:color="#777777"/>
+
+        </shape>
+    </item>
+
+    <!-- タップ時のマスク -->
+    <item android:id="@android:id/mask"
+          android:drawable="@drawable/ic_sysbar_highlight">
+        <shape android:shape="rectangle">
+
+            <solid android:color="#FFFFFFFF"/>
+
+            <corners android:radius="25dp"/>
+
+        </shape>
+    </item>
+
+</ripple>
