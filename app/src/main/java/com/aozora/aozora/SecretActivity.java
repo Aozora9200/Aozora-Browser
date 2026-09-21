@@ -1964,6 +1964,14 @@ public class SecretActivity extends Activity {
         if (webView != null) webView.reload();
     }
 
+    private int getPopupBottomOffset() {
+        View decor = getWindow().getDecorView();
+        int[] loc = new int[2];
+        bottomBar.getLocationInWindow(loc); // translationY も反映される
+        int offset = decor.getHeight() - loc[1];
+        return Math.max(0, offset); // bottomBar が隠れているときは 0
+    }
+
     private void popupLight(View anchor) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.popup_menu_white, null);
@@ -1980,7 +1988,7 @@ public class SecretActivity extends Activity {
         currentPopupWindow.setBackgroundDrawable(new ColorDrawable());
         currentPopupWindow.setOutsideTouchable(true);
         currentPopupWindow.setAnimationStyle(R.style.PopupAnimation);
-        currentPopupWindow.showAtLocation(anchor, Gravity.BOTTOM, 0, 0);
+        currentPopupWindow.showAtLocation(anchor, Gravity.BOTTOM, 0, getPopupBottomOffset());
 
         RecyclerView recycler = popupView.findViewById(R.id.popupRecycler);
 
@@ -2087,7 +2095,7 @@ public class SecretActivity extends Activity {
         currentPopupWindow.setBackgroundDrawable(new ColorDrawable());
         currentPopupWindow.setOutsideTouchable(true);
         currentPopupWindow.setAnimationStyle(R.style.PopupAnimation);
-        currentPopupWindow.showAtLocation(anchor, Gravity.BOTTOM, 0, 0);
+        currentPopupWindow.showAtLocation(anchor, Gravity.BOTTOM, 0, getPopupBottomOffset());
 
         RecyclerView recycler = popupView.findViewById(R.id.popupRecycler);
 
