@@ -31,6 +31,8 @@
     <uses-feature android:name="android.hardware.microphone" android:required="false" />
 
     <queries>
+        <!-- AirSky Browser(インストール済みかの確認・起動) -->
+        <package android:name="com.airsky.browser" />
         <!-- カメラ -->
         <intent>
             <action android:name="android.media.action.IMAGE_CAPTURE" />
@@ -69,6 +71,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
+        android:requestLegacyExternalStorage="true"
         android:launchMode="singleTop"
         tools:targetApi="31">
         <activity
@@ -371,6 +374,12 @@
             android:icon="@drawable/h_platlogo"
             android:label="@string/h_egg_name"
             android:theme="@android:style/Theme.Wallpaper.NoTitleBar.Fullscreen"/>
+
+        <activity
+            android:name=".AirSkyPromoActivity"
+            android:exported="false"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize"
+            android:theme="@style/Theme.Aozora.AirSky" />
 
         <provider android:name="androidx.core.content.FileProvider" android:authorities="com.aozora.aozora.fileprovider" android:exported="false" android:grantUriPermissions="true">
             <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths"/>

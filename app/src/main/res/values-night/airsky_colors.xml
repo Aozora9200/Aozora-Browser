@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="airsky_sheet">#FF1F1F1F</color>
+    <color name="airsky_on_sheet">#FFE3E3E3</color>
+    <color name="airsky_on_sheet_variant">#FFC4C7C5</color>
+    <color name="airsky_primary">#FFA8C7FA</color>
+    <color name="airsky_on_primary">#FF062E6F</color>
+    <color name="airsky_chip">#FF004A77</color>
+    <color name="airsky_on_chip">#FFC2E7FF</color>
+    <color name="airsky_warning">#FF8C1D18</color>
+    <color name="airsky_on_warning">#FFFFDAD6</color>
+    <color name="airsky_ripple">#29A8C7FA</color>
+</resources>

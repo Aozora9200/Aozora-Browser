@@ -56,6 +56,10 @@
     </PreferenceCategory>-->
     <!-- カテゴリ2 -->
     <PreferenceCategory android:title="システム">
+        <Preference
+            android:key="AirSkyTransfer"
+            android:title="AirSky Browserへ引っ越し"
+            android:summary="タブ履歴・ページ履歴・ブックマーク・保存ページ・設定を AirSky Browser に引き継ぎます" />
         <!--<ListPreference
             android:key="theme"
             android:title="テーマの選択"

@@ -137,10 +137,8 @@ public class PasswordActivity extends Activity {
                             );
                 }
 
-                intent.putExtra(
-                        "authenticated",
-                        true
-                );
+                // 解除済みの印は 1 回だけ使える合言葉で渡す(外部アプリからは偽造できない)
+                AuthTicket.attach(intent);
 
                 final Intent finalIntent = intent;
                 startActivity(finalIntent);
@@ -412,10 +410,8 @@ public class PasswordActivity extends Activity {
                             );
                 }
 
-                intent.putExtra(
-                        "authenticated",
-                        true
-                );
+                // 解除済みの印は 1 回だけ使える合言葉で渡す(外部アプリからは偽造できない)
+                AuthTicket.attach(intent);
 
                 final Intent finalIntent = intent;
 
@@ -956,10 +952,8 @@ public class PasswordActivity extends Activity {
                     );
         }
 
-        intent.putExtra(
-                "authenticated",
-                true
-        );
+        // 解除済みの印は 1 回だけ使える合言葉で渡す(外部アプリからは偽造できない)
+        AuthTicket.attach(intent);
 
         final Intent finalIntent = intent;
 

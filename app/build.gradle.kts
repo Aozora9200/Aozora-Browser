@@ -14,8 +14,8 @@ android {
         applicationId = "com.aozora.aozora"
         minSdk = 24
         targetSdk = 34
-        versionCode = 10
-        versionName = "3.2.1"
+        versionCode = 12
+        versionName = "3.2.3"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- AirSky Browser のお知らせ画面(Pixel 風)の色 -->
+<resources>
+    <color name="airsky_sheet">#FFFFFFFF</color>
+    <color name="airsky_on_sheet">#FF1F1F1F</color>
+    <color name="airsky_on_sheet_variant">#FF444746</color>
+    <color name="airsky_primary">#FF0B57D0</color>
+    <color name="airsky_on_primary">#FFFFFFFF</color>
+    <color name="airsky_chip">#FFD3E3FD</color>
+    <color name="airsky_on_chip">#FF041E49</color>
+    <color name="airsky_warning">#FFFFDAD6</color>
+    <color name="airsky_on_warning">#FF410002</color>
+    <color name="airsky_ripple">#1F0B57D0</color>
+</resources>

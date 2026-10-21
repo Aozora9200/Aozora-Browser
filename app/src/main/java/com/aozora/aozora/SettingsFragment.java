@@ -24,6 +24,15 @@ public class SettingsFragment extends PreferenceFragment {
                 return true;
             });
         }
+        Preference airSky = findPreference("AirSkyTransfer");
+        if (airSky != null) {
+            airSky.setOnPreferenceClickListener(preference -> {
+                Intent intent = new Intent(getActivity(), AirSkyPromoActivity.class);
+                intent.putExtra(AirSkyPromoActivity.EXTRA_FROM_SETTINGS, true);
+                startActivity(intent);
+                return true;
+            });
+        }
         Preference backup = findPreference("Storage");
         if (backup != null) {
             backup.setOnPreferenceClickListener(preference -> {

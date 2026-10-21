@@ -287,6 +287,10 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
     private boolean imgBlockEnabled = false;
     //private boolean wentToBackground = false; ←アプリ復帰時のパスワード要求するか判定で試行錯誤で入れた没データ
     private boolean authenticated = false;
+    /** onSaveInstanceState に残す「このプロセスで解除済み」の印のキー。 */
+    private static final String STATE_UNLOCKED_NONCE = "unlockedProcessNonce";
+    /** 画面を作る前にセットアップ・ロック画面へ回した(この画面では何もしない)。 */
+    private boolean redirectedToLock = false;
     private boolean batteryReceiverRegistered = false;
 
     private WebView preloadedWebView = null;
@@ -455,6 +459,8 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
             Intent intent = new Intent(this, SetupActivity.class);
             startActivity(intent);
             finish(); // MainActivityを閉じてセットアップから開始
+            redirectedToLock = true;
+            return;
         }
         boolean usePassWordonStartup = setupprefs.getBoolean(STARTUP_PASSWORD, true);
         boolean useSecretSecurity = setupprefs.getBoolean("useSecretSecurity", false);
@@ -466,10 +472,15 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
                     WindowManager.LayoutParams.FLAG_SECURE
             );
         }
-        authenticated =
-                getIntent().getBooleanExtra("authenticated", false);
+        // 解除済みかどうかは、パスワード画面が発行した 1 回限りの合言葉でだけ判断する。
+        // (以前の authenticated=true は外部アプリからも付けられるので無視する)
+        authenticated = AuthTicket.consume(getIntent());
+        // 同じプロセス内で画面が作り直された場合(recreate など)は、解除済みを引き継ぐ。
+        // プロセスが終了した後の復元では引き継がず、パスワードを求める。
+        boolean recreatedUnlocked = savedInstanceState != null
+                && AuthTicket.PROCESS_NONCE.equals(savedInstanceState.getString(STATE_UNLOCKED_NONCE));
 
-        if (passwordManager.isPasswordSet() && !authenticated) {
+        if (passwordManager.isPasswordSet() && !authenticated && !recreatedUnlocked) {
 
             if (usePassWordonStartup) {
                 Intent intent = new Intent(this, PasswordActivity.class);
@@ -492,6 +503,10 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
                 startActivity(intent);
 
                 finish();
+                // ロック画面へ回したので、この画面ではこれ以上何もしない
+                // (以前は続けてタブや外部から渡された URL の読み込みまで行っていた)
+                redirectedToLock = true;
+                return;
             }
 
         }
@@ -863,6 +878,9 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
         if (isUpdate) {
             new CheckUpdateTask().execute();
         }
+
+        // このバージョンへのアップデート後・初回起動時(セットアップ後)に 1 回だけ AirSky Browser のお知らせを出す
+        AirSkyPromoActivity.showIfNeeded(this);
 
         preInitializeWebView();
         if (!defaultLoadsImagesAutomaticallyInitialized && !webViews.isEmpty()) {
@@ -2037,6 +2055,8 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        // 外部から付けられた解除済みの印は使わない(残さない)
+        AuthTicket.consume(intent);
 
         // 今後 getIntent() でも新しい Intent を取得できるようにする
         setIntent(intent);
@@ -6209,6 +6229,13 @@ public class MainActivity extends Activity implements HistoryAdapter.HistoryList
         super.onStop();
 
         //wentToBackground = true;
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // この画面を表示できている = ロックは解除済み。同じプロセス内での作り直しにだけ引き継ぐ
+        if (!redirectedToLock) outState.putString(STATE_UNLOCKED_NONCE, AuthTicket.PROCESS_NONCE);
     }
 
     @Override
